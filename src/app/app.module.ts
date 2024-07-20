@@ -10,6 +10,8 @@ import { getFirestore, provideFirestore } from "@angular/fire/firestore";
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, AppRoutingModule],
+  declarations: [AppComponent],
+  imports: [BrowserModule, AppRoutingModule],
   providers: [
     provideFirebaseApp(() =>
       initializeApp({
@@ -24,7 +26,10 @@ import { getFirestore, provideFirestore } from "@angular/fire/firestore";
     ),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
+    provideFirestore(() => getFirestore()),
   ],
   bootstrap: [AppComponent],
+  bootstrap: [AppComponent],
 })
+export class AppModule {}
 export class AppModule {}
