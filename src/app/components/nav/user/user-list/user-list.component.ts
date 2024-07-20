@@ -32,7 +32,7 @@ export class UserListComponent implements OnInit {
   }
   onSelect(id?: string) {
     if (id) {
-      this.router.navigate(["movies_list", id]);
+      this.router.navigate(["users_list", id, "transactions"]);
     }
   }
 }

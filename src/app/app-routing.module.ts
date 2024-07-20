@@ -19,6 +19,7 @@ const routes: Routes = [
     children: [
       { path: ":id", component: UserListComponent },
       { path: ":id/edit", component: UserRegComponent },
+      { path: ":id/transactions", component: TransactionRegComponent },
     ],
   },
   { path: "new_transactions", component: TransactionRegComponent },

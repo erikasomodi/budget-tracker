@@ -3,17 +3,20 @@ import {
   DocumentData,
   Firestore,
   addDoc,
+  arrayUnion,
   collection,
   deleteDoc,
   doc,
   getDoc,
   getDocs,
   setDoc,
+  updateDoc,
 } from "@angular/fire/firestore";
 
 import { Observable, from, map } from "rxjs";
 import { UserModel } from "../models/user.model";
 import { ToastrService } from "ngx-toastr";
+import { TransactionModel } from "../models/transaction.model";
 
 @Injectable({
   providedIn: "root",
@@ -66,5 +69,21 @@ export class UserService {
   updateUser(user: UserModel): Observable<void> {
     const userDoc = doc(this.firestore, `users/${user.id}`);
     return from(setDoc(userDoc, user));
+  }
+
+  addTransactionToUser(
+    userId: string,
+    transaction: TransactionModel
+  ): Observable<void> {
+    const userDoc = doc(this.firestore, `users/${userId}`);
+    return from(
+      updateDoc(userDoc, {
+        transactions: arrayUnion(transaction),
+      })
+    ).pipe(
+      map(() => {
+        this.toastr.success("Transaction added to user successfully!");
+      })
+    );
   }
 }
