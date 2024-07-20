@@ -57,14 +57,14 @@ export class UserService {
   }
 
   //* DELETE
-  deletUser(movieId: string): Observable<void> {
-    const userDoc = doc(this.firestore, `users/${movieId}`);
+  deletUser(userId: string): Observable<void> {
+    const userDoc = doc(this.firestore, `users/${userId}`);
     return from(deleteDoc(userDoc));
   }
 
   //* UPDATE
-  updateUser(movie: UserModel): Observable<void> {
-    const userDoc = doc(this.firestore, `users/${movie.id}`);
-    return from(setDoc(userDoc, movie));
+  updateUser(user: UserModel): Observable<void> {
+    const userDoc = doc(this.firestore, `users/${user.id}`);
+    return from(setDoc(userDoc, user));
   }
 }

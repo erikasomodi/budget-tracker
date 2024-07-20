@@ -9,7 +9,7 @@
         <th scope="col">User Name</th>
         <th scope="col">Age</th>
         <th scope="col">Married</th>
-        <th scope="col">Number of Children</th>
+        <th scope="col">Childrens</th>
         <th scope="col">Start Budget</th>
         <th scope="col">Monthly Salary</th>
         <!-- <th scope="col">Transactions</th> -->
@@ -22,8 +22,10 @@
         <td>{{ user.age }}</td>
         <td>{{ user.married }}</td>
         <td>{{ user.numberOfChildren }}</td>
-        <td>{{ user.startBudget }}</td>
-        <td>{{ user.monthlySalary }}</td>
+        <td>{{ user.startBudget | currency : "EUR" : "symbol" : "1.0-0" }}</td>
+        <td>
+          {{ user.monthlySalary | currency : "EUR" : "symbol" : "1.0-0" }}
+        </td>
 
         <td>
           <button class="btn btn-warning" (click)="onSelect(user.id)">

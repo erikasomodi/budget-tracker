@@ -38,6 +38,7 @@ export class UserRegComponent implements OnInit {
       Validators.required,
       Validators.min(0),
     ]),
+    transactions: new FormControl(null),
   });
 
   updateUserId?: string;
