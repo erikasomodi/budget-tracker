@@ -1,4 +1,4 @@
-import { BudgetModel } from "./budget.model";
+import { TransactionModel } from "./transaction.model";
 
 export interface UserModel {
   id?: string;
@@ -8,5 +8,5 @@ export interface UserModel {
   numberOfChildren: number;
   startBudget: number;
   monthlySalary: number;
-  budget: BudgetModel;
+  transactions: TransactionModel;
 }
