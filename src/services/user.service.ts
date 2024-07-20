@@ -13,14 +13,15 @@ import {
 
 import { Observable, from, map } from "rxjs";
 import { UserModel } from "../models/user.model";
+import { ToastrService } from "ngx-toastr";
 
 @Injectable({
   providedIn: "root",
 })
-export class UserServiceService {
+export class UserService {
   private readonly usersCollectionRef = collection(this.firestore, "users");
 
-  constructor(private firestore: Firestore) {}
+  constructor(private firestore: Firestore, private toastr: ToastrService) {}
 
   //*CREATE
   addUser(user: UserModel): Observable<DocumentData> {

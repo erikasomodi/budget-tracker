@@ -7,6 +7,8 @@ import { TransactionRegComponent } from "./components/nav/transaction/transactio
 import { TransactionDetailsComponent } from "./components/nav/transaction/transaction-details/transaction-details.component";
 import { UserComponent } from "./components/nav/user/user.component";
 import { TransactionComponent } from "./components/nav/transaction/transaction.component";
+import { UserListComponent } from "./components/nav/user/user-list/user-list.component";
+import { TransactionListComponent } from "./components/nav/transaction/transaction-list/transaction-list.component";
 
 const routes: Routes = [
   { path: "home", component: MainComponent },
@@ -15,7 +17,7 @@ const routes: Routes = [
     path: "users_list",
     component: UserComponent,
     children: [
-      { path: ":id", component: UserDetailsComponent },
+      { path: ":id", component: UserListComponent },
       { path: ":id/edit", component: UserRegComponent },
     ],
   },
@@ -24,7 +26,7 @@ const routes: Routes = [
     path: "transactions_list",
     component: TransactionComponent,
     children: [
-      { path: ":id", component: TransactionDetailsComponent },
+      { path: ":id", component: TransactionListComponent },
       { path: ":id/edit", component: TransactionRegComponent },
     ],
   },

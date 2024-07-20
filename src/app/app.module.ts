@@ -8,20 +8,43 @@ import { getFirestore, provideFirestore } from "@angular/fire/firestore";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HttpClientModule } from "@angular/common/http";
+import { ToastrModule } from "ngx-toastr";
 
 import { AppComponent } from "./app.component";
-import { MainComponent } from './components/main/main.component';
-import { NavComponent } from './components/nav/nav.component';
-import { UserComponent } from './components/nav/user/user.component';
-import { UserRegComponent } from './components/nav/user/user-reg/user-reg.component';
-import { UserDetailsComponent } from './components/nav/user/user-details/user-details.component';
-import { TransactionComponent } from './components/nav/transaction/transaction.component';
-import { TransactionRegComponent } from './components/nav/transaction/transaction-reg/transaction-reg.component';
-import { TransactionDetailsComponent } from './components/nav/transaction/transaction-details/transaction-details.component';
+import { MainComponent } from "./components/main/main.component";
+import { NavComponent } from "./components/nav/nav.component";
+import { UserComponent } from "./components/nav/user/user.component";
+import { UserRegComponent } from "./components/nav/user/user-reg/user-reg.component";
+import { UserDetailsComponent } from "./components/nav/user/user-details/user-details.component";
+import { TransactionComponent } from "./components/nav/transaction/transaction.component";
+import { TransactionRegComponent } from "./components/nav/transaction/transaction-reg/transaction-reg.component";
+import { TransactionDetailsComponent } from "./components/nav/transaction/transaction-details/transaction-details.component";
+import { UserListComponent } from './components/nav/user/user-list/user-list.component';
+import { TransactionListComponent } from './components/nav/transaction/transaction-list/transaction-list.component';
 
 @NgModule({
-  declarations: [AppComponent, MainComponent, NavComponent, UserComponent, UserRegComponent, UserDetailsComponent, TransactionComponent, TransactionRegComponent, TransactionDetailsComponent],
-  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule,FormsModule,BrowserAnimationsModule,HttpClientModule],
+  declarations: [
+    AppComponent,
+    MainComponent,
+    NavComponent,
+    UserComponent,
+    UserRegComponent,
+    UserDetailsComponent,
+    TransactionComponent,
+    TransactionRegComponent,
+    TransactionDetailsComponent,
+    UserListComponent,
+    TransactionListComponent,
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    ReactiveFormsModule,
+    FormsModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    ToastrModule.forRoot(),
+  ],
   providers: [
     provideFirebaseApp(() =>
       initializeApp({
