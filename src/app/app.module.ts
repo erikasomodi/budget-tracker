@@ -7,9 +7,10 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { NavComponent } from './components/nav/nav.component';
+import { HomePageComponent } from './components/home-page/home-page.component';
 
 @NgModule({
-  declarations: [AppComponent, NavComponent],
+  declarations: [AppComponent, NavComponent, HomePageComponent],
   imports: [BrowserModule, AppRoutingModule],
   providers: [
     provideFirebaseApp(() =>
