@@ -1,0 +1,48 @@
+<div class="container">
+  <table
+    class="table table-striped table-hover"
+    *ngIf="(users$ | async)!.length > 0"
+  >
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">User Name</th>
+        <th scope="col">Age</th>
+        <th scope="col">Married</th>
+        <th scope="col">Childrens</th>
+        <th scope="col">Start Budget</th>
+        <th scope="col">Monthly Salary</th>
+        <!-- <th scope="col">Transactions</th> -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users$ | async; index as i">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ user.name }}</td>
+        <td>{{ user.age }}</td>
+        <td>{{ user.married }}</td>
+        <td>{{ user.numberOfChildren }}</td>
+        <td>{{ user.startBudget | currency : "EUR" : "symbol" : "1.0-0" }}</td>
+        <td>
+          {{ user.monthlySalary | currency : "EUR" : "symbol" : "1.0-0" }}
+        </td>
+
+        <td>
+          <button class="btn btn-warning" (click)="onSelect(user.id)">
+            Transactions
+          </button>
+        </td>
+        <!--  <td>
+          <button class="btn btn-info" (click)="onUpdateMovie(movie.id)">
+            Update
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-danger" (click)="onDelete(movie)">
+            Delete
+          </button>
+        </td> -->
+      </tr>
+    </tbody>
+  </table>
+</div>
