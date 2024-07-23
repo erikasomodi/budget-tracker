@@ -13,14 +13,15 @@ import { ToastrModule } from "ngx-toastr";
 import { AppComponent } from "./app.component";
 import { MainComponent } from "./components/main/main.component";
 import { NavComponent } from "./components/nav/nav.component";
-import { UserComponent } from "./components/nav/user/user.component";
-import { UserRegComponent } from "./components/nav/user/user-reg/user-reg.component";
-import { UserDetailsComponent } from "./components/nav/user/user-details/user-details.component";
-import { TransactionComponent } from "./components/nav/transaction/transaction.component";
-import { TransactionRegComponent } from "./components/nav/transaction/transaction-reg/transaction-reg.component";
-import { TransactionDetailsComponent } from "./components/nav/transaction/transaction-details/transaction-details.component";
-import { UserListComponent } from './components/nav/user/user-list/user-list.component';
-import { TransactionListComponent } from './components/nav/transaction/transaction-list/transaction-list.component';
+import { UserComponent } from "./components/user/user.component";
+import { UserRegComponent } from "./components/user/user-reg/user-reg.component";
+import { UserDetailsComponent } from "./components/user/user-details/user-details.component";
+import { TransactionComponent } from "./components/transaction/transaction.component";
+import { TransactionRegComponent } from "./components/transaction/transaction-reg/transaction-reg.component";
+import { TransactionDetailsComponent } from "./components/transaction/transaction-details/transaction-details.component";
+import { UserListComponent } from "./components/user/user-list/user-list.component";
+import { TransactionListComponent } from "./components/transaction/transaction-list/transaction-list.component";
+import { HomePageComponent } from './components/home-page/home-page.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { TransactionListComponent } from './components/nav/transaction/transacti
     TransactionDetailsComponent,
     UserListComponent,
     TransactionListComponent,
+    HomePageComponent,
   ],
   imports: [
     BrowserModule,

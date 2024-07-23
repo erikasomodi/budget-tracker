@@ -1,10 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import { UserService } from "../../../../../services/user.service";
 import { ToastrService } from "ngx-toastr";
-import { TransactionModel } from "../../../../../models/transaction.model";
+
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
-import { UserModel } from "../../../../../models/user.model";
-import { transition } from "@angular/animations";
+import { UserModel } from "../../../models/user.model";
+import { UserService } from "../../../services/user.service";
 
 @Component({
   selector: "app-transaction-reg",
@@ -19,9 +18,8 @@ export class TransactionRegComponent implements OnInit {
     private userService: UserService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private toastr: ToastrService
-  ) // private  newTransaction: TransactionModel;
-  {}
+    private toastr: ToastrService // private  newTransaction: TransactionModel;
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe({

@@ -1,9 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
-import { UserService } from "../../../../../services/user.service";
+
 import { ToastrService } from "ngx-toastr";
-import { UserModel } from "../../../../../models/user.model";
+import { UserService } from "../../../services/user.service";
+import { UserModel } from "../../../models/user.model";
 
 @Component({
   selector: "app-user-reg",

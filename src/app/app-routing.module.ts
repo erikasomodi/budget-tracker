@@ -1,17 +1,15 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { MainComponent } from "./components/main/main.component";
-import { UserRegComponent } from "./components/nav/user/user-reg/user-reg.component";
-import { UserDetailsComponent } from "./components/nav/user/user-details/user-details.component";
-import { TransactionRegComponent } from "./components/nav/transaction/transaction-reg/transaction-reg.component";
-import { TransactionDetailsComponent } from "./components/nav/transaction/transaction-details/transaction-details.component";
-import { UserComponent } from "./components/nav/user/user.component";
-import { TransactionComponent } from "./components/nav/transaction/transaction.component";
-import { UserListComponent } from "./components/nav/user/user-list/user-list.component";
-import { TransactionListComponent } from "./components/nav/transaction/transaction-list/transaction-list.component";
+import { UserRegComponent } from "./components/user/user-reg/user-reg.component";
+import { UserComponent } from "./components/user/user.component";
+import { UserListComponent } from "./components/user/user-list/user-list.component";
+import { TransactionRegComponent } from "./components/transaction/transaction-reg/transaction-reg.component";
+import { TransactionComponent } from "./components/transaction/transaction.component";
+import { TransactionListComponent } from "./components/transaction/transaction-list/transaction-list.component";
+import { HomePageComponent } from "./components/home-page/home-page.component";
 
 const routes: Routes = [
-  { path: "home", component: MainComponent },
+  { path: "home", component: HomePageComponent },
   { path: "users_registration", component: UserRegComponent },
   {
     path: "users_list",

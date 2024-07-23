@@ -12,8 +12,7 @@ import {
 } from "@angular/fire/firestore";
 
 import { Observable, from, map } from "rxjs";
-import { UserModel } from "../models/user.model";
-import { TransactionModel } from "../models/transaction.model";
+
 import { ToastrService } from "ngx-toastr";
 @Injectable({
   providedIn: "root",
