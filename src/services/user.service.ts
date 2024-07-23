@@ -80,10 +80,6 @@ export class UserService {
       updateDoc(userDoc, {
         transactions: arrayUnion(transaction),
       })
-    ).pipe(
-      map(() => {
-        this.toastr.success("Transaction added to user successfully!");
-      })
     );
   }
 }

@@ -8,5 +8,5 @@ export interface UserModel {
   numberOfChildren: number;
   startBudget: number;
   monthlySalary: number;
-  transactions: TransactionModel;
+  transactions: TransactionModel[];
 }

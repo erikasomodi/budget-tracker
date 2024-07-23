@@ -1,7 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { UserService } from "../../../../../services/user.service";
+import { ToastrService } from "ngx-toastr";
 import { TransactionModel } from "../../../../../models/transaction.model";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
+import { UserModel } from "../../../../../models/user.model";
+import { transition } from "@angular/animations";
 
 @Component({
   selector: "app-transaction-reg",
@@ -9,37 +12,61 @@ import { ActivatedRoute, ParamMap, Router } from "@angular/router";
   styleUrl: "./transaction-reg.component.scss",
 })
 export class TransactionRegComponent implements OnInit {
-  userId!: string | null | undefined;
+  updateUserId?: string;
+  selectUser!: UserModel;
 
   constructor(
     private userService: UserService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
-  ) {}
+    private router: Router,
+    private toastr: ToastrService
+  ) // private  newTransaction: TransactionModel;
+  {}
 
-  ngOnInit() {
-    this.activatedRoute.paramMap.subscribe((params) => {
-      this.userId = params.get("id");
+  ngOnInit(): void {
+    this.activatedRoute.paramMap.subscribe({
+      next: (params: ParamMap) => {
+        const userId = params.get("id");
+        if (userId) {
+          this.userService.getUserWithGetDoc(userId).subscribe({
+            next: (data) => {
+              console.log(data.id);
+
+              this.updateUserId = data.id;
+              console.log(this.updateUserId);
+              this.selectUser = data;
+              console.log(this.selectUser);
+            },
+          });
+        }
+      },
     });
   }
-  addTransaction() {
-    const newTransaction: TransactionModel = {
-      transactionName: "Example Transaction",
-      transactionAmount: 100,
-      transactionDate: new Date().toISOString(),
-      transactionCategory: "Example Category",
-      transactionMethod: "Example Method",
-    };
+  newTransaction = {
+    id: Date.now(),
+    transactionName: "Grocery Shopping",
+    transactionAmount: 50.25,
+    transactionDate: "2024-07-23",
+    transactionCategory: "Food",
+    transactionMethod: "Credit Card",
+  };
+  // console.log(newTransaction);
 
-    this.userService
-      .addTransactionToUser(this.userId, newTransaction)
-      .subscribe({
-        next: () => {
-          console.log("Transaction added to user successfully.");
-        },
-        error: (err) => {
-          console.error("Error adding transaction:", err);
-        },
-      });
+  addTransaction() {
+    if (this.updateUserId) {
+      this.userService
+        .addTransactionToUser(this.updateUserId, this.newTransaction)
+        .subscribe({
+          next: () => {
+            this.toastr.success("Add a new transaction is successful!");
+            console.log(this.selectUser);
+            console.log(this.selectUser.transactions);
+            this.router.navigate(["users_list"]);
+          },
+          error: (err) => {
+            console.log(err);
+          },
+        });
+    }
   }
 }

@@ -1,5 +1,5 @@
 export interface TransactionModel {
-  id?: string;
+  id?: number;
   transactionName: string;
   transactionAmount: number;
   transactionDate: string;
