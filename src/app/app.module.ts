@@ -8,9 +8,13 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { NavComponent } from './components/nav/nav.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
+import { RegistrationComponent } from './components/registration/registration.component';
+import { TransactionsComponent } from './components/transactions/transactions.component';
+import { BudgetTrackerComponent } from './components/budget-tracker/budget-tracker.component';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
-  declarations: [AppComponent, NavComponent, HomePageComponent],
+  declarations: [AppComponent, NavComponent, HomePageComponent, RegistrationComponent, TransactionsComponent, BudgetTrackerComponent, LoginComponent],
   imports: [BrowserModule, AppRoutingModule],
   providers: [
     provideFirebaseApp(() =>
