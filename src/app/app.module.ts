@@ -2,49 +2,28 @@ import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 
 import { AppRoutingModule } from "./app-routing.module";
+import { AppComponent } from "./app.component";
 import { initializeApp, provideFirebaseApp } from "@angular/fire/app";
 import { getAuth, provideAuth } from "@angular/fire/auth";
 import { getFirestore, provideFirestore } from "@angular/fire/firestore";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { HttpClientModule } from "@angular/common/http";
-import { ToastrModule } from "ngx-toastr";
-
-import { AppComponent } from "./app.component";
 import { NavComponent } from "./components/nav/nav.component";
-import { UserComponent } from "./components/user/user.component";
-import { UserRegComponent } from "./components/user/user-reg/user-reg.component";
-import { UserDetailsComponent } from "./components/user/user-details/user-details.component";
-import { TransactionComponent } from "./components/transaction/transaction.component";
-import { TransactionRegComponent } from "./components/transaction/transaction-reg/transaction-reg.component";
-import { TransactionDetailsComponent } from "./components/transaction/transaction-details/transaction-details.component";
-import { UserListComponent } from "./components/user/user-list/user-list.component";
-import { TransactionListComponent } from "./components/transaction/transaction-list/transaction-list.component";
-import { HomePageComponent } from './components/home-page/home-page.component';
+import { HomePageComponent } from "./components/home-page/home-page.component";
+import { RegistrationComponent } from "./components/registration/registration.component";
+import { TransactionsComponent } from "./components/transactions/transactions.component";
+import { BudgetTrackerComponent } from "./components/budget-tracker/budget-tracker.component";
+import { LoginComponent } from "./components/login/login.component";
 
 @NgModule({
   declarations: [
     AppComponent,
-       NavComponent,
-    UserComponent,
-    UserRegComponent,
-    UserDetailsComponent,
-    TransactionComponent,
-    TransactionRegComponent,
-    TransactionDetailsComponent,
-    UserListComponent,
-    TransactionListComponent,
+    NavComponent,
     HomePageComponent,
+    RegistrationComponent,
+    TransactionsComponent,
+    BudgetTrackerComponent,
+    LoginComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    ReactiveFormsModule,
-    FormsModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    ToastrModule.forRoot(),
-  ],
+  imports: [BrowserModule, AppRoutingModule],
   providers: [
     provideFirebaseApp(() =>
       initializeApp({
