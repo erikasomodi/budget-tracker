@@ -1,14 +1,14 @@
-import { Component, OnInit } from "@angular/core";
-import { ToastrService } from "ngx-toastr";
+import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 
-import { ActivatedRoute, ParamMap, Router } from "@angular/router";
-import { UserModel } from "../../../models/user.model";
-import { UserService } from "../../../services/user.service";
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { UserModel } from '../../../models/user.model';
+import { UserService } from '../../../services/user.service';
 
 @Component({
-  selector: "app-transaction-reg",
-  templateUrl: "./transaction-reg.component.html",
-  styleUrl: "./transaction-reg.component.scss",
+  selector: 'app-transaction-reg',
+  templateUrl: './transaction-reg.component.html',
+  styleUrl: './transaction-reg.component.scss',
 })
 export class TransactionRegComponent implements OnInit {
   updateUserId?: string;
@@ -24,7 +24,7 @@ export class TransactionRegComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe({
       next: (params: ParamMap) => {
-        const userId = params.get("id");
+        const userId = params.get('id');
         if (userId) {
           this.userService.getUserWithGetDoc(userId).subscribe({
             next: (data) => {
@@ -42,11 +42,11 @@ export class TransactionRegComponent implements OnInit {
   }
   newTransaction = {
     id: Date.now(),
-    transactionName: "Grocery Shopping",
+    transactionName: 'Grocery Shopping',
     transactionAmount: 50.25,
-    transactionDate: "2024-07-23",
-    transactionCategory: "Food",
-    transactionMethod: "Credit Card",
+    transactionDate: '2024-07-23',
+    transactionCategory: 'Food',
+    transactionMethod: 'Credit Card',
   };
   // console.log(newTransaction);
 
@@ -56,10 +56,10 @@ export class TransactionRegComponent implements OnInit {
         .addTransactionToUser(this.updateUserId, this.newTransaction)
         .subscribe({
           next: () => {
-            this.toastr.success("Add a new transaction is successful!");
+            this.toastr.success('Add a new transaction is successful!');
             console.log(this.selectUser);
             console.log(this.selectUser.transactions);
-            this.router.navigate(["users_list"]);
+            this.router.navigate(['users_list']);
           },
           error: (err) => {
             console.log(err);
