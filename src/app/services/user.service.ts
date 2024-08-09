@@ -28,7 +28,7 @@ export class UserService {
   constructor(private firestore: Firestore, private toastr: ToastrService) {}
 
   //*CREATE
-  addUser(user: UserModel): Observable<DocumentData> {
+  createUser(user: UserModel): Observable<DocumentData> {
     return from(addDoc(this.usersCollectionRef, user));
     // létrehozunk egy új felhasználót az adott firebase kollekcióban
   }
