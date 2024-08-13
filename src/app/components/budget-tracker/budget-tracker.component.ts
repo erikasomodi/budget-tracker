@@ -16,12 +16,6 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
   styleUrl: './budget-tracker.component.scss',
 })
 export class BudgetTrackerComponent implements OnInit {
-  ngOnInit() {
-    this.expenses = this.expenses.map((transaction) => ({
-      ...transaction,
-      transactionAmount: -Math.abs(transaction.transactionAmount),
-    }));
-  }
   // expense icons
   faShirt: IconProp = faShirt;
   faGift: IconProp = faGift;
@@ -30,6 +24,8 @@ export class BudgetTrackerComponent implements OnInit {
   faMoneyBill: IconProp = faMoneyBill;
   faLaptop: IconProp = faLaptop;
   faChartLine: IconProp = faChartLine;
+
+  currentSum: number = 0;
 
   expenses: TransactionModel[] = [
     {
@@ -98,6 +94,29 @@ export class BudgetTrackerComponent implements OnInit {
     0
   );
 
+  currentView: 'expenses' | 'incomes' | 'transactions' = 'expenses';
+
+  switchView(view: 'expenses' | 'incomes' | 'transactions') {
+    this.currentView = view;
+
+    if (view === 'expenses') {
+      this.currentSum = this.expenses.reduce(
+        (sum, transaction) => sum + transaction.transactionAmount,
+        0
+      );
+    } else if (view === 'incomes') {
+      this.currentSum = this.incomes.reduce(
+        (sum, transaction) => sum + transaction.transactionAmount,
+        0
+      );
+    } else {
+      this.currentSum = this.transactions.reduce(
+        (sum, transaction) => sum + transaction.transactionAmount,
+        0
+      );
+    }
+  }
+
   months = [
     'January',
     'February',
@@ -113,8 +132,14 @@ export class BudgetTrackerComponent implements OnInit {
     'December',
   ];
 
-  currentView: 'expenses' | 'incomes' | 'transactions' = 'expenses';
-  switchView(view: 'expenses' | 'incomes' | 'transactions') {
-    this.currentView = view;
+  ngOnInit() {
+    // Negatív lesz az összeg
+    this.expenses = this.expenses.map((transaction) => ({
+      ...transaction,
+      transactionAmount: -Math.abs(transaction.transactionAmount),
+    }));
+
+    // Aa teljes összeg kiszámítása
+    this.switchView(this.currentView); // Beállítja az összegz
   }
 }
