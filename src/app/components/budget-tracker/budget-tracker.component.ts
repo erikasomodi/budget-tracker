@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   faShirt,
   faGift,
@@ -15,7 +15,13 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
   templateUrl: './budget-tracker.component.html',
   styleUrl: './budget-tracker.component.scss',
 })
-export class BudgetTrackerComponent {
+export class BudgetTrackerComponent implements OnInit {
+  ngOnInit() {
+    this.expenses = this.expenses.map((transaction) => ({
+      ...transaction,
+      transactionAmount: -Math.abs(transaction.transactionAmount),
+    }));
+  }
   // expense icons
   faShirt: IconProp = faShirt;
   faGift: IconProp = faGift;
@@ -28,7 +34,7 @@ export class BudgetTrackerComponent {
   expenses: TransactionModel[] = [
     {
       transactionName: 'Clothes',
-      transactionAmount: -24985,
+      transactionAmount: 24985,
       transactionDate: '2024-08-01',
       transactionCategory: 'Shopping',
       transactionMethod: 'Cash',
@@ -36,7 +42,7 @@ export class BudgetTrackerComponent {
     },
     {
       transactionName: 'Book',
-      transactionAmount: -4985,
+      transactionAmount: 4985,
       transactionDate: '2024-08-03',
       transactionCategory: 'Gifts',
       transactionMethod: 'Cash',
@@ -44,7 +50,7 @@ export class BudgetTrackerComponent {
     },
     {
       transactionName: 'Pizza',
-      transactionAmount: -5000,
+      transactionAmount: 5000,
       transactionDate: '2024-08-05',
       transactionCategory: 'Food',
       transactionMethod: 'Card',
@@ -78,7 +84,19 @@ export class BudgetTrackerComponent {
     },
   ];
 
-  transactions: TransactionModel[] = [...this.expenses, ...this.incomes];
+  // transactions: TransactionModel[] = [...this.expenses, ...this.incomes];
+  transactions: TransactionModel[] = [
+    ...this.expenses.map((transaction) => ({
+      ...transaction,
+      transactionAmount: -Math.abs(transaction.transactionAmount), // Negatív lesz
+    })),
+    ...this.incomes,
+  ];
+
+  transactionsSum: number = this.transactions.reduce(
+    (sum, transaction) => sum + transaction.transactionAmount,
+    0
+  );
 
   months = [
     'January',
