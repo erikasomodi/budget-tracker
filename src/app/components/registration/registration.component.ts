@@ -40,7 +40,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
         this.adminNameValidator,
       ]),
       age: new FormControl("", [Validators.required]),
-      married: new FormControl(false, [Validators.required]),
+      married: new FormControl("", [Validators.required]),
       numberOfChildren: new FormControl(null, [Validators.required]),
       startBudget: new FormControl("", [Validators.required]),
       monthlySalary: new FormControl("", [Validators.required]),
