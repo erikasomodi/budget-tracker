@@ -1,1 +1,105 @@
-<p>budget-tracker works!</p>
+<div class="container">
+  <div class="text-center mt-3">
+    <h2>32 500.00 Ft</h2>
+    <p>Total Balance</p>
+  </div>
+
+  <div class="d-flex justify-content-between align-items-baseline my-4">
+    <div class="">
+      <button
+        class="btn"
+        [ngClass]="{
+        'btn-link btn-lg fw-bold text-warning btn__title': currentView === 'expenses',
+        'btn-sm btn-warning': currentView !== 'expenses',
+      }"
+        (click)="switchView('expenses')"
+      >
+        Expenses
+      </button>
+    </div>
+    <div class="me-md-auto">
+      <button
+        class="btn"
+        [ngClass]="{
+        'btn-link btn-lg fw-bold text-warning btn__title': currentView === 'incomes',
+        'btn-sm btn-warning': currentView !== 'incomes',
+      }"
+        (click)="switchView('incomes')"
+      >
+        Income
+      </button>
+    </div>
+    <div>
+      <select class="form-select form-select-sm w-auto">
+        <option *ngFor="let month of months">{{ month }}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-around my-3">
+    <div>
+      <h5>5 200 Ft</h5>
+      <p>Day</p>
+    </div>
+    <div>
+      <h5>40 300 Ft</h5>
+      <p>Week</p>
+    </div>
+    <div>
+      <h5>45 500 Ft</h5>
+      <p>Month</p>
+    </div>
+  </div>
+
+  <ul class="list-group">
+    <!-- Költségek  -->
+    <ng-container *ngIf="currentView === 'expenses'">
+      <li
+        *ngFor="let expense of expenses"
+        class="list-group-item"
+      >
+        <div class="row">
+          <div class="col-md-4 text-start align-items-baseline">
+            <fa-icon
+              *ngIf="expense.icon"
+              [icon]="expense.icon"
+              class="me-3"
+            ></fa-icon>
+            <span>{{ expense.transactionName }}</span>
+          </div>
+          <div class="col-md-4 text-end align-items-baseline">
+            <strong>{{ expense.transactionAmount | number }} Ft</strong>
+          </div>
+          <div class="col-md-4 text-end align-items-baseline">
+            <span>{{ expense.transactionDate }}</span>
+          </div>
+        </div>
+      </li>
+    </ng-container>
+
+    <!-- Bevételek  -->
+    <ng-container *ngIf="currentView === 'incomes'">
+      <li
+        *ngFor="let income of incomes"
+        class="list-group-item"
+      >
+        <div class="row">
+          <div class="col-md-4 text-start align-items-baseline">
+            <fa-icon
+              *ngIf="income.icon"
+              [icon]="income.icon"
+              class="me-3"
+            ></fa-icon>
+            <span>{{ income.transactionName }}</span>
+          </div>
+          <div class="col-md-4 text-end align-items-baseline">
+            <strong>{{ income.transactionAmount | number }} Ft</strong>
+          </div>
+          <div class="col-md-4 text-end align-items-baseline">
+            <span>{{ income.transactionDate }}</span>
+          </div>
+        </div>
+      </li>
+    </ng-container>
+  </ul>
+</div>
