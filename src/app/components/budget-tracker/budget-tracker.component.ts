@@ -3,7 +3,12 @@ import {
   faShirt,
   faGift,
   faPizzaSlice,
+  faMoneyBill,
+  faLaptop,
+  faChartLine,
 } from '@fortawesome/free-solid-svg-icons';
+import { TransactionModel } from '../../models/transaction.model';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 @Component({
   selector: 'app-budget-tracker',
@@ -11,28 +16,69 @@ import {
   styleUrl: './budget-tracker.component.scss',
 })
 export class BudgetTrackerComponent {
-  faShirt = faShirt;
-  faGift = faGift;
-  faPizzaSlice = faPizzaSlice;
-  expenses = [
+  // expense icons
+  faShirt: IconProp = faShirt;
+  faGift: IconProp = faGift;
+  faPizzaSlice: IconProp = faPizzaSlice;
+  // income icons
+  faMoneyBill: IconProp = faMoneyBill;
+  faLaptop: IconProp = faLaptop;
+  faChartLine: IconProp = faChartLine;
+
+  expenses: TransactionModel[] = [
     {
-      category: 'Clothes',
-      amount: 498.5,
-      percentage: 32,
+      transactionName: 'Clothes',
+      transactionAmount: 24985,
+      transactionDate: '2024-08-01',
+      transactionCategory: 'Shopping',
+      transactionMethod: 'Cash',
       icon: this.faShirt,
     },
     {
-      category: 'Gifts',
-      amount: 344.45,
-      percentage: 21,
+      transactionName: 'Book',
+      transactionAmount: 4985,
+      transactionDate: '2024-08-03',
+      transactionCategory: 'Gifts',
+      transactionMethod: 'Cash',
       icon: this.faGift,
     },
     {
-      category: 'Food',
-      amount: 230.5,
-      percentage: 12,
+      transactionName: 'Pizza',
+      transactionAmount: 5000,
+      transactionDate: '2024-08-05',
+      transactionCategory: 'Food',
+      transactionMethod: 'Card',
       icon: this.faPizzaSlice,
     },
-    // Add more expenses as necessary
   ];
+  incomes: TransactionModel[] = [
+    {
+      transactionName: 'Fizu',
+      transactionAmount: 450000,
+      transactionDate: '2024-08-01',
+      transactionCategory: 'Income',
+      transactionMethod: 'Bank Transfer',
+      icon: this.faMoneyBill,
+    },
+    {
+      transactionName: 'Családi pótlék',
+      transactionAmount: 25000,
+      transactionDate: '2024-08-03',
+      transactionCategory: 'FreeLance',
+      transactionMethod: 'Bank Transfer',
+      icon: this.faMoneyBill,
+    },
+    {
+      transactionName: 'Tőzsde',
+      transactionAmount: 5000,
+      transactionDate: '2024-08-10',
+      transactionCategory: 'Investments',
+      transactionMethod: 'Bank Transfer',
+      icon: this.faChartLine,
+    },
+  ];
+  currentView: 'expenses' | 'incomes' = 'expenses';
+  switchView(view: 'expenses' | 'incomes') {
+    this.currentView = view;
+  }
 }

@@ -5,8 +5,26 @@
   </div>
 
   <div class="d-flex justify-content-between my-4">
-    <button class="btn btn-dark">Expenses</button>
-    <button class="btn btn-light">Income</button>
+    <button
+      class="btn"
+      [ngClass]="{
+        'btn-dark': currentView === 'expenses',
+        'btn-light': currentView !== 'expenses'
+      }"
+      (click)="switchView('expenses')"
+    >
+      Expenses
+    </button>
+    <button
+      class="btn"
+      [ngClass]="{
+        'btn-dark': currentView === 'incomes',
+        'btn-light': currentView !== 'incomes'
+      }"
+      (click)="switchView('incomes')"
+    >
+      Income
+    </button>
     <select class="form-select w-auto">
       <option>August</option>
       <!-- Add other months -->
@@ -28,20 +46,51 @@
     </div>
   </div>
 
-  <div class="expense-list">
-    <div
-      class="d-flex justify-content-between mb-3"
-      *ngFor="let expense of expenses"
-    >
-      <div>
-        <fa-icon [icon]="expense.icon"></fa-icon>
-      </div>
-      <div>
-        <strong>{{ expense.amount }} Ft</strong>
-      </div>
-      <div>
-        <span>{{ expense.percentage }}%</span>
-      </div>
-    </div>
-  </div>
+  <ul class="list-group">
+    <!-- Költségek  -->
+    <ng-container *ngIf="currentView === 'expenses'">
+      <li
+        *ngFor="let expense of expenses"
+        class="list-group-item d-flex justify-content-between align-items-center"
+      >
+        <div class="d-flex align-items-center">
+          <fa-icon
+            *ngIf="expense.icon"
+            [icon]="expense.icon"
+            class="me-3"
+          ></fa-icon>
+          <span>{{ expense.transactionName }}</span>
+        </div>
+        <div>
+          <strong>{{ expense.transactionAmount }} Ft</strong>
+        </div>
+        <div>
+          <span>{{ expense.transactionDate }}</span>
+        </div>
+      </li>
+    </ng-container>
+
+    <!-- Bevételek  -->
+    <ng-container *ngIf="currentView === 'incomes'">
+      <li
+        *ngFor="let income of incomes"
+        class="list-group-item d-flex justify-content-between align-items-center"
+      >
+        <div class="d-flex align-items-center">
+          <fa-icon
+            *ngIf="income.icon"
+            [icon]="income.icon"
+            class="me-3"
+          ></fa-icon>
+          <span>{{ income.transactionName }}</span>
+        </div>
+        <div>
+          <strong>{{ income.transactionAmount }} Ft</strong>
+        </div>
+        <div>
+          <span>{{ income.transactionDate }}</span>
+        </div>
+      </li>
+    </ng-container>
+  </ul>
 </div>

@@ -1,3 +1,4 @@
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 export interface TransactionModel {
   id?: number;
   transactionName: string;
@@ -5,4 +6,5 @@ export interface TransactionModel {
   transactionDate: string;
   transactionCategory: string;
   transactionMethod: string;
+  icon?: IconProp; // Opcionális ikon
 }
