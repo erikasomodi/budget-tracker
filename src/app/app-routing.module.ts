@@ -1,20 +1,28 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
+
 import { HomePageComponent } from "./components/home-page/home-page.component";
-import { RegistrationComponent } from "./components/registration/registration.component";
-import { BudgetTrackerComponent } from "./components/budget-tracker/budget-tracker.component";
 import { LoginComponent } from "./components/login/login.component";
-// import { TransactionRegComponent } from './components/transaction/transaction-reg/transaction-reg.component';
-// import { TransactionListComponent } from './components/transaction/transaction-list/transaction-list.component';
+
+import { RegistrationComponent } from "./components/registration/registration.component";
+
+import { TransactionRegComponent } from "./components/transaction/transaction-reg/transaction-reg.component";
+import { TransactionListComponent } from "./components/transaction/transaction-list/transaction-list.component";
+
+import { BudgetTrackerComponent } from "./components/budget-tracker/budget-tracker.component";
 
 const routes: Routes = [
+  { path: "", redirectTo: "home-page", pathMatch: "full" },
   { path: "home-page", component: HomePageComponent },
+
   { path: "login", component: LoginComponent },
   { path: "registration", component: RegistrationComponent },
-  // { path: 'transaction/transaction-reg', component: TransactionRegComponent },
-  // { path: 'transaction/transaction-list', component: TransactionListComponent },
+
+  { path: "transaction/transaction-reg", component: TransactionRegComponent },
+  { path: "transaction/transaction-list", component: TransactionListComponent },
+
   { path: "budget", component: BudgetTrackerComponent },
-  { path: "", redirectTo: "home-page", pathMatch: "full" },
+
   { path: "**", redirectTo: "home-page" },
 ];
 
