@@ -21,6 +21,34 @@
           >Can not contain 'admin'!</small
         >
       </div>
+      <div class="col-md-6 mb-3">
+        <label for="password" class="form-label">Password</label>
+        <div class="input-group">
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            class="form-control"
+            formControlName="password"
+          />
+          <div class="input-group-append">
+            <span class="input-group-text">
+              <fa-icon
+                [icon]="showPassword ? faEyeSlash : faEye"
+                (click)="togglePassword()"
+                style="cursor: pointer"
+              ></fa-icon>
+            </span>
+          </div>
+        </div>
+        <small *ngIf="password?.invalid && password?.dirty" class="text-danger"
+          >Required field!</small
+        >
+        <small
+          *ngIf="password?.dirty && password?.errors && password?.errors?.['password']"
+          class="text-danger"
+          >Can not contain 'admin'!</small
+        >
+      </div>
 
       <div class="col-md-6 mb-3">
         <label for="age" class="form-label">Age</label>

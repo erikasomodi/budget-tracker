@@ -1,0 +1,14 @@
+.input-group-text {
+  background-color: transparent;
+  border: none;
+  padding: 0.375rem 0.75rem;
+}
+
+.input-group .form-control {
+  border-right: 0;
+}
+
+.input-group .input-group-append .input-group-text {
+  border-left: 0;
+  cursor: pointer;
+}
