@@ -22,7 +22,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
   constructor(private userService: UserService, private router: Router) {}
 
-  //plusz validátorok még jöhetnek!
+  //plusz validátorok még kellenek!
   ngOnInit(): void {
     this.userForm = new FormGroup({
       name: new FormControl("", [Validators.required]),
