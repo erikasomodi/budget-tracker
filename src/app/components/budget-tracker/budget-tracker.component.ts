@@ -28,7 +28,7 @@ export class BudgetTrackerComponent {
   expenses: TransactionModel[] = [
     {
       transactionName: 'Clothes',
-      transactionAmount: 24985,
+      transactionAmount: -24985,
       transactionDate: '2024-08-01',
       transactionCategory: 'Shopping',
       transactionMethod: 'Cash',
@@ -36,7 +36,7 @@ export class BudgetTrackerComponent {
     },
     {
       transactionName: 'Book',
-      transactionAmount: 4985,
+      transactionAmount: -4985,
       transactionDate: '2024-08-03',
       transactionCategory: 'Gifts',
       transactionMethod: 'Cash',
@@ -44,7 +44,7 @@ export class BudgetTrackerComponent {
     },
     {
       transactionName: 'Pizza',
-      transactionAmount: 5000,
+      transactionAmount: -5000,
       transactionDate: '2024-08-05',
       transactionCategory: 'Food',
       transactionMethod: 'Card',
@@ -77,6 +77,9 @@ export class BudgetTrackerComponent {
       icon: this.faChartLine,
     },
   ];
+
+  transactions: TransactionModel[] = [...this.expenses, ...this.incomes];
+
   months = [
     'January',
     'February',
@@ -92,8 +95,8 @@ export class BudgetTrackerComponent {
     'December',
   ];
 
-  currentView: 'expenses' | 'incomes' = 'expenses';
-  switchView(view: 'expenses' | 'incomes') {
+  currentView: 'expenses' | 'incomes' | 'transactions' = 'expenses';
+  switchView(view: 'expenses' | 'incomes' | 'transactions') {
     this.currentView = view;
   }
 }

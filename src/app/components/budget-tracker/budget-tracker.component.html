@@ -17,16 +17,28 @@
         Expenses
       </button>
     </div>
-    <div class="me-md-auto">
+    <div class="">
       <button
         class="btn"
         [ngClass]="{
         'btn-link btn-lg fw-bold text-warning btn__title': currentView === 'incomes',
-        'btn-sm btn-warning': currentView !== 'incomes',
+        'btn-sm btn-warning mx-3': currentView !== 'incomes',
       }"
         (click)="switchView('incomes')"
       >
         Income
+      </button>
+    </div>
+    <div class="me-md-auto">
+      <button
+        class="btn"
+        [ngClass]="{
+        'btn-link btn-lg fw-bold text-warning btn__title': currentView === 'transactions',
+        'btn-sm btn-warning': currentView !== 'transactions',
+      }"
+        (click)="switchView('transactions')"
+      >
+        Budget
       </button>
     </div>
     <div>
@@ -97,6 +109,31 @@
           </div>
           <div class="col-md-4 text-end align-items-baseline">
             <span>{{ income.transactionDate }}</span>
+          </div>
+        </div>
+      </li>
+    </ng-container>
+
+    <!-- Költségvetés  -->
+    <ng-container *ngIf="currentView === 'transactions'">
+      <li
+        *ngFor="let transaction of transactions"
+        class="list-group-item"
+      >
+        <div class="row">
+          <div class="col-md-4 text-start align-items-baseline">
+            <fa-icon
+              *ngIf="transaction.icon"
+              [icon]="transaction.icon"
+              class="me-3"
+            ></fa-icon>
+            <span>{{ transaction.transactionName }}</span>
+          </div>
+          <div class="col-md-4 text-end align-items-baseline">
+            <strong>{{ transaction.transactionAmount | number }} Ft</strong>
+          </div>
+          <div class="col-md-4 text-end align-items-baseline">
+            <span>{{ transaction.transactionDate }}</span>
           </div>
         </div>
       </li>
