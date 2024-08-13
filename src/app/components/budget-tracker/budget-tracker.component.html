@@ -4,31 +4,36 @@
     <p>Total Balance</p>
   </div>
 
-  <div class="d-flex justify-content-between my-4">
-    <button
-      class="btn"
-      [ngClass]="{
-        'btn-dark': currentView === 'expenses',
-        'btn-light': currentView !== 'expenses'
+  <div class="d-flex justify-content-between align-items-baseline my-4">
+    <div class="">
+      <button
+        class="btn"
+        [ngClass]="{
+        'btn-link btn-lg fw-bold text-warning btn__title': currentView === 'expenses',
+        'btn-sm btn-warning': currentView !== 'expenses',
       }"
-      (click)="switchView('expenses')"
-    >
-      Expenses
-    </button>
-    <button
-      class="btn"
-      [ngClass]="{
-        'btn-dark': currentView === 'incomes',
-        'btn-light': currentView !== 'incomes'
+        (click)="switchView('expenses')"
+      >
+        Expenses
+      </button>
+    </div>
+    <div class="me-md-auto">
+      <button
+        class="btn"
+        [ngClass]="{
+        'btn-link btn-lg fw-bold text-warning btn__title': currentView === 'incomes',
+        'btn-sm btn-warning': currentView !== 'incomes',
       }"
-      (click)="switchView('incomes')"
-    >
-      Income
-    </button>
-    <select class="form-select w-auto">
-      <option>August</option>
-      <!-- Add other months -->
-    </select>
+        (click)="switchView('incomes')"
+      >
+        Income
+      </button>
+    </div>
+    <div>
+      <select class="form-select form-select-sm w-auto">
+        <option *ngFor="let month of months">{{ month }}</option>
+      </select>
+    </div>
   </div>
 
   <div class="d-flex justify-content-around my-3">
@@ -51,21 +56,23 @@
     <ng-container *ngIf="currentView === 'expenses'">
       <li
         *ngFor="let expense of expenses"
-        class="list-group-item d-flex justify-content-between align-items-center"
+        class="list-group-item"
       >
-        <div class="d-flex align-items-center">
-          <fa-icon
-            *ngIf="expense.icon"
-            [icon]="expense.icon"
-            class="me-3"
-          ></fa-icon>
-          <span>{{ expense.transactionName }}</span>
-        </div>
-        <div>
-          <strong>{{ expense.transactionAmount }} Ft</strong>
-        </div>
-        <div>
-          <span>{{ expense.transactionDate }}</span>
+        <div class="row">
+          <div class="col-md-4 text-start align-items-baseline">
+            <fa-icon
+              *ngIf="expense.icon"
+              [icon]="expense.icon"
+              class="me-3"
+            ></fa-icon>
+            <span>{{ expense.transactionName }}</span>
+          </div>
+          <div class="col-md-4 text-end align-items-baseline">
+            <strong>{{ expense.transactionAmount | number }} Ft</strong>
+          </div>
+          <div class="col-md-4 text-end align-items-baseline">
+            <span>{{ expense.transactionDate }}</span>
+          </div>
         </div>
       </li>
     </ng-container>
@@ -74,21 +81,23 @@
     <ng-container *ngIf="currentView === 'incomes'">
       <li
         *ngFor="let income of incomes"
-        class="list-group-item d-flex justify-content-between align-items-center"
+        class="list-group-item"
       >
-        <div class="d-flex align-items-center">
-          <fa-icon
-            *ngIf="income.icon"
-            [icon]="income.icon"
-            class="me-3"
-          ></fa-icon>
-          <span>{{ income.transactionName }}</span>
-        </div>
-        <div>
-          <strong>{{ income.transactionAmount }} Ft</strong>
-        </div>
-        <div>
-          <span>{{ income.transactionDate }}</span>
+        <div class="row">
+          <div class="col-md-4 text-start align-items-baseline">
+            <fa-icon
+              *ngIf="income.icon"
+              [icon]="income.icon"
+              class="me-3"
+            ></fa-icon>
+            <span>{{ income.transactionName }}</span>
+          </div>
+          <div class="col-md-4 text-end align-items-baseline">
+            <strong>{{ income.transactionAmount | number }} Ft</strong>
+          </div>
+          <div class="col-md-4 text-end align-items-baseline">
+            <span>{{ income.transactionDate }}</span>
+          </div>
         </div>
       </li>
     </ng-container>

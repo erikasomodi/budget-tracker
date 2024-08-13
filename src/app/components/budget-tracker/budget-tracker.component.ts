@@ -77,6 +77,21 @@ export class BudgetTrackerComponent {
       icon: this.faChartLine,
     },
   ];
+  months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+
   currentView: 'expenses' | 'incomes' = 'expenses';
   switchView(view: 'expenses' | 'incomes') {
     this.currentView = view;
