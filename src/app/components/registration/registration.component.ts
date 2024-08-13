@@ -75,22 +75,22 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     return this.userForm.get("name");
   }
   get username(): AbstractControl | null {
-    return this.userForm.get("name");
+    return this.userForm.get("username");
   }
   get age(): AbstractControl | null {
-    return this.userForm.get("name");
+    return this.userForm.get("age");
   }
   get married(): AbstractControl | null {
-    return this.userForm.get("name");
+    return this.userForm.get("married");
   }
   get numberOfChildren(): AbstractControl | null {
-    return this.userForm.get("name");
+    return this.userForm.get("numberOfChildren");
   }
   get startBudget(): AbstractControl | null {
-    return this.userForm.get("name");
+    return this.userForm.get("startBudget");
   }
   get monthlySalary(): AbstractControl | null {
-    return this.userForm.get("name");
+    return this.userForm.get("monthlySalary");
   }
 
   ngOnDestroy(): void {
