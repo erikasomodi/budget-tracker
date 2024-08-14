@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import {
   faShirt,
   faGift,
@@ -14,6 +14,7 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
   selector: 'app-budget-tracker',
   templateUrl: './budget-tracker.component.html',
   styleUrl: './budget-tracker.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BudgetTrackerComponent implements OnInit {
   // expense icons
@@ -98,23 +99,23 @@ export class BudgetTrackerComponent implements OnInit {
 
   switchView(view: 'expenses' | 'incomes' | 'transactions') {
     this.currentView = view;
+    this.currentSum = this.calculateSum(view);
+  }
 
+  calculateSum(view: 'expenses' | 'incomes' | 'transactions'): number {
+    let transactions;
     if (view === 'expenses') {
-      this.currentSum = this.expenses.reduce(
-        (sum, transaction) => sum + transaction.transactionAmount,
-        0
-      );
+      transactions = this.expenses;
     } else if (view === 'incomes') {
-      this.currentSum = this.incomes.reduce(
-        (sum, transaction) => sum + transaction.transactionAmount,
-        0
-      );
+      transactions = this.incomes;
     } else {
-      this.currentSum = this.transactions.reduce(
-        (sum, transaction) => sum + transaction.transactionAmount,
-        0
-      );
+      transactions = this.transactions;
     }
+
+    return transactions.reduce(
+      (sum, transaction) => sum + transaction.transactionAmount,
+      0
+    );
   }
 
   months = [
@@ -141,5 +142,13 @@ export class BudgetTrackerComponent implements OnInit {
 
     // Aa teljes összeg kiszámítása
     this.switchView(this.currentView); // Beállítja az összegz
+  }
+
+  getButtonClasses(viewType: 'expenses' | 'incomes' | 'transactions') {
+    return {
+      'btn-link btn-lg fw-bold text-warning btn__title me-3':
+        this.currentView === viewType,
+      'btn-sm btn-warning me-3': this.currentView !== viewType,
+    };
   }
 }

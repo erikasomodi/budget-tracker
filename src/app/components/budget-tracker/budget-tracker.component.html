@@ -11,10 +11,7 @@
     <div class="">
       <button
         class="btn"
-        [ngClass]="{
-        'btn-link btn-lg fw-bold text-warning btn__title': currentView === 'expenses',
-        'btn-sm btn-warning': currentView !== 'expenses',
-      }"
+        [ngClass]="getButtonClasses('expenses')"
         (click)="switchView('expenses')"
       >
         Expenses
@@ -23,10 +20,7 @@
     <div class="">
       <button
         class="btn"
-        [ngClass]="{
-        'btn-link btn-lg fw-bold text-warning btn__title': currentView === 'incomes',
-        'btn-sm btn-warning mx-3': currentView !== 'incomes',
-      }"
+        [ngClass]="getButtonClasses('incomes')"
         (click)="switchView('incomes')"
       >
         Income
@@ -35,10 +29,7 @@
     <div class="me-md-auto">
       <button
         class="btn"
-        [ngClass]="{
-        'btn-link btn-lg fw-bold text-warning btn__title': currentView === 'transactions',
-        'btn-sm btn-warning': currentView !== 'transactions',
-      }"
+        [ngClass]="getButtonClasses('transactions')"
         (click)="switchView('transactions')"
       >
         Budget
