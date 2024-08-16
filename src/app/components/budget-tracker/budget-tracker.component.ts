@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import {
   faShirt,
   faGift,
@@ -14,8 +14,9 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
   selector: 'app-budget-tracker',
   templateUrl: './budget-tracker.component.html',
   styleUrl: './budget-tracker.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BudgetTrackerComponent {
+export class BudgetTrackerComponent implements OnInit {
   // expense icons
   faShirt: IconProp = faShirt;
   faGift: IconProp = faGift;
@@ -25,10 +26,12 @@ export class BudgetTrackerComponent {
   faLaptop: IconProp = faLaptop;
   faChartLine: IconProp = faChartLine;
 
+  currentSum: number = 0;
+
   expenses: TransactionModel[] = [
     {
       transactionName: 'Clothes',
-      transactionAmount: -24985,
+      transactionAmount: 24985,
       transactionDate: '2024-08-01',
       transactionCategory: 'Shopping',
       transactionMethod: 'Cash',
@@ -36,7 +39,7 @@ export class BudgetTrackerComponent {
     },
     {
       transactionName: 'Book',
-      transactionAmount: -4985,
+      transactionAmount: 4985,
       transactionDate: '2024-08-03',
       transactionCategory: 'Gifts',
       transactionMethod: 'Cash',
@@ -44,7 +47,7 @@ export class BudgetTrackerComponent {
     },
     {
       transactionName: 'Pizza',
-      transactionAmount: -5000,
+      transactionAmount: 5000,
       transactionDate: '2024-08-05',
       transactionCategory: 'Food',
       transactionMethod: 'Card',
@@ -78,7 +81,42 @@ export class BudgetTrackerComponent {
     },
   ];
 
-  transactions: TransactionModel[] = [...this.expenses, ...this.incomes];
+  // transactions: TransactionModel[] = [...this.expenses, ...this.incomes];
+  transactions: TransactionModel[] = [
+    ...this.expenses.map((transaction) => ({
+      ...transaction,
+      transactionAmount: -Math.abs(transaction.transactionAmount), // Negatív lesz
+    })),
+    ...this.incomes,
+  ];
+
+  transactionsSum: number = this.transactions.reduce(
+    (sum, transaction) => sum + transaction.transactionAmount,
+    0
+  );
+
+  currentView: 'expenses' | 'incomes' | 'transactions' = 'expenses';
+
+  switchView(view: 'expenses' | 'incomes' | 'transactions') {
+    this.currentView = view;
+    this.currentSum = this.calculateSum(view);
+  }
+
+  calculateSum(view: 'expenses' | 'incomes' | 'transactions'): number {
+    let transactions;
+    if (view === 'expenses') {
+      transactions = this.expenses;
+    } else if (view === 'incomes') {
+      transactions = this.incomes;
+    } else {
+      transactions = this.transactions;
+    }
+
+    return transactions.reduce(
+      (sum, transaction) => sum + transaction.transactionAmount,
+      0
+    );
+  }
 
   months = [
     'January',
@@ -95,8 +133,22 @@ export class BudgetTrackerComponent {
     'December',
   ];
 
-  currentView: 'expenses' | 'incomes' | 'transactions' = 'expenses';
-  switchView(view: 'expenses' | 'incomes' | 'transactions') {
-    this.currentView = view;
+  ngOnInit() {
+    // Negatív lesz az összeg
+    this.expenses = this.expenses.map((transaction) => ({
+      ...transaction,
+      transactionAmount: -Math.abs(transaction.transactionAmount),
+    }));
+
+    // Aa teljes összeg kiszámítása
+    this.switchView(this.currentView); // Beállítja az összegz
+  }
+
+  getButtonClasses(viewType: 'expenses' | 'incomes' | 'transactions') {
+    return {
+      'btn-link btn-lg fw-bold text-warning btn__title me-3':
+        this.currentView === viewType,
+      'btn-sm btn-warning me-3': this.currentView !== viewType,
+    };
   }
 }

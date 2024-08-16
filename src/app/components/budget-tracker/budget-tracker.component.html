@@ -1,17 +1,17 @@
-<div class="container">
+<div class="container pt-3">
+  <div class="text-start mt-3">
+    <h2>Hello Era!</h2>
+  </div>
   <div class="text-center mt-3">
-    <h2>32 500.00 Ft</h2>
-    <p>Total Balance</p>
+    <h6 class="text-warning-emphasis">Total Balance</h6>
+    <h2 class="fw-bold text-white">{{ currentSum | number }} Ft</h2>
   </div>
 
   <div class="d-flex justify-content-between align-items-baseline my-4">
     <div class="">
       <button
         class="btn"
-        [ngClass]="{
-        'btn-link btn-lg fw-bold text-warning btn__title': currentView === 'expenses',
-        'btn-sm btn-warning': currentView !== 'expenses',
-      }"
+        [ngClass]="getButtonClasses('expenses')"
         (click)="switchView('expenses')"
       >
         Expenses
@@ -20,10 +20,7 @@
     <div class="">
       <button
         class="btn"
-        [ngClass]="{
-        'btn-link btn-lg fw-bold text-warning btn__title': currentView === 'incomes',
-        'btn-sm btn-warning mx-3': currentView !== 'incomes',
-      }"
+        [ngClass]="getButtonClasses('incomes')"
         (click)="switchView('incomes')"
       >
         Income
@@ -32,10 +29,7 @@
     <div class="me-md-auto">
       <button
         class="btn"
-        [ngClass]="{
-        'btn-link btn-lg fw-bold text-warning btn__title': currentView === 'transactions',
-        'btn-sm btn-warning': currentView !== 'transactions',
-      }"
+        [ngClass]="getButtonClasses('transactions')"
         (click)="switchView('transactions')"
       >
         Budget
