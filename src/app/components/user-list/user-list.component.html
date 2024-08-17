@@ -1,0 +1,35 @@
+<div class="container">
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Username</th>
+        <th scope="col">Password</th>
+        <th scope="col">Age</th>
+        <th scope="col">Married</th>
+        <th scope="col">Number of children</th>
+        <th scope="col">Start budget</th>
+        <th scope="col">Monthly salary</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users; index as i">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ user.name }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.password }}</td>
+        <td>{{ user.age }}</td>
+        <td>{{ user.married }}</td>
+        <td>{{ user.numberOfChildren }}</td>
+        <td>{{ user.startBudget }}</td>
+        <td>{{ user.monthlySalary }}</td>
+        <td>
+          <button class="btn btn-warning" (click)="onSelect(user.id)">
+            Select
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

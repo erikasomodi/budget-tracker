@@ -17,6 +17,7 @@ import { LoginComponent } from "./components/login/login.component";
 import { ToastrModule } from "ngx-toastr";
 import { TransactionRegComponent } from './components/transaction/transaction-reg/transaction-reg.component';
 import { TransactionListComponent } from './components/transaction/transaction-list/transaction-list.component';
+import { UserListComponent } from './components/user-list/user-list.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { TransactionListComponent } from './components/transaction/transaction-l
     LoginComponent,
     TransactionRegComponent,
     TransactionListComponent,
+    UserListComponent,
   ],
   imports: [
     BrowserModule,
