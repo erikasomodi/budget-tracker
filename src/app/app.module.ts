@@ -17,6 +17,8 @@ import { LoginComponent } from "./components/login/login.component";
 import { ToastrModule } from "ngx-toastr";
 import { TransactionRegComponent } from './components/transaction/transaction-reg/transaction-reg.component';
 import { TransactionListComponent } from './components/transaction/transaction-list/transaction-list.component';
+import { ButtonComponent } from './components/shared/button/button.component';
+import { ButtonSwitcherComponent } from './components/shared/button-switcher/button-switcher.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,8 @@ import { TransactionListComponent } from './components/transaction/transaction-l
     LoginComponent,
     TransactionRegComponent,
     TransactionListComponent,
+    ButtonComponent,
+    ButtonSwitcherComponent,
   ],
   imports: [
     BrowserModule,

@@ -143,12 +143,4 @@ export class BudgetTrackerComponent implements OnInit {
     // Aa teljes összeg kiszámítása
     this.switchView(this.currentView); // Beállítja az összegz
   }
-
-  getButtonClasses(viewType: 'expenses' | 'incomes' | 'transactions') {
-    return {
-      'btn-link btn-lg fw-bold text-warning btn__title me-3':
-        this.currentView === viewType,
-      'btn-sm btn-warning me-3': this.currentView !== viewType,
-    };
-  }
 }

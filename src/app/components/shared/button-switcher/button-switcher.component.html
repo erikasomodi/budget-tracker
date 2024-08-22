@@ -1,0 +1,15 @@
+<div>
+  <app-button
+    *ngIf="currentView !== view"
+    [label]="label"
+    [buttonClass]="getButtonClasses()"
+    class="me-3"
+    (buttonClick)="switchView()"
+  ></app-button>
+  <h4
+    *ngIf="currentView === view"
+    class="text-warning fw-bold me-3"
+  >
+    {{ label }}
+  </h4>
+</div>
