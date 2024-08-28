@@ -1,6 +1,7 @@
-import { UserService } from "./../../services/user.service";
+import { UserService } from "../../../services/user.service";
 import { Component, OnInit } from "@angular/core";
-import { UserModel } from "../../models/user.model";
+import { UserModel } from "../../../models/user.model";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-user-list",
@@ -9,10 +10,9 @@ import { UserModel } from "../../models/user.model";
 })
 export class UserListComponent implements OnInit {
   users: UserModel[] = [];
-  router: any;
+  constructor(private userService: UserService, private router: Router) {}
 
-  constructor(private userService: UserService) {}
-
+  //csak manuálisan elindídásra kérjük le az adatokat
   ngOnInit(): void {
     this.userService.getUsersWithGetDocs().subscribe({
       next: (data: UserModel[]) => {

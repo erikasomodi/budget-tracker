@@ -7,7 +7,7 @@
       <h1 class="text-white fw-bold mb-3">PROGBudget</h1>
     </div>
     <div class="col-12 col-md-6 mb-3">
-      <input class="form-control" placeholder="Username" type="text" />
+      <input class="form-control" placeholder="E-mail" type="text" />
     </div>
     <div class="col-12 col-md-6 mb-3">
       <input class="form-control" placeholder="Password" type="text" />
@@ -17,3 +17,58 @@
     </div>
   </div>
 </div>
+
+<!-- <main class="container-md mt-5">
+  <form [formGroup]="loginForm">
+    <div *ngIf="email" class="form-floating">
+      <input
+        formControlName="email"
+        class="form-control"
+        id="email"
+        type="email"
+        placeholder="Enter your email..."
+      />
+      <label for="email">Email address</label>
+      <div *ngIf="email.invalid && email.touched" class="small text-danger">
+        <span *ngIf="email.touched">An email is required.</span>
+        <span *ngIf="email.invalid">Email is not valid.</span>
+      </div>
+    </div>
+
+    <div *ngIf="password" class="form-floating mt-5">
+      <input
+        formControlName="password"
+        class="form-control"
+        type="password"
+        id="password"
+        placeholder="Enter your password..."
+      />
+      <label for="password">Password</label>
+      <div
+        *ngIf="password.invalid && password.touched"
+        class="small text-danger"
+      >
+        A password is required.
+      </div>
+    </div> -->
+
+<!-- Submit Button -->
+<!-- <button 
+[disabled]="loginForm.invalid" (click)="login()" class="mx-3 btn btn-primary
+text-uppercase mt-2" id="loginButton" type="submit" > Login -->
+<!-- </button> -->
+
+<!-- <button
+      [disabled]="loginForm.invalid"
+      (click)="registration()"
+      class="btn btn-primary text-uppercase mt-2"
+      id="regButton"
+      type="submit"
+    >
+      Registration
+    </button>
+
+    <p class="my-3">or login with</p>
+    <button class="btn btn-danger" (click)="loginWithGoogle()">Google</button>
+  </form>
+</main>  -->

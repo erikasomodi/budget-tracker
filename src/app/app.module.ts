@@ -15,9 +15,12 @@ import { RegistrationComponent } from "./components/registration/registration.co
 import { BudgetTrackerComponent } from "./components/budget-tracker/budget-tracker.component";
 import { LoginComponent } from "./components/login/login.component";
 import { ToastrModule } from "ngx-toastr";
-import { TransactionRegComponent } from './components/transaction/transaction-reg/transaction-reg.component';
-import { TransactionListComponent } from './components/transaction/transaction-list/transaction-list.component';
-import { UserListComponent } from './components/user-list/user-list.component';
+import { TransactionRegComponent } from "./components/transaction/transaction-reg/transaction-reg.component";
+import { TransactionListComponent } from "./components/transaction/transaction-list/transaction-list.component";
+import { UserListComponent } from "./components/users/user-list/user-list.component";
+import { UserDetailsComponent } from "./components/users/user-details/user-details.component";
+import { UserFilterComponent } from "./components/users/user-filter/user-filter.component";
+import { UsersComponent } from "./components/users/users.component";
 
 @NgModule({
   declarations: [
@@ -30,6 +33,9 @@ import { UserListComponent } from './components/user-list/user-list.component';
     TransactionRegComponent,
     TransactionListComponent,
     UserListComponent,
+    UserDetailsComponent,
+    UserFilterComponent,
+    UsersComponent,
   ],
   imports: [
     BrowserModule,
