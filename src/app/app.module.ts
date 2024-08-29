@@ -19,6 +19,7 @@ import { TransactionRegComponent } from './components/transaction/transaction-re
 import { TransactionListComponent } from './components/transaction/transaction-list/transaction-list.component';
 import { ButtonComponent } from './components/shared/button/button.component';
 import { ButtonSwitcherComponent } from './components/shared/button-switcher/button-switcher.component';
+import { SelectComponent } from './components/shared/select/select.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { ButtonSwitcherComponent } from './components/shared/button-switcher/but
     TransactionListComponent,
     ButtonComponent,
     ButtonSwitcherComponent,
+    SelectComponent,
   ],
   imports: [
     BrowserModule,
