@@ -200,29 +200,17 @@ export class BudgetTrackerComponent implements OnInit {
     // A kiadások, bevételek és az összes tranzakció kiválasztása a nézet szerint
     if (view === 'expenses') {
       transactions = this.user.transactions
-        .filter(
-          (transaction) =>
-            transaction.transactionCategory === 'Shopping' ||
-            transaction.transactionCategory === 'Gifts' ||
-            transaction.transactionCategory === 'Food'
-        )
+        .filter((transaction) => transaction.transactionType === 'expense')
         .map((transaction) => this.setExpensesNegative(transaction));
       // A bevételek kiválasztása a nézet szerint
     } else if (view === 'incomes') {
       transactions = this.user.transactions.filter(
-        (transaction) =>
-          transaction.transactionCategory === 'Income' ||
-          transaction.transactionCategory === 'FreeLance' ||
-          transaction.transactionCategory === 'Investments'
+        (transaction) => transaction.transactionType === 'income'
       );
       // Az összes tranzakció kiválasztása
     } else {
       transactions = this.user.transactions.map((transaction) => {
-        if (
-          transaction.transactionCategory === 'Shopping' ||
-          transaction.transactionCategory === 'Gifts' ||
-          transaction.transactionCategory === 'Food'
-        ) {
+        if (transaction.transactionType === 'expense') {
           return this.setExpensesNegative(transaction);
         }
         return transaction;
@@ -246,7 +234,7 @@ export class BudgetTrackerComponent implements OnInit {
     // Az összes tranzakció sorbarendezése dátum szerint
     this.sortTransactionsByDate();
 
-    //  Az összegzés kiszámítása a kiválasztott nézet szerint, azaz a kiadásokra állítja be az összegzést, amikor a komponens betöltődik (expenses a default)
+    //  Az összegzés kiszámítása a kiválasztott nézet szerint, azaz a kiadásokra állítja be az összegzést, amikor a komponens betöltődik (transactions a default)
     this.switchView(this.currentView);
   }
 
