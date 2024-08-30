@@ -10,7 +10,6 @@ import { TransactionRegComponent } from "./components/transaction/transaction-re
 import { TransactionListComponent } from "./components/transaction/transaction-list/transaction-list.component";
 
 import { BudgetTrackerComponent } from "./components/budget-tracker/budget-tracker.component";
-import { LoginComponent } from "./components/login/login.component";
 
 const routes: Routes = [
   { path: "", redirectTo: "home-page", pathMatch: "full" },
@@ -18,8 +17,8 @@ const routes: Routes = [
 
   { path: "login", component: LoginComponent },
   { path: "registration", component: RegistrationComponent },
-  // { path: "transaction/transaction-reg", component: TransactionRegComponent },
-  // { path: "transaction/transaction-list", component: TransactionListComponent },
+  { path: "transaction/transaction-reg", component: TransactionRegComponent },
+  { path: "transaction/transaction-list", component: TransactionListComponent },
   { path: "budget", component: BudgetTrackerComponent },
 
   { path: "**", redirectTo: "home-page" },
