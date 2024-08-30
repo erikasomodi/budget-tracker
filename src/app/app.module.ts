@@ -20,6 +20,10 @@ import { TransactionListComponent } from "./components/transaction/transaction-l
 import { ButtonComponent } from "./components/shared/button/button.component";
 import { ButtonSwitcherComponent } from "./components/shared/button-switcher/button-switcher.component";
 import { SelectComponent } from "./components/shared/select/select.component";
+import { UserListComponent } from "./components/users/user-list/user-list.component";
+import { UserDetailsComponent } from "./components/users/user-details/user-details.component";
+import { UserFilterComponent } from "./components/users/user-filter/user-filter.component";
+import { UsersComponent } from "./components/users/users.component";
 
 @NgModule({
   declarations: [
@@ -34,6 +38,10 @@ import { SelectComponent } from "./components/shared/select/select.component";
     ButtonComponent,
     ButtonSwitcherComponent,
     SelectComponent,
+    UserListComponent,
+    UserDetailsComponent,
+    UserFilterComponent,
+    UsersComponent,
   ],
   imports: [
     BrowserModule,
