@@ -58,6 +58,20 @@ export class UserService {
     );
   }
 
+ // nem teremt folyamatos kapcsolatot, egyszer olvasás
+ getUsersWithGetDocs(): Observable<UserModel[]> {
+  return from(getDocs(this.usersCollectionRef)).pipe(
+    map((snapshot) => {
+      const resultList = snapshot.docs.map((doc) => {
+        const userData: UserModel = doc.data() as UserModel;
+        userData.id = doc.id;
+        return userData;
+      });
+      return resultList;
+    })
+  );
+}
+
   //* DELETE
   deletUser(userId: string): Observable<void> {
     const userDoc = doc(this.firestore, `users/${userId}`);

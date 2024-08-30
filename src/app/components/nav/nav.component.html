@@ -2,6 +2,7 @@
   <div class="container-fluid ps-lg-3">
     <div class="me-2" id="navbar__logo"></div>
 
+    <a href="#" class="navbar-brand" routerLink="home-page">PROGBudget</a>
     <a href="#" class="navbar-brand" routerLink="home-page">PROGbudget</a>
     <button
       class="navbar-toggler"
@@ -21,12 +22,24 @@
             >Login</a
           >
         </li>
+        <ng-template #loggedIn>
+          <li class="nav-item">
+            <a class="nav-link active" routerLink="" (click)="logout()">
+              Logout
+            </a>
+          </li>
+        </ng-template>
         <li class="nav-item">
           <a
             class="nav-link"
             routerLinkActive="active"
             routerLink="registration"
             >Registration</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" routerLink="users"
+            >Users</a
           >
         </li>
         <li class="nav-item">

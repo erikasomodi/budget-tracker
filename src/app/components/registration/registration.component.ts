@@ -1,3 +1,4 @@
+import { AuthService, userAuthData } from "./../../services/auth.service";
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import {
   AbstractControl,
@@ -9,7 +10,7 @@ import {
 import { UserService } from "../../services/user.service";
 import { UserModel } from "../../models/user.model";
 import { Subscription } from "rxjs";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
@@ -25,7 +26,14 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   faEye: IconProp = faEye;
   faEyeSlash: IconProp = faEyeSlash;
 
-  constructor(private userService: UserService, private router: Router) {}
+  updateUserId?: string;
+
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private authService: AuthService
+  ) {}
 
   //plusz validátorok még kellenek!
   ngOnInit(): void {
@@ -45,6 +53,22 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       startBudget: new FormControl("", [Validators.required]),
       monthlySalary: new FormControl("", [Validators.required]),
     });
+
+    //* SHOW OF REGISTRATION DATA
+    this.activatedRoute.paramMap.subscribe({
+      next: (params) => {
+        const userId = params.get("id");
+        if (userId) {
+          this.updateUserId = userId;
+          this.userService.getUserWithGetDoc(userId).subscribe({
+            next: (data) => {
+              this.userForm.patchValue(data);
+              this.updateUserId = data.id;
+            },
+          });
+        }
+      },
+    });
   }
 
   //* TOGGLE PASSWORD
@@ -54,19 +78,58 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
   //* CREATE USER
 
+  handleSubmit() {
+    if (this.userForm.valid) {
+      this.saveUser();
+      this.registration();
+    } else {
+      console.error("Form is invalid");
+    }
+  }
+
   saveUser(): void {
     if (this.userForm.valid) {
       const user: UserModel = this.userForm.value;
-      this.saveSubscription = this.userService.createUser(user).subscribe({
-        next: () => {
-          console.log("User created!");
-          this.router.navigate(["/home"]);
-        },
-        error: (error) => {
-          console.log(error);
-        },
-      });
-      this.userForm.reset();
+      if (this.updateUserId) {
+        user.id = this.updateUserId;
+        this.userService.updateUser(user).subscribe({
+          next: () => {
+            this.router.navigate(["users"]);
+          },
+        });
+      } else {
+        this.saveSubscription = this.userService.createUser(user).subscribe({
+          next: () => {
+            console.log("User created!");
+            this.router.navigate(["/home"]);
+          },
+          error: (error) => {
+            console.log(error);
+          },
+        });
+        this.userForm.reset();
+      }
+    }
+  }
+
+  //* USER REGISTRATION, LOGIN
+  public registration() {
+    if (this.userForm.valid) {
+      const loginData: userAuthData = {
+        email: this.userForm.get("email")?.value,
+        password: this.userForm.get("password")?.value,
+      };
+      this.authService.registration(loginData).subscribe();
+    }
+  }
+
+  public login() {
+    if (this.userForm.valid) {
+      const loginData: userAuthData = {
+        email: this.userForm.get("email")?.value,
+        password: this.userForm.get("password")?.value,
+      };
+      this.authService.login(loginData).subscribe();
     }
   }
 
