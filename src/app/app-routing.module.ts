@@ -17,10 +17,8 @@ const routes: Routes = [
 
   { path: "login", component: LoginComponent },
   { path: "registration", component: RegistrationComponent },
-
   { path: "transaction/transaction-reg", component: TransactionRegComponent },
   { path: "transaction/transaction-list", component: TransactionListComponent },
-
   { path: "budget", component: BudgetTrackerComponent },
 
   { path: "**", redirectTo: "home-page" },
