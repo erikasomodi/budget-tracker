@@ -1,4 +1,4 @@
-<div
+<!-- <div
   class="container-fluid vh-100 main__bg d-flex align-items-center justify-content-center"
 >
   <div class="row justify-content-center align-items-center text-center">
@@ -16,9 +16,9 @@
       <button class="btn btn-warning">Login</button>
     </div>
   </div>
-</div>
+</div> -->
 
-<!-- <main class="container-md mt-5">
+<main class="container-md mt-5">
   <form [formGroup]="loginForm">
     <div *ngIf="email" class="form-floating">
       <input
@@ -50,15 +50,20 @@
       >
         A password is required.
       </div>
-    </div> -->
+    </div>
 
-<!-- Submit Button -->
-<!-- <button 
-[disabled]="loginForm.invalid" (click)="login()" class="mx-3 btn btn-primary
-text-uppercase mt-2" id="loginButton" type="submit" > Login -->
-<!-- </button> -->
+    <!-- Submit Button -->
+    <button
+      [disabled]="loginForm.invalid"
+      (click)="login()"
+      class="mx-3 btn btn-primary text-uppercase mt-2"
+      id="loginButton"
+      type="submit"
+    >
+      Login
+    </button>
 
-<!-- <button
+    <!-- <button
       [disabled]="loginForm.invalid"
       (click)="registration()"
       class="btn btn-primary text-uppercase mt-2"
@@ -66,9 +71,9 @@ text-uppercase mt-2" id="loginButton" type="submit" > Login -->
       type="submit"
     >
       Registration
-    </button>
+    </button> -->
 
     <p class="my-3">or login with</p>
     <button class="btn btn-danger" (click)="loginWithGoogle()">Google</button>
   </form>
-</main>  -->
+</main>

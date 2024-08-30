@@ -1,4 +1,4 @@
-import { AuthService } from "./../../services/auth.service";
+import { AuthService, userAuthData } from "./../../services/auth.service";
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import {
   AbstractControl,
@@ -112,9 +112,25 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     }
   }
 
-  //* USER REGISTRATION
+  //* USER REGISTRATION, LOGIN
   public registration() {
-    this.authService.registration(this.userForm.value).subscribe();
+    if (this.userForm.valid) {
+      const loginData: userAuthData = {
+        email: this.userForm.get("email")?.value,
+        password: this.userForm.get("password")?.value,
+      };
+      this.authService.registration(loginData).subscribe();
+    }
+  }
+
+  public login() {
+    if (this.userForm.valid) {
+      const loginData: userAuthData = {
+        email: this.userForm.get("email")?.value,
+        password: this.userForm.get("password")?.value,
+      };
+      this.authService.login(loginData).subscribe();
+    }
   }
 
   //* CUSTOM VALIDATOR

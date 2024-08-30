@@ -34,9 +34,9 @@ export class LoginComponent {
     this.authService.login(this.loginForm.value).subscribe();
   }
 
-  public registration() {
-    this.authService.registration(this.loginForm.value).subscribe();
-  }
+  // public registration() {
+  //   this.authService.registration(this.loginForm.value).subscribe();
+  // }
 
   public loginWithGoogle() {}
 }
