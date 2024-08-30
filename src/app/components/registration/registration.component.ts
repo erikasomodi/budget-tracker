@@ -31,13 +31,13 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.userForm = new FormGroup({
       name: new FormControl("", [Validators.required]),
-      username: new FormControl("", [
+      email: new FormControl("", [
         Validators.required,
-        this.adminNameValidator,
+        this.adminEmailValidator,
       ]),
       password: new FormControl("", [
         Validators.required,
-        this.adminNameValidator,
+        this.adminEmailValidator,
       ]),
       age: new FormControl("", [Validators.required]),
       married: new FormControl("", [Validators.required]),
@@ -72,12 +72,12 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
   //* CUSTOM VALIDATOR
 
-  adminNameValidator(control: AbstractControl): ValidationErrors | null {
+  adminEmailValidator(control: AbstractControl): ValidationErrors | null {
     const controlValue = control.value as string;
 
     if (controlValue != null) {
       return controlValue.match(/admin/i)
-        ? { username: { value: control.value + "Error: contain admin" } }
+        ? { email: { value: control.value + "Error: contain admin" } }
         : null;
     }
     return null;
@@ -88,8 +88,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   get name(): AbstractControl | null {
     return this.userForm.get("name");
   }
-  get username(): AbstractControl | null {
-    return this.userForm.get("username");
+  get email(): AbstractControl | null {
+    return this.userForm.get("email");
   }
   get password(): AbstractControl | null {
     return this.userForm.get("password");
