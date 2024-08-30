@@ -10,13 +10,18 @@
       </div>
 
       <div class="col-md-6 mb-3 pt-4">
-        <label for="email" class="form-label">Email</label>
-        <input type="text" class="form-control" formControlName="email" />
+        <label for="username" class="form-label">Email address</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="email"
+          placeholder="example@example.com"
+        />
         <small *ngIf="email?.invalid && email?.dirty" class="text-danger"
           >Required field!</small
         >
         <small
-          *ngIf="email?.dirty && email?.errors && email?.errors?.['username']"
+          *ngIf="email?.dirty && email?.errors && email?.errors?.['email']"
           class="text-danger"
           >Can not contain 'admin'!</small
         >

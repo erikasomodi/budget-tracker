@@ -17,10 +17,9 @@ import { LoginComponent } from "./components/login/login.component";
 import { ToastrModule } from "ngx-toastr";
 import { TransactionRegComponent } from "./components/transaction/transaction-reg/transaction-reg.component";
 import { TransactionListComponent } from "./components/transaction/transaction-list/transaction-list.component";
-import { UserListComponent } from "./components/users/user-list/user-list.component";
-import { UserDetailsComponent } from "./components/users/user-details/user-details.component";
-import { UserFilterComponent } from "./components/users/user-filter/user-filter.component";
-import { UsersComponent } from "./components/users/users.component";
+import { ButtonComponent } from "./components/shared/button/button.component";
+import { ButtonSwitcherComponent } from "./components/shared/button-switcher/button-switcher.component";
+import { SelectComponent } from "./components/shared/select/select.component";
 
 @NgModule({
   declarations: [
@@ -32,10 +31,9 @@ import { UsersComponent } from "./components/users/users.component";
     LoginComponent,
     TransactionRegComponent,
     TransactionListComponent,
-    UserListComponent,
-    UserDetailsComponent,
-    UserFilterComponent,
-    UsersComponent,
+    ButtonComponent,
+    ButtonSwitcherComponent,
+    SelectComponent,
   ],
   imports: [
     BrowserModule,

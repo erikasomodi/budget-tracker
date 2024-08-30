@@ -1,7 +1,97 @@
-<section class="container-fluid pt-5">
-  <div class="mt-5">
-    <h2>Add Transaction</h2>
+<div class="container px-4 px-lg-5 my-5">
+  <form [formGroup]="transactionForm" (ngSubmit)="addTransaction()">
+    <div class="row">
+      <!-- Transaction Name -->
+      <div class="col-md-6 mb-3 pt-4">
+        <label for="transactionName" class="form-label">Transaction Name</label>
+        <input
+          type="text"
+          id="transactionName"
+          class="form-control"
+          formControlName="transactionName"
+        />
+        <small
+          *ngIf="transactionName.invalid && transactionName.dirty"
+          class="text-danger"
+        >
+          Transaction name is required and must be at least 3 characters long.
+        </small>
+      </div>
 
-    <button type="submit" (click)="addTransaction()">Add Transaction</button>
-  </div>
-</section>
+      <!-- Transaction Type -->
+      <div class="col-md-6 mb-3 pt-4">
+        <app-select
+          [form]="transactionForm"
+          [label]="'Transaction Type'"
+          [controllerName]="'transactionType'"
+          [options]="transactionTypeOptions"
+        ></app-select>
+      </div>
+
+      <!-- Transaction Amount -->
+      <div class="col-md-6 mb-3">
+        <label for="transactionAmount" class="form-label"
+          >Transaction Amount</label
+        >
+        <input
+          type="number"
+          id="transactionAmount"
+          class="form-control"
+          formControlName="transactionAmount"
+        />
+        <small
+          *ngIf="transactionAmount.invalid && transactionAmount.dirty"
+          class="text-danger"
+        >
+          Transaction amount is required and must be a positive number.
+        </small>
+      </div>
+
+      <!-- Transaction Date -->
+      <div class="col-md-6 mb-3">
+        <label for="transactionDate" class="form-label">Transaction Date</label>
+        <input
+          type="date"
+          id="transactionDate"
+          class="form-control"
+          formControlName="transactionDate"
+        />
+        <small
+          *ngIf="transactionDate.invalid && transactionDate.dirty"
+          class="text-danger"
+        >
+          Transaction date is required.
+        </small>
+      </div>
+
+      <!-- Transaction Category -->
+      <div class="col-md-6 mb-3">
+        <app-select
+          [form]="transactionForm"
+          [label]="'Transaction Category'"
+          [controllerName]="'transactionCategory'"
+          [options]="transactionCategoryOptions"
+        ></app-select>
+      </div>
+
+      <!-- Transaction Method -->
+      <div class="col-md-6 mb-3">
+        <app-select
+          [form]="transactionForm"
+          [label]="'Transaction Method'"
+          [controllerName]="'transactionMethod'"
+          [options]="transactionMethodOptions"
+        ></app-select>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <button
+      [disabled]="transactionForm.invalid"
+      type="submit"
+      class="btn btn-warning"
+    >
+      {{ updateUserId ? "Update Transaction" : "Add Transaction" }}
+    </button>
+  </form>
+</div>

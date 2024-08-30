@@ -3,6 +3,7 @@
     <div class="me-2" id="navbar__logo"></div>
 
     <a href="#" class="navbar-brand" routerLink="home-page">PROGBudget</a>
+    <a href="#" class="navbar-brand" routerLink="home-page">PROGbudget</a>
     <button
       class="navbar-toggler"
       type="button"
@@ -16,8 +17,10 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
-        <li *ngIf="!(loggedInStatus$ | async); else loggedIn" class="nav-item">
-          <a class="nav-link active" routerLink="login">Login</a>
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" routerLink="login"
+            >Login</a
+          >
         </li>
         <ng-template #loggedIn>
           <li class="nav-item">
