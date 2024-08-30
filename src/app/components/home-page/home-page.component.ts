@@ -1,5 +1,4 @@
 import { Component } from "@angular/core";
-import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 
 @Component({
@@ -7,7 +6,6 @@ import { Router } from "@angular/router";
   templateUrl: "./home-page.component.html",
   styleUrl: "./home-page.component.scss",
 })
-export class HomePageComponent {}
 export class HomePageComponent {
   constructor(private router: Router) {}
   navigateToLogin() {
