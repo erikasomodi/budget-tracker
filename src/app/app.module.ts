@@ -4,7 +4,7 @@ import { BrowserModule } from "@angular/platform-browser";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
-import { ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { initializeApp, provideFirebaseApp } from "@angular/fire/app";
 import { getAuth, provideAuth } from "@angular/fire/auth";
 import { getFirestore, provideFirestore } from "@angular/fire/firestore";
@@ -24,6 +24,7 @@ import { UserListComponent } from "./components/users/user-list/user-list.compon
 import { UserDetailsComponent } from "./components/users/user-details/user-details.component";
 import { UserFilterComponent } from "./components/users/user-filter/user-filter.component";
 import { UsersComponent } from "./components/users/users.component";
+import { InputComponent } from './components/shared/input/input.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { UsersComponent } from "./components/users/users.component";
     UserDetailsComponent,
     UserFilterComponent,
     UsersComponent,
+    InputComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,6 +51,7 @@ import { UsersComponent } from "./components/users/users.component";
     ToastrModule.forRoot(),
     ReactiveFormsModule,
     FontAwesomeModule,
+    FormsModule
   ],
   providers: [
     provideFirebaseApp(() =>
