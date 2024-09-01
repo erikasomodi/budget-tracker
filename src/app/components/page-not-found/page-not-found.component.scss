@@ -14,6 +14,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-image: url("../../../assets/matrixBackground.svg");
 }
 
 .fullscreen-svg-container img {
@@ -60,6 +61,7 @@ h1 {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   filter: brightness(2);
 }
+
 .pill-img:hover,
 .pill-img:focus {
   transform: scale(1.1); /* Növeli a méretét */
