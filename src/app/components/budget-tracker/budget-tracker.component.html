@@ -47,9 +47,29 @@
             </h1>
           </div>
         </div>
+        <!-- Toaster  -->
+        <div
+          class="toast-container position-fixed top-0 end-0 p-3"
+          *ngIf="showNoResultsToast"
+        >
+          <div class="toast show align-items-center text-bg-danger border-0">
+            <div class="d-flex">
+              <div class="toast-body">No results found.</div>
+              <button
+                type="button"
+                class="btn-close btn-close-white me-2 m-auto"
+                (click)="hideToast()"
+              ></button>
+            </div>
+          </div>
+        </div>
         <div class="row">
           <div class="col-md-4 pb-3">
-            <app-input (search)="budgetSearch($event)"></app-input>
+            <app-input
+              [formControl]="searchTerm"
+              (search)="budgetSearch($event)"
+              (keydown.enter)="$event.preventDefault()"
+            ></app-input>
           </div>
         </div>
 

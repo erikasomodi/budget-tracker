@@ -18,7 +18,7 @@ import {
 import { TransactionModel } from '../../models/transaction.model';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { UserModel } from '../../models/user.model';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-budget-tracker',
@@ -175,6 +175,9 @@ export class BudgetTrackerComponent implements OnInit {
   filteredIncomes: TransactionModel[] = [];
   filteredTransactions: TransactionModel[] = [];
 
+  searchTerm: FormControl = new FormControl('');
+  showNoResultsToast: boolean = false;
+
   constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef) {
     this.budgetForm = this.fb.group({});
     // Felhasználó létrehozása
@@ -213,6 +216,9 @@ export class BudgetTrackerComponent implements OnInit {
 
     // Az összegzés kiszámítása a kiválasztott nézet szerint, azaz a kiadásokra állítja be az összegzést, amikor a komponens betöltődik (transactions a default)
     this.switchView(this.currentView);
+
+    // Subscribe to search term changes
+    this.searchTerm.valueChanges.subscribe((term) => this.budgetSearch(term));
   }
 
   budgetSearch(searchTerm: string) {
@@ -232,11 +238,22 @@ export class BudgetTrackerComponent implements OnInit {
         transaction.transactionName.toLowerCase().includes(searchTerm)
       );
     }
+    // Toast megjelenítése, ha nincs találat
+    this.showNoResultsToast = this.filteredTransactions.length === 0;
+
+    // Az összegzés frissítése a szűrt tranzakciók alapján
+    this.currentSum = this.filteredTransactions.reduce(
+      (sum, transaction) => sum + transaction.transactionAmount,
+      0
+    );
 
     // Manually trigger change detection
     this.cdr.detectChanges();
   }
-
+  hideToast() {
+    this.showNoResultsToast = false;
+    this.cdr.detectChanges();
+  }
   // Sorbarendezés dátum szerint, a tranzakciók tömbjében
   sortTransactionsByDateArray(
     transactions: TransactionModel[]
@@ -271,6 +288,10 @@ export class BudgetTrackerComponent implements OnInit {
     this.currentView = view;
     this.currentSum = this.calculateSum(view);
 
+    // Reset search term
+    this.searchTerm.setValue('', { emitEvent: false });
+    this.resetSearch();
+
     // Frissítsd a szűrt tranzakciókat a kiválasztott nézet alapján
     if (view === 'expenses') {
       this.filteredTransactions = this.filteredExpenses;
@@ -282,6 +303,10 @@ export class BudgetTrackerComponent implements OnInit {
 
     // Manuális nézet frissítés
     this.cdr.detectChanges();
+  }
+
+  resetSearch() {
+    this.budgetSearch('');
   }
 
   // Az összegzés kiszámítása a kiválasztott nézet szerint
