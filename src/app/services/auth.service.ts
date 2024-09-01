@@ -1,9 +1,11 @@
 import { Injectable } from "@angular/core";
 import {
   Auth,
+  GoogleAuthProvider,
   UserCredential,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signInWithPopup,
 } from "@angular/fire/auth";
 import { Router } from "@angular/router";
 import { BehaviorSubject, Observable, catchError, from, tap } from "rxjs";
@@ -18,9 +20,18 @@ export interface userAuthData {
 })
 export class AuthService {
   private loggedInStatus = new BehaviorSubject<boolean | null>(null);
+  private googleAuthProvider = new GoogleAuthProvider();
 
   public get loggedInStatus$(): Observable<boolean | null> {
     return this.loggedInStatus.asObservable();
+  }
+
+  private userEmail: BehaviorSubject<string | null> = new BehaviorSubject<
+    string | null
+  >(null);
+
+  public get userEmail$(): Observable<string | null> {
+    return this.userEmail.asObservable();
   }
 
   constructor(private router: Router, private auth: Auth) {}
@@ -31,6 +42,7 @@ export class AuthService {
         if (user) {
           console.log("van user initkor: ", user);
           this.loggedInStatus.next(true);
+          this.userEmail.next(user.email);
         }
       },
       error: (error) => {
@@ -81,8 +93,16 @@ export class AuthService {
     ) as Observable<UserCredential>;
   }
 
+  public async loginWithGoogle(): Promise<void> {
+    const user = await signInWithPopup(this.auth, this.googleAuthProvider);
+    console.log("You logged in successfully!");
+    console.log(user);
+    this.router.navigate([""]);
+  }
+
   async logout() {
     await this.auth.signOut();
     this.loggedInStatus.next(false);
+    this.userEmail.next(null);
   }
 }

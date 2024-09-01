@@ -17,18 +17,6 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active" routerLink="login"
-            >Login</a
-          >
-        </li>
-        <ng-template #loggedIn>
-          <li class="nav-item">
-            <a class="nav-link active" routerLink="" (click)="logout()">
-              Logout
-            </a>
-          </li>
-        </ng-template>
-        <li class="nav-item">
           <a
             class="nav-link"
             routerLinkActive="active"
@@ -62,6 +50,24 @@
             >Budget tracker</a
           >
         </li>
+        <li
+          *ngIf="!(loggedInStatus$ | async); else loggedIn"
+          class="nav - item"
+        >
+          <a class="nav-link" routerLinkActive="active" routerLink="login"
+            >Login</a
+          >
+        </li>
+        <ng-template #loggedIn>
+          <li class="nav-item">
+            <a class="nav-link active" routerLink="" (click)="logout()">
+              Logout
+            </a>
+          </li>
+          <li *ngIf="userEmail$ | async" class="nav-item">
+            <a class="nav-link active">Üdv: {{ userEmail$ | async }}</a>
+          </li>
+        </ng-template>
       </ul>
     </div>
   </div>

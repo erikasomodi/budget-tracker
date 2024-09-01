@@ -8,6 +8,7 @@ import { AuthService } from "../../services/auth.service";
 })
 export class NavComponent implements OnInit {
   public loggedInStatus$ = this.authService.loggedInStatus$;
+  public userEmail$ = this.authService.userEmail$;
 
   constructor(private authService: AuthService) {}
 
