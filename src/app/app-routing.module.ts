@@ -7,11 +7,11 @@ import { LoginComponent } from "./components/login/login.component";
 import { RegistrationComponent } from "./components/registration/registration.component";
 
 import { TransactionRegComponent } from "./components/transaction/transaction-reg/transaction-reg.component";
-import { TransactionListComponent } from "./components/transaction/transaction-list/transaction-list.component";
 
 import { BudgetTrackerComponent } from "./components/budget-tracker/budget-tracker.component";
 import { UserDetailsComponent } from "./components/users/user-details/user-details.component";
 import { UsersComponent } from "./components/users/users.component";
+import { PageNotFoundComponent } from "./components/page-not-found/page-not-found.component";
 
 const routes: Routes = [
   { path: "", redirectTo: "home-page", pathMatch: "full" },
@@ -28,12 +28,11 @@ const routes: Routes = [
     ],
   },
 
-  { path: "transaction/transaction-reg", component: TransactionRegComponent },
-  { path: "transaction/transaction-list", component: TransactionListComponent },
+  { path: "transaction-reg", component: TransactionRegComponent },
 
   { path: "budget", component: BudgetTrackerComponent },
 
-  { path: "**", redirectTo: "home-page" },
+  { path: "**", component: PageNotFoundComponent },
 ];
 
 @NgModule({
