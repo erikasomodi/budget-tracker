@@ -166,14 +166,14 @@ export class BudgetTrackerComponent implements OnInit {
     ),
     ...this.incomes,
   ];
-@Input()label!: string;
-getButtonClasses(): string {
-  return 'btn-warning';
-}
+  @Input() label!: string;
+  getButtonClasses(): string {
+    return 'btn-warning';
+  }
 
-  filteredExpenses: TransactionModel[] = this.expenses;
-  filteredIncomes: TransactionModel[] = this.incomes;
-  filteredTransactions: TransactionModel[] = this.transactions;
+  filteredExpenses: TransactionModel[] = [];
+  filteredIncomes: TransactionModel[] = [];
+  filteredTransactions: TransactionModel[] = [];
 
   constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef) {
     this.budgetForm = this.fb.group({});
@@ -197,51 +197,55 @@ getButtonClasses(): string {
     this.expenses = this.expenses.map((transaction) =>
       this.setExpensesNegative(transaction)
     );
+
     // Az összes tranzakció sorbarendezése dátum szerint
-    this.sortTransactionsByDateArray(this.transactions);
+    const sortedExpenses = this.sortTransactionsByDateArray(this.expenses);
+    const sortedIncomes = this.sortTransactionsByDateArray(this.incomes);
+
+    // Az expenses és incomes elemek külön sorbarendezése és összefűzése
+    this.transactions = [...sortedExpenses, ...sortedIncomes];
+    this.transactions = this.sortTransactionsByDateArray(this.transactions);
+
     // A szűrt kiadások, bevételek és tranzakciók beállítása az eredetikre
-    this.filteredExpenses = this.expenses;
-    this.filteredIncomes = this.incomes;
+    this.filteredExpenses = sortedExpenses;
+    this.filteredIncomes = sortedIncomes;
     this.filteredTransactions = this.transactions;
 
-    //  Az összegzés kiszámítása a kiválasztott nézet szerint, azaz a kiadásokra állítja be az összegzést, amikor a komponens betöltődik (transactions a default)
+    // Az összegzés kiszámítása a kiválasztott nézet szerint, azaz a kiadásokra állítja be az összegzést, amikor a komponens betöltődik (transactions a default)
     this.switchView(this.currentView);
   }
-  budgetSearch(searchTerm: string) {
-    console.log('Search term:', searchTerm);
-    let transactions;
 
-    // A kiadások, bevételek és az összes tranzakció kiválasztása a nézet szerint
+  budgetSearch(searchTerm: string) {
+    searchTerm = searchTerm.toLowerCase();
+
+    // Filter transactions based on the current view
     if (this.currentView === 'expenses') {
-      transactions = this.user.transactions
-        .filter((transaction) => transaction.transactionType === 'expense')
-        .map((transaction) => this.setExpensesNegative(transaction));
+      this.filteredTransactions = this.filteredExpenses.filter((transaction) =>
+        transaction.transactionName.toLowerCase().includes(searchTerm)
+      );
     } else if (this.currentView === 'incomes') {
-      transactions = this.user.transactions.filter(
-        (transaction) => transaction.transactionType === 'income'
+      this.filteredTransactions = this.filteredIncomes.filter((transaction) =>
+        transaction.transactionName.toLowerCase().includes(searchTerm)
       );
     } else {
-      transactions = this.user.transactions.map((transaction) => {
-        if (transaction.transactionType === 'expense') {
-          return this.setExpensesNegative(transaction);
-        }
-        return transaction;
-      });
+      this.filteredTransactions = this.transactions.filter((transaction) =>
+        transaction.transactionName.toLowerCase().includes(searchTerm)
+      );
     }
 
-    // Szűrés a keresési kifejezés alapján
-    const filteredTransactions = transactions.filter((transaction) =>
-      transaction.transactionName
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
+    // Manually trigger change detection
+    this.cdr.detectChanges();
+  }
+
+  // Sorbarendezés dátum szerint, a tranzakciók tömbjében
+  sortTransactionsByDateArray(
+    transactions: TransactionModel[]
+  ): TransactionModel[] {
+    return transactions.sort(
+      (a, b) =>
+        new Date(a.transactionDate).getTime() -
+        new Date(b.transactionDate).getTime()
     );
-    // Sorbarendezés dátum szerint, a tranzakciók tömbjében
-    this.sortTransactionsByDateArray(filteredTransactions);
-
-    // A szűrt tranzakciók beállítása a megfelelő nézet szerint
-    this.filteredTransactions = filteredTransactions;
-
-    this.cdr.detectChanges(); // Manuális nézet frissítés
   }
 
   // A kiadások negatív előjellel, hogy az összegzés helyes legyen
@@ -266,6 +270,18 @@ getButtonClasses(): string {
   switchView(view: 'expenses' | 'incomes' | 'transactions') {
     this.currentView = view;
     this.currentSum = this.calculateSum(view);
+
+    // Frissítsd a szűrt tranzakciókat a kiválasztott nézet alapján
+    if (view === 'expenses') {
+      this.filteredTransactions = this.filteredExpenses;
+    } else if (view === 'incomes') {
+      this.filteredTransactions = this.filteredIncomes;
+    } else {
+      this.filteredTransactions = this.transactions;
+    }
+
+    // Manuális nézet frissítés
+    this.cdr.detectChanges();
   }
 
   // Az összegzés kiszámítása a kiválasztott nézet szerint
@@ -304,15 +320,5 @@ getButtonClasses(): string {
     }
 
     return sum; // startBudget hozzáadása a transactions nézethez
-  }
-
-  // Sorbarendezés dátum szerint, a tranzakciók tömbjében
-  sortTransactionsByDateArray(transactions: TransactionModel[]) {
-    this.transactions.sort((a, b) => {
-      return (
-        new Date(a.transactionDate).getTime() -
-        new Date(b.transactionDate).getTime()
-      );
-    });
   }
 }

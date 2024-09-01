@@ -33,9 +33,6 @@
               (viewChange)="switchView($event)"
             ></app-button-switcher>
           </div>
-          <div>
-            <app-input (search)="budgetSearch($event)"></app-input>
-          </div>
         </div>
         <div class="pt-4 my-3">
           <div class="position-relative text-center">
@@ -50,6 +47,11 @@
             </h1>
           </div>
         </div>
+        <div class="row">
+          <div class="col-md-4 pb-3">
+            <app-input (search)="budgetSearch($event)"></app-input>
+          </div>
+        </div>
 
         <ul class="list-group">
           <!-- Költségek  -->
@@ -58,22 +60,7 @@
               *ngFor="let expense of filteredExpenses"
               class="list-group-item"
             >
-              <div class="row">
-                <div class="col-md-4 text-start align-items-baseline">
-                  <fa-icon
-                    *ngIf="expense.icon"
-                    [icon]="expense.icon"
-                    class="me-3"
-                  ></fa-icon>
-                  <span>{{ expense.transactionName }}</span>
-                </div>
-                <div class="col-md-3 text-end align-items-baseline">
-                  <strong>{{ expense.transactionAmount | number }} Ft</strong>
-                </div>
-                <div class="col-md-3 text-end align-items-baseline">
-                  <span>{{ expense.transactionDate }}</span>
-                </div>
-              </div>
+              <app-transaction-item [item]="expense"></app-transaction-item>
             </li>
           </ng-container>
 
@@ -83,22 +70,7 @@
               *ngFor="let income of filteredIncomes"
               class="list-group-item"
             >
-              <div class="row">
-                <div class="col-md-4 text-start align-items-baseline">
-                  <fa-icon
-                    *ngIf="income.icon"
-                    [icon]="income.icon"
-                    class="me-3"
-                  ></fa-icon>
-                  <span>{{ income.transactionName }}</span>
-                </div>
-                <div class="col-md-3 text-end align-items-baseline">
-                  <strong>{{ income.transactionAmount | number }} Ft</strong>
-                </div>
-                <div class="col-md-3 text-end align-items-baseline">
-                  <span>{{ income.transactionDate }}</span>
-                </div>
-              </div>
+              <app-transaction-item [item]="income"></app-transaction-item>
             </li>
           </ng-container>
 
@@ -112,32 +84,7 @@
                 ' list-group-item-warning': transaction.transactionAmount < 0
               }"
             >
-              <div class="row">
-                <div class="col-md-4 text-start align-items-baseline">
-                  <fa-icon
-                    *ngIf="transaction.icon"
-                    [icon]="transaction.icon"
-                    class="me-3"
-                  ></fa-icon>
-                  <span>{{ transaction.transactionName }}</span>
-                </div>
-                <div class="col-md-3 text-end align-items-baseline">
-                  <strong
-                    >{{ transaction.transactionAmount | number }} Ft</strong
-                  >
-                </div>
-                <div class="col-md-3 text-end align-items-baseline">
-                  <span>{{ transaction.transactionDate }}</span>
-                </div>
-                <div class="col-md-2 text-end align-items-baseline">
-                  <button class="btn btn-sm btn-outline-warning me-2">
-                    <fa-icon [icon]="faMarker"></fa-icon>
-                  </button>
-                  <button class="btn btn-sm btn-outline-danger">
-                    <fa-icon [icon]="faTrash"></fa-icon>
-                  </button>
-                </div>
-              </div>
+              <app-transaction-item [item]="transaction"></app-transaction-item>
             </li>
           </ng-container>
         </ul>

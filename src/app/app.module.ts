@@ -25,6 +25,7 @@ import { UserDetailsComponent } from "./components/users/user-details/user-detai
 import { UserFilterComponent } from "./components/users/user-filter/user-filter.component";
 import { UsersComponent } from "./components/users/users.component";
 import { InputComponent } from './components/shared/input/input.component';
+import { TransactionItemComponent } from './components/budget-tracker/transaction-item/transaction-item.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { InputComponent } from './components/shared/input/input.component';
     UserFilterComponent,
     UsersComponent,
     InputComponent,
+    TransactionItemComponent,
   ],
   imports: [
     BrowserModule,
