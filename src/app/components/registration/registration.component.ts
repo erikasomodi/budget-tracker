@@ -80,11 +80,23 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
   handleSubmit() {
     if (this.userForm.valid) {
-      this.saveUser();
-      this.registration();
+      const regData = this.userForm.value;
+      this.authService.registration(regData).subscribe({
+        next: (userCredential) => {
+          console.log("User registered:", userCredential);
+          this.router.navigate([""]); // Navigate to the desired route after registration
+        },
+        error: (error) => {
+          console.error("Registration error:", error);
+        },
+        complete: () => {
+          console.log("Registration completed");
+        },
+      });
     } else {
       console.error("Form is invalid");
     }
+    this.saveUser();
   }
 
   saveUser(): void {
