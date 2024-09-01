@@ -1,19 +1,21 @@
 <div class="row">
-  <div class="col-md-4 text-start align-items-baseline">
+  <div class="col-auto text-end align-items-baseline">
     <fa-icon
       *ngIf="item.icon"
       [icon]="item.icon"
       class="me-3"
     ></fa-icon>
-    <span>{{ item.transactionName }}</span>
   </div>
-  <div class="col-md-3 text-end align-items-baseline">
+  <div class="col-md-4 text-start align-items-baseline">
+    <span>{{ item.transactionName }} </span>
+  </div>
+  <div class="col-md-3 ms-auto text-end align-items-baseline">
     <strong>{{ item.transactionAmount | number }} Ft</strong>
   </div>
-  <div class="col-md-3 text-end align-items-baseline">
+  <div class="col-md-2 text-end align-items-baseline">
     <span>{{ item.transactionDate }}</span>
   </div>
-  <div class="col-md-2 text-end align-items-baseline">
+  <div class="col-auto text-end align-items-baseline">
     <button class="btn btn-sm btn-outline-warning me-2">
       <fa-icon [icon]="faMarker"></fa-icon>
     </button>

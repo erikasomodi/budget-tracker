@@ -100,6 +100,15 @@ export class BudgetTrackerComponent implements OnInit {
       transactionMethod: 'Card',
       icon: this.faPizzaSlice,
     },
+    {
+      transactionName: 'Futó cipő',
+      transactionType: 'expense',
+      transactionAmount: 45000,
+      transactionDate: '2024-08-31',
+      transactionCategory: 'Shopping',
+      transactionMethod: 'Cash',
+      icon: this.faShirt,
+    },
   ];
   // bevételek
   incomes: TransactionModel[] = [
@@ -226,16 +235,22 @@ export class BudgetTrackerComponent implements OnInit {
 
     // Filter transactions based on the current view
     if (this.currentView === 'expenses') {
-      this.filteredTransactions = this.filteredExpenses.filter((transaction) =>
-        transaction.transactionName.toLowerCase().includes(searchTerm)
+      this.filteredTransactions = this.filteredExpenses.filter(
+        (transaction) =>
+          transaction.transactionName.toLowerCase().includes(searchTerm) ||
+          transaction.transactionCategory.toLowerCase().includes(searchTerm)
       );
     } else if (this.currentView === 'incomes') {
-      this.filteredTransactions = this.filteredIncomes.filter((transaction) =>
-        transaction.transactionName.toLowerCase().includes(searchTerm)
+      this.filteredTransactions = this.filteredIncomes.filter(
+        (transaction) =>
+          transaction.transactionName.toLowerCase().includes(searchTerm) ||
+          transaction.transactionCategory.toLowerCase().includes(searchTerm)
       );
     } else {
-      this.filteredTransactions = this.transactions.filter((transaction) =>
-        transaction.transactionName.toLowerCase().includes(searchTerm)
+      this.filteredTransactions = this.transactions.filter(
+        (transaction) =>
+          transaction.transactionName.toLowerCase().includes(searchTerm) ||
+          transaction.transactionCategory.toLowerCase().includes(searchTerm)
       );
     }
     // Toast megjelenítése, ha nincs találat
@@ -246,6 +261,9 @@ export class BudgetTrackerComponent implements OnInit {
       (sum, transaction) => sum + transaction.transactionAmount,
       0
     );
+    if (!searchTerm && this.currentView === 'transactions') {
+      this.currentSum += this.user.startBudget;
+    }
 
     // Manually trigger change detection
     this.cdr.detectChanges();
