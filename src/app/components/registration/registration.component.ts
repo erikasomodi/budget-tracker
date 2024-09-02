@@ -113,7 +113,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
         this.saveSubscription = this.userService.createUser(user).subscribe({
           next: () => {
             console.log("User created!");
-            this.router.navigate(["/home"]);
+            // this.router.navigate(["/home"]);
           },
           error: (error) => {
             console.log(error);
