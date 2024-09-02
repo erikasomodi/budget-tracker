@@ -85,9 +85,8 @@ export class AuthService {
         this.userEmail.next(userCredential.user.email);
         // console.log("user adatok: ", userCredential);
         // console.log("You have logged in successfully");
-        console.log("lefut a login");
-        this.toastr.success("Logout successful");
-        // this.router.navigate(["budget"]);
+        this.toastr.success("You logged in successfully");
+        this.router.navigate(["budget"]);
       }),
       catchError((error) => {
         console.log(error.message);
@@ -99,6 +98,7 @@ export class AuthService {
   public async loginWithGoogle(): Promise<void> {
     const user = await signInWithPopup(this.auth, this.googleAuthProvider);
     console.log("You logged in successfully!");
+    this.toastr.success("You logged in successfully");
     console.log(user);
     this.router.navigate(["budget"]);
   }
@@ -107,7 +107,6 @@ export class AuthService {
     await this.auth.signOut();
     this.loggedInStatus.next(false);
     this.userEmail.next(null);
-    console.log("lefut a logout");
-    this.toastr.success("Logout successful");
+    this.toastr.success("You logged out successfully");
   }
 }

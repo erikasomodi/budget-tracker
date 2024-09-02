@@ -26,7 +26,11 @@ import { UserFilterComponent } from "./components/users/user-filter/user-filter.
 import { UsersComponent } from "./components/users/users.component";
 import { InputComponent } from "./components/shared/input/input.component";
 import { TransactionItemComponent } from "./components/budget-tracker/transaction-item/transaction-item.component";
-import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { PageNotFoundComponent } from "./components/page-not-found/page-not-found.component";
+
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+
+import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -55,6 +59,8 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     ReactiveFormsModule,
     FontAwesomeModule,
     FormsModule,
+    BrowserAnimationsModule,
+    NoopAnimationsModule,
   ],
   providers: [
     provideFirebaseApp(() =>

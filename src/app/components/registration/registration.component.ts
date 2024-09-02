@@ -125,9 +125,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       .registration(regData)
       .subscribe({
         next: (userCredential) => {
-          this.toastr.success(`${regData.name} registration is successful!`);
+          this.toastr.success(`${regData.name}'s registration was successful!`);
           console.log("User registered:", userCredential);
-          // this.router.navigate([""]);
         },
         error: (error) => {
           console.error("Registration error:", error);
