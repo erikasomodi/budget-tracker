@@ -234,14 +234,31 @@ export class BudgetTrackerComponent implements OnInit {
     // Az összegzés kiszámítása a kiválasztott nézet szerint, azaz a kiadásokra állítja be az összegzést, amikor a komponens betöltődik (transactions a default)
     this.switchView(this.currentView);
 
-    // Subscribe to search term changes
+    // Feliratkozás a keresőmező értékének változásaira
     this.searchTerm.valueChanges.subscribe((term) => this.budgetSearch(term));
   }
 
-  budgetSearch(searchTerm: string) {
-    searchTerm = searchTerm.toLowerCase();
+  // Keresőmező eseménykezelője
+  onSearch(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const searchTerm = inputElement.value;
+    this.budgetSearch(searchTerm);
+  }
+  // Az Enter gomb megakadályozása a keresőmezőben (nem frissíti az oldalt)
+  preventEnter(event: KeyboardEvent): void {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  }
+  // Keresőmező frissítése a keresőmező tartalmával (a keresőmező tartalmának megváltozásakor)
+  budgetSearch(searchTerm: string): void {
+    if (!searchTerm) {
+      searchTerm = '';
+    } else {
+      searchTerm = searchTerm.toLowerCase();
+    }
 
-    // Filter transactions based on the current view
+    // Tranzakciók szűrése a keresőmező tartalma alapján
     if (this.currentView === 'expenses') {
       this.filteredTransactions = this.filteredExpenses.filter(
         (transaction) =>
@@ -261,6 +278,7 @@ export class BudgetTrackerComponent implements OnInit {
           transaction.transactionCategory.toLowerCase().includes(searchTerm)
       );
     }
+
     // Toast megjelenítése, ha nincs találat
     this.showNoResultsToast = this.filteredTransactions.length === 0;
 
@@ -273,9 +291,11 @@ export class BudgetTrackerComponent implements OnInit {
       this.currentSum += this.user.startBudget;
     }
 
-    // Manually trigger change detection
+    // Manuális nézet frissítés
     this.cdr.detectChanges();
   }
+
+  // Toast elrejtése
   hideToast() {
     this.showNoResultsToast = false;
     this.cdr.detectChanges();
@@ -373,4 +393,3 @@ export class BudgetTrackerComponent implements OnInit {
     return sum; // startBudget hozzáadása a transactions nézethez
   }
 }
-
