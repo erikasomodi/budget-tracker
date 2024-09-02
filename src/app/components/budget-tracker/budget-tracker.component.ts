@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs';
+import { AuthService } from './../../services/auth.service';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -29,6 +31,7 @@ import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 export class BudgetTrackerComponent implements OnInit {
   budgetForm: FormGroup;
   user: UserModel;
+  userName$: Observable<string>;
 
   // expense icons
   faShirt: IconProp = faShirt;
@@ -187,12 +190,17 @@ export class BudgetTrackerComponent implements OnInit {
   searchTerm: FormControl = new FormControl('');
   showNoResultsToast: boolean = false;
 
-  constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef) {
+  constructor(
+    private fb: FormBuilder,
+    private cdr: ChangeDetectorRef,
+    private authService: AuthService
+  ) {
     this.budgetForm = this.fb.group({});
+    this.userName$ = this.authService.userName$;
     // Felhasználó létrehozása
     this.user = {
       id: '1',
-      name: 'Somodi Era',
+      name: '',
       email: 'SomodiEra@gmail.com',
       password: 'PROGbudget2024',
       age: 40,
@@ -204,7 +212,7 @@ export class BudgetTrackerComponent implements OnInit {
     };
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     // Negatív lesz az összeg
     this.expenses = this.expenses.map((transaction) =>
       this.setExpensesNegative(transaction)
@@ -365,3 +373,4 @@ export class BudgetTrackerComponent implements OnInit {
     return sum; // startBudget hozzáadása a transactions nézethez
   }
 }
+
