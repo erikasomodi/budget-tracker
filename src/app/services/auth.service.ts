@@ -8,6 +8,7 @@ import {
   signInWithPopup,
 } from "@angular/fire/auth";
 import { Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 import { BehaviorSubject, Observable, catchError, from, tap } from "rxjs";
 
 export interface userAuthData {
@@ -34,7 +35,11 @@ export class AuthService {
     return this.userEmail.asObservable();
   }
 
-  constructor(private router: Router, private auth: Auth) {}
+  constructor(
+    private router: Router,
+    private auth: Auth,
+    private toastr: ToastrService
+  ) {}
 
   public checkAuthState(): void {
     this.auth.onAuthStateChanged({
@@ -49,7 +54,7 @@ export class AuthService {
         console.error(error);
       },
       complete: () => {
-        console.log("completed");
+        console.log("CheckAuthState Completed");
       },
     });
   }
@@ -59,10 +64,10 @@ export class AuthService {
       createUserWithEmailAndPassword(this.auth, regData.email, regData.password)
     ).pipe(
       tap((userCredential) => {
-        this.loggedInStatus.next(true);
-        console.log("user adatok", userCredential);
-        console.log("Registered and logged in.");
-        this.router.navigate([""]);
+        // this.loggedInStatus.next(true);
+        // console.log("user adatok", userCredential);
+        // console.log("Registered and logged in.");
+        // this.router.navigate([""]);
       }),
       catchError((error) => {
         console.error(error.message);
@@ -76,18 +81,16 @@ export class AuthService {
       signInWithEmailAndPassword(this.auth, loginData.email, loginData.password)
     ).pipe(
       tap((userCredential) => {
-        console.log("user adatok: ", userCredential);
-
         this.loggedInStatus.next(true);
-
-        console.log("You have logged in successfully");
-
-        this.router.navigate([""]);
+        this.userEmail.next(userCredential.user.email);
+        // console.log("user adatok: ", userCredential);
+        // console.log("You have logged in successfully");
+        console.log("lefut a login");
+        this.toastr.success("Logout successful");
+        // this.router.navigate(["budget"]);
       }),
-
       catchError((error) => {
         console.log(error.message);
-
         return error;
       })
     ) as Observable<UserCredential>;
@@ -97,12 +100,14 @@ export class AuthService {
     const user = await signInWithPopup(this.auth, this.googleAuthProvider);
     console.log("You logged in successfully!");
     console.log(user);
-    this.router.navigate([""]);
+    this.router.navigate(["budget"]);
   }
 
   async logout() {
     await this.auth.signOut();
     this.loggedInStatus.next(false);
     this.userEmail.next(null);
+    console.log("lefut a logout");
+    this.toastr.success("Logout successful");
   }
 }

@@ -13,6 +13,7 @@ import { Subscription } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-registration",
@@ -21,7 +22,12 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 })
 export class RegistrationComponent implements OnInit, OnDestroy {
   userForm!: FormGroup;
+
   saveSubscription?: Subscription;
+  updateSubscription?: Subscription;
+  authRegSubscription?: Subscription;
+  authLoginSubscription?: Subscription;
+
   showPassword: boolean = false;
   faEye: IconProp = faEye;
   faEyeSlash: IconProp = faEyeSlash;
@@ -32,7 +38,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    private toastr: ToastrService
   ) {}
 
   //plusz validátorok még kellenek!
@@ -80,59 +87,53 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
   handleSubmit() {
     if (this.userForm.valid) {
-      const regData = this.userForm.value;
-      this.authService.registration(regData).subscribe({
-        next: (userCredential) => {
-          console.log("User registered:", userCredential);
-          this.router.navigate([""]); // Navigate to the desired route after registration
-        },
-        error: (error) => {
-          console.error("Registration error:", error);
-        },
-        complete: () => {
-          console.log("Registration completed");
-        },
-      });
+      this.registration();
+      this.saveUser();
     } else {
       console.error("Form is invalid");
     }
-    this.saveUser();
   }
 
   saveUser(): void {
-    if (this.userForm.valid) {
-      const user: UserModel = this.userForm.value;
-      if (this.updateUserId) {
-        user.id = this.updateUserId;
-        this.userService.updateUser(user).subscribe({
-          next: () => {
-            this.router.navigate(["users"]);
-          },
-        });
-      } else {
-        this.saveSubscription = this.userService.createUser(user).subscribe({
-          next: () => {
-            console.log("User created!");
-            // this.router.navigate(["/home"]);
-          },
-          error: (error) => {
-            console.log(error);
-          },
-        });
-        this.userForm.reset();
-      }
+    const user: UserModel = this.userForm.value;
+    if (this.updateUserId) {
+      user.id = this.updateUserId;
+      this.updateSubscription = this.userService.updateUser(user).subscribe({
+        next: () => {
+          this.router.navigate(["users"]);
+        },
+      });
+    } else {
+      this.saveSubscription = this.userService.createUser(user).subscribe({
+        next: () => {
+          console.log("User created!");
+          // this.router.navigate(["/home"]);
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
+      this.userForm.reset();
     }
   }
 
   //* USER REGISTRATION, LOGIN
   public registration() {
-    if (this.userForm.valid) {
-      const loginData: userAuthData = {
-        email: this.userForm.get("email")?.value,
-        password: this.userForm.get("password")?.value,
-      };
-      this.authService.registration(loginData).subscribe();
-    }
+    console.log();
+    const regData = this.userForm.value;
+    this.authRegSubscription = this.authService
+      .registration(regData)
+      .subscribe({
+        next: (userCredential) => {
+          this.toastr.success(`${regData.name} registration is successful!`);
+          console.log("User registered:", userCredential);
+          // this.router.navigate([""]);
+        },
+        error: (error) => {
+          console.error("Registration error:", error);
+        },
+        complete: () => {},
+      });
   }
 
   public login() {
@@ -141,7 +142,9 @@ export class RegistrationComponent implements OnInit, OnDestroy {
         email: this.userForm.get("email")?.value,
         password: this.userForm.get("password")?.value,
       };
-      this.authService.login(loginData).subscribe();
+      this.authLoginSubscription = this.authService
+        .login(loginData)
+        .subscribe();
     }
   }
 
@@ -188,6 +191,15 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.saveSubscription) {
       this.saveSubscription.unsubscribe();
+    }
+    if (this.updateSubscription) {
+      this.updateSubscription.unsubscribe();
+    }
+    if (this.authRegSubscription) {
+      this.authRegSubscription.unsubscribe();
+    }
+    if (this.authLoginSubscription) {
+      this.authLoginSubscription.unsubscribe();
     }
   }
 }

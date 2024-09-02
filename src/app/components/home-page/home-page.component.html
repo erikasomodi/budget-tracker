@@ -11,9 +11,19 @@
     </div>
     <div class="row pt-4">
       <div class="col-6">
-        <button (click)="navigateToLogin()" class="btn btn-warning" onclick="">
+        <button
+          *ngIf="!(loggedInStatus$ | async); else loggedIn"
+          (click)="navigateToLogin()"
+          class="btn btn-warning"
+          onclick=""
+        >
           Login
         </button>
+        <ng-template #loggedIn>
+          <button class="btn btn-warning" routerLink="" (click)="logout()">
+            Logout
+          </button>
+        </ng-template>
       </div>
       <div class="col-6">
         <button (click)="navigateToReg()" class="btn btn-warning" onclick="">
