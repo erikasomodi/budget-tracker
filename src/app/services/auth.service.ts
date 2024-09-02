@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import {
   Auth,
   GoogleAuthProvider,
@@ -6,17 +6,17 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
-} from '@angular/fire/auth';
+} from "@angular/fire/auth";
 import {
   collection,
   Firestore,
   getDocs,
   query,
   where,
-} from '@angular/fire/firestore';
-import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { BehaviorSubject, Observable, catchError, from, tap } from 'rxjs';
+} from "@angular/fire/firestore";
+import { Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
+import { BehaviorSubject, Observable, catchError, from, tap } from "rxjs";
 
 export interface userAuthData {
   email: string;
@@ -24,12 +24,12 @@ export interface userAuthData {
 }
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class AuthService {
   private loggedInStatus = new BehaviorSubject<boolean | null>(null);
   private googleAuthProvider = new GoogleAuthProvider();
-  private userNameSubject = new BehaviorSubject<string>('');
+  private userNameSubject = new BehaviorSubject<string>("");
   public userName$: Observable<string> = this.userNameSubject.asObservable();
 
   public get loggedInStatus$(): Observable<boolean | null> {
@@ -55,7 +55,7 @@ export class AuthService {
     this.auth.onAuthStateChanged({
       next: (user) => {
         if (user) {
-          console.log('van user initkor: ', user);
+          console.log("van user initkor: ", user);
           this.loggedInStatus.next(true);
           this.userEmail.next(user.email);
           this.setUserNameByEmail(user.email);
@@ -65,7 +65,7 @@ export class AuthService {
         console.error(error);
       },
       complete: () => {
-        console.log('CheckAuthState Completed');
+        console.log("CheckAuthState Completed");
       },
     });
   }
@@ -76,15 +76,15 @@ export class AuthService {
     }
   }
   private async getUserNameByEmail(email: string): Promise<string> {
-    const usersCollection = collection(this.firestore, 'users');
-    const q = query(usersCollection, where('email', '==', email));
+    const usersCollection = collection(this.firestore, "users");
+    const q = query(usersCollection, where("email", "==", email));
     const querySnapshot = await getDocs(q);
     if (!querySnapshot.empty) {
       const userDoc = querySnapshot.docs[0];
       const userData = userDoc.data();
-      return userData['name'] || 'Unknown User';
+      return userData["name"] || "Unknown User";
     }
-    return 'Unknown User';
+    return "Unknown User";
   }
 
   public registration(regData: userAuthData): Observable<UserCredential> {
@@ -92,14 +92,15 @@ export class AuthService {
       createUserWithEmailAndPassword(this.auth, regData.email, regData.password)
     ).pipe(
       tap(async (userCredential) => {
-        // this.loggedInStatus.next(true);
+        this.loggedInStatus.next(false);
         // console.log("user adatok", userCredential);
         // console.log("Registered and logged in.");
-        // this.router.navigate([""]);
+        this.router.navigate([""]);
         const userName = await this.getUserNameByEmail(
           userCredential.user.email!
         );
         this.setUsername(userName);
+        console.log(userCredential.user.uid);
       }),
       catchError((error) => {
         console.error(error.message);
@@ -122,10 +123,8 @@ export class AuthService {
           userCredential.user.email!
         );
         this.setUsername(userName);
-        // console.log("user adatok: ", userCredential);
-        // console.log("You have logged in successfully");
-        this.toastr.success('You logged in successfully');
-        this.router.navigate(['budget']);
+        this.toastr.success("You logged in successfully");
+        this.router.navigate(["budget"]);
       }),
       catchError((error) => {
         console.log(error.message);
@@ -136,17 +135,17 @@ export class AuthService {
 
   public async loginWithGoogle(): Promise<void> {
     const user = await signInWithPopup(this.auth, this.googleAuthProvider);
-    console.log('You logged in successfully!');
-    this.toastr.success('You logged in successfully');
+    console.log("You logged in successfully!");
+    this.toastr.success("You logged in successfully");
     console.log(user);
-    this.router.navigate(['budget']);
+    this.router.navigate(["budget"]);
   }
 
   async logout() {
     await this.auth.signOut();
     this.loggedInStatus.next(false);
     this.userEmail.next(null);
-    this.userNameSubject.next('');
-    this.toastr.success('You logged out successfully');
+    this.userNameSubject.next("");
+    this.toastr.success("You logged out successfully");
   }
 }

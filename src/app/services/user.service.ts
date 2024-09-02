@@ -26,25 +26,16 @@ export class UserService {
 
   constructor(private firestore: Firestore) {}
 
-  //*CREATE
+  //*CREATE - Automatikusan generált ID-val
   createUser(user: UserModel): Observable<DocumentData> {
     return from(addDoc(this.usersCollectionRef, user));
   }
 
-  //*READ ALL
-  // nem teremt folyamatos kapcsolatot, egyszer olvasás
-  // getUsersWithGetDocs(): Observable<UserModel[]> {
-  //   return from(getDocs(this.usersCollectionRef)).pipe(
-  //     map((snapshot) => {
-  //       const resultList = snapshot.docs.map((doc) => {
-  //         const userData: UserModel = doc.data() as UserModel;
-  //         userData.id = doc.id;
-  //         return userData;
-  //       });
-  //       return resultList;
-  //     })
-  //   );
-  // }
+  //* CREATE - Meghatározott ID-val
+  createUserWithId(userId: string, user: UserModel): Observable<void> {
+    const userDoc = doc(this.firestore, `users/${userId}`);
+    return from(setDoc(userDoc, { ...user, id: userId }));
+  }
 
   //*READ ONE - nem teremt folyamatos kapcsolatot egyszeri olvasás
   getUserWithGetDoc(id: string) {
@@ -58,19 +49,19 @@ export class UserService {
     );
   }
 
- // nem teremt folyamatos kapcsolatot, egyszer olvasás
- getUsersWithGetDocs(): Observable<UserModel[]> {
-  return from(getDocs(this.usersCollectionRef)).pipe(
-    map((snapshot) => {
-      const resultList = snapshot.docs.map((doc) => {
-        const userData: UserModel = doc.data() as UserModel;
-        userData.id = doc.id;
-        return userData;
-      });
-      return resultList;
-    })
-  );
-}
+  // nem teremt folyamatos kapcsolatot, egyszer olvasás
+  getUsersWithGetDocs(): Observable<UserModel[]> {
+    return from(getDocs(this.usersCollectionRef)).pipe(
+      map((snapshot) => {
+        const resultList = snapshot.docs.map((doc) => {
+          const userData: UserModel = doc.data() as UserModel;
+          userData.id = doc.id;
+          return userData;
+        });
+        return resultList;
+      })
+    );
+  }
 
   //* DELETE
   deletUser(userId: string): Observable<void> {

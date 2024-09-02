@@ -9,7 +9,7 @@ import {
 } from "@angular/forms";
 import { UserService } from "../../services/user.service";
 import { UserModel } from "../../models/user.model";
-import { Subscription } from "rxjs";
+import { Subscription, tap } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -33,6 +33,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   faEyeSlash: IconProp = faEyeSlash;
 
   updateUserId?: string;
+  createUserId?: string;
 
   constructor(
     private userService: UserService,
@@ -87,8 +88,14 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
   handleSubmit() {
     if (this.userForm.valid) {
-      this.registration();
-      this.saveUser();
+      this.authRegSubscription = this.registration().subscribe({
+        next: () => {
+          this.saveUser();
+        },
+        error: (error) => {
+          console.error("Error during registration:", error);
+        },
+      });
     } else {
       console.error("Form is invalid");
     }
@@ -96,24 +103,32 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
   saveUser(): void {
     const user: UserModel = this.userForm.value;
-    if (this.updateUserId) {
-      user.id = this.updateUserId;
-      this.updateSubscription = this.userService.updateUser(user).subscribe({
-        next: () => {
-          this.router.navigate(["users"]);
-        },
-      });
-    } else {
-      this.saveSubscription = this.userService.createUser(user).subscribe({
-        next: () => {
-          console.log("User created!");
-          // this.router.navigate(["/home"]);
-        },
-        error: (error) => {
-          console.log(error);
-        },
-      });
+    //* CREATE
+    if (this.createUserId) {
+      this.saveSubscription = this.userService
+        .createUserWithId(this.createUserId, user)
+        .subscribe({
+          next: () => {
+            console.log("User created!");
+          },
+          error: (error) => {
+            console.log(error);
+          },
+        });
       this.userForm.reset();
+      this.createUserId = undefined;
+    } else {
+      //* UPDATE
+      if (this.updateUserId) {
+        user.id = this.updateUserId;
+        this.updateSubscription = this.userService.updateUser(user).subscribe({
+          next: () => {
+            this.router.navigate(["users"]);
+          },
+        });
+        this.userForm.reset();
+        this.updateUserId = undefined;
+      }
     }
   }
 
@@ -121,18 +136,19 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   public registration() {
     console.log();
     const regData = this.userForm.value;
-    this.authRegSubscription = this.authService
-      .registration(regData)
-      .subscribe({
+    return this.authService.registration(regData).pipe(
+      tap({
         next: (userCredential) => {
           this.toastr.success(`${regData.name}'s registration was successful!`);
-          console.log("User registered:", userCredential);
+          this.createUserId = userCredential.user.uid;
+          console.log("User registered:", userCredential.user.uid);
         },
         error: (error) => {
           console.error("Registration error:", error);
         },
         complete: () => {},
-      });
+      })
+    );
   }
 
   public login() {
