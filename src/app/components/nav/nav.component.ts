@@ -16,6 +16,7 @@ export class NavComponent implements OnInit {
   ngOnInit(): void {}
 
   public async logout() {
+    console.log(this.loggedInStatus$.subscribe());
     await this.authService.logout();
   }
 }

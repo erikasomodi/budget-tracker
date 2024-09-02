@@ -22,6 +22,7 @@ export class HomePageComponent implements OnInit {
   }
 
   public async logout() {
+    console.log(this.loggedInStatus$.subscribe());
     await this.authService.logout();
   }
 

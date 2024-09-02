@@ -29,8 +29,12 @@ export interface userAuthData {
 export class AuthService {
   private loggedInStatus = new BehaviorSubject<boolean | null>(null);
   private googleAuthProvider = new GoogleAuthProvider();
+
   private userNameSubject = new BehaviorSubject<string>("");
   public userName$: Observable<string> = this.userNameSubject.asObservable();
+
+  private userIdSubject = new BehaviorSubject<string | null>(null);
+  public userId$: Observable<string | null> = this.userIdSubject.asObservable();
 
   public get loggedInStatus$(): Observable<boolean | null> {
     return this.loggedInStatus.asObservable();
@@ -58,7 +62,12 @@ export class AuthService {
           console.log("van user initkor: ", user);
           this.loggedInStatus.next(true);
           this.userEmail.next(user.email);
+          this.userIdSubject.next(user.uid);
           this.setUserNameByEmail(user.email);
+        } else {
+          this.loggedInStatus.next(false);
+          this.userEmail.next(null);
+          this.userIdSubject.next(null);
         }
       },
       error: (error) => {
@@ -118,7 +127,9 @@ export class AuthService {
     ).pipe(
       tap(async (userCredential) => {
         this.loggedInStatus.next(true);
+        // this.userId$.next(userCredential.user.uid);
         this.userEmail.next(userCredential.user.email);
+
         const userName = await this.getUserNameByEmail(
           userCredential.user.email!
         );

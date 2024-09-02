@@ -15,6 +15,7 @@ import {
   faPizzaSlice,
   faShirt,
 } from "@fortawesome/free-solid-svg-icons";
+import { AuthService } from "../../../services/auth.service";
 
 @Component({
   selector: "app-transaction-reg",
@@ -22,7 +23,7 @@ import {
   styleUrl: "./transaction-reg.component.scss",
 })
 export class TransactionRegComponent implements OnInit {
-  updateUserId?: string;
+  updateUserId!: string | null;
   selectUser!: UserModel;
   transactionForm!: FormGroup;
   saveSub?: Subscription;
@@ -52,7 +53,8 @@ export class TransactionRegComponent implements OnInit {
     private userService: UserService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private toastr: ToastrService // private  newTransaction: TransactionModel;
+    private toastr: ToastrService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -71,22 +73,26 @@ export class TransactionRegComponent implements OnInit {
       transactionMethod: new FormControl("", [Validators.required]),
     });
 
-    this.activatedRoute.paramMap.subscribe({
-      next: (params: ParamMap) => {
-        const userId = params.get("id");
-        if (userId) {
-          this.userService.getUserWithGetDoc(userId).subscribe({
-            next: (data) => {
-              console.log(data.id);
-              this.updateUserId = data.id;
-              console.log(this.updateUserId);
-              this.selectUser = data;
-              console.log(this.selectUser);
-            },
-          });
-        }
-      },
+    this.authService.userId$.subscribe((id: string | null) => {
+      this.updateUserId = id;
+      console.log("Current User ID: ", this.updateUserId);
     });
+    // this.activatedRoute.paramMap.subscribe({
+    //   next: (params: ParamMap) => {
+    //     const userId = params.get("id");
+    //     if (userId) {
+    //       this.userService.getUserWithGetDoc(userId).subscribe({
+    //         next: (data) => {
+    //           console.log(data.id);
+    //           this.updateUserId = data.id;
+    //           console.log(this.updateUserId);
+    //           this.selectUser = data;
+    //           console.log(this.selectUser);
+    //         },
+    //       });
+    //     }
+    //   },
+    // });
   }
   newTransaction = {
     id: Date.now(),
