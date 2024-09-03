@@ -112,6 +112,7 @@ export class TransactionRegComponent implements OnInit, OnDestroy {
   addTransaction() {
     if (this.LoginUserId) {
       const newTransaction: TransactionModel = this.transactionForm.value;
+      newTransaction.id = Date.now();
       this.saveSubscription = this.userService
         .addTransactionToUser(this.LoginUserId, newTransaction)
         .subscribe({

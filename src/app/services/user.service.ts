@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import {
   DocumentData,
   Firestore,
@@ -11,18 +11,18 @@ import {
   getDocs,
   setDoc,
   updateDoc,
-} from '@angular/fire/firestore';
+} from "@angular/fire/firestore";
 
-import { Observable, from, map } from 'rxjs';
+import { Observable, from, map, switchMap } from "rxjs";
 
-import { UserModel } from '../models/user.model';
-import { TransactionModel } from '../models/transaction.model';
+import { UserModel } from "../models/user.model";
+import { TransactionModel } from "../models/transaction.model";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class UserService {
-  private readonly usersCollectionRef = collection(this.firestore, 'users');
+  private readonly usersCollectionRef = collection(this.firestore, "users");
 
   constructor(private firestore: Firestore) {}
 
@@ -86,12 +86,39 @@ export class UserService {
       })
     );
   }
+  removeTransactionFromUser(
+    userId: string,
+    transactionId: number | undefined
+  ): Observable<void> {
+    const userDoc = doc(this.firestore, `users/${userId}`);
+    return from(getDoc(userDoc)).pipe(
+      switchMap((docSnapshot) => {
+        const userData = docSnapshot.data() as UserModel;
+        if (userData && userData.transactions) {
+          // Szűrjük ki a törlendő tranzakciót a tömbből
+          const updatedTransactions = userData.transactions.filter(
+            (transaction) => transaction.id !== transactionId
+          );
+
+          // Frissítjük a felhasználó dokumentumot a módosított tranzakció tömbbel
+          return from(
+            updateDoc(userDoc, { transactions: updatedTransactions })
+          );
+        } else {
+          throw new Error(
+            "A felhasználónak nincsenek tranzakciói vagy nem található a felhasználó."
+          );
+        }
+      })
+    );
+  }
+
   getUserTransactions(userId: string): Observable<TransactionModel[]> {
     const userDoc = doc(this.firestore, `users/${userId}`);
     return from(getDoc(userDoc)).pipe(
       map((docSnapshot) => {
         const data = docSnapshot.data();
-        return data ? data['transactions'] || [] : [];
+        return data ? data["transactions"] || [] : [];
       })
     );
   }

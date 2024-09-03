@@ -14,6 +14,8 @@ import {
 import { TransactionModel } from "../../../models/transaction.model";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { Router } from "@angular/router";
+import { UserService } from "../../../services/user.service";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-transaction-item",
@@ -23,6 +25,7 @@ import { Router } from "@angular/router";
 export class TransactionItemComponent {
   @Input() item!: TransactionModel;
   @Input() icon!: IconProp;
+  @Input() id!: string | null;
   faMarker = faMarker;
   faTrash = faTrash;
   faTshirt = faTshirt;
@@ -34,7 +37,11 @@ export class TransactionItemComponent {
   faCreditCard = faCreditCard;
   faMoneyBill = faMoneyBill;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private userService: UserService,
+    private toastr: ToastrService
+  ) {}
 
   getIcon(): IconProp {
     switch (this.item.transactionCategory) {
@@ -58,11 +65,24 @@ export class TransactionItemComponent {
         return this.icon;
     }
   }
-  transactionDelete(arg0: number | undefined) {
-    throw new Error("Method not implemented.");
+  transactionDelete(transactionId: number | undefined) {
+    if (transactionId && confirm(`Do you wanna delete this transaction?`)) {
+      this.userService
+        .removeTransactionFromUser(this.id!, transactionId)
+        .subscribe({
+          next: () => {
+            console.log("Tranzakció sikeresen törölve."),
+              this.toastr.success("Tranzakció sikeresen törölve");
+          },
+          error: (error) => {
+            console.error("Hiba történt a tranzakció törlésekor:", error),
+              this.toastr.error("Hiba történt a tranzakció törlésekor");
+          },
+        });
+    }
   }
-  transactionUpdate(id: TransactionModel | undefined) {
+  transactionUpdate(id: number | undefined) {
     console.log(id);
-    // this.router.navigate(["transaction-reg", id]);
+    this.router.navigate(["transaction-reg", id]);
   }
 }
