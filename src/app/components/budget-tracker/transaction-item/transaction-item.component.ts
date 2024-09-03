@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 import {
   faTrash,
   faMarker,
@@ -10,14 +10,15 @@ import {
   faCreditCard,
   faMoneyBill,
   faUmbrellaBeach,
-} from '@fortawesome/free-solid-svg-icons';
-import { TransactionModel } from '../../../models/transaction.model';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
+} from "@fortawesome/free-solid-svg-icons";
+import { TransactionModel } from "../../../models/transaction.model";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-transaction-item',
-  templateUrl: './transaction-item.component.html',
-  styleUrls: ['./transaction-item.component.scss'],
+  selector: "app-transaction-item",
+  templateUrl: "./transaction-item.component.html",
+  styleUrls: ["./transaction-item.component.scss"],
 })
 export class TransactionItemComponent {
   @Input() item!: TransactionModel;
@@ -33,26 +34,34 @@ export class TransactionItemComponent {
   faCreditCard = faCreditCard;
   faMoneyBill = faMoneyBill;
 
+  constructor(private router: Router) {}
+
   getIcon(): IconProp {
     switch (this.item.transactionCategory) {
-      case 'shopping':
+      case "shopping":
         return this.faTshirt;
-      case 'recreation':
+      case "recreation":
         return this.faUmbrellaBeach;
-      case 'gifts':
+      case "gifts":
         return this.faGift;
-      case 'food':
+      case "food":
         return this.faPizzaSlice;
-      case 'electronic items':
+      case "electronic items":
         return this.faLaptop;
-      case 'investments':
+      case "investments":
         return this.faChartLine;
-      case 'income':
+      case "income":
         return this.faCreditCard;
-      case 'freeLance':
+      case "freeLance":
         return this.faMoneyBill;
       default:
         return this.icon;
     }
+  }
+  transactionDelete(arg0: number | undefined) {
+    throw new Error("Method not implemented.");
+  }
+  transactionUpdate(id: number | undefined) {
+    this.router.navigate(["transaction-reg", id]);
   }
 }
