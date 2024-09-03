@@ -39,7 +39,7 @@ export class TransactionItemComponent {
         return this.faGift;
       case 'food':
         return this.faPizzaSlice;
-      case 'electronic-items':
+      case 'electronic items':
         return this.faLaptop;
       case 'investments':
         return this.faChartLine;
