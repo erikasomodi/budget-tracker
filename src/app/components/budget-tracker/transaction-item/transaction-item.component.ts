@@ -9,6 +9,7 @@ import {
   faChartLine,
   faCreditCard,
   faMoneyBill,
+  faUmbrellaBeach,
 } from '@fortawesome/free-solid-svg-icons';
 import { TransactionModel } from '../../../models/transaction.model';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
@@ -24,6 +25,7 @@ export class TransactionItemComponent {
   faMarker = faMarker;
   faTrash = faTrash;
   faTshirt = faTshirt;
+  faUmbrellaBeach = faUmbrellaBeach;
   faGift = faGift;
   faPizzaSlice = faPizzaSlice;
   faLaptop = faLaptop;
@@ -35,6 +37,8 @@ export class TransactionItemComponent {
     switch (this.item.transactionCategory) {
       case 'shopping':
         return this.faTshirt;
+      case 'recreation':
+        return this.faUmbrellaBeach;
       case 'gifts':
         return this.faGift;
       case 'food':

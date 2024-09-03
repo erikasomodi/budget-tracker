@@ -15,6 +15,7 @@ import {
   faMoneyBill,
   faPizzaSlice,
   faShirt,
+  faUmbrellaBeach,
 } from "@fortawesome/free-solid-svg-icons";
 import { AuthService } from "../../../services/auth.service";
 import { TransactionModel } from "../../../models/transaction.model";
@@ -69,6 +70,7 @@ export class TransactionRegComponent implements OnInit, OnDestroy {
     icon: IconProp;
   }[] = [
     { key: "shopping", value: "Shopping", icon: faShirt },
+    { key: "recreation", value: "Recreation", icon: faUmbrellaBeach },
     { key: "gifts", value: "Gifts", icon: faGift },
     { key: "food", value: "Food", icon: faPizzaSlice },
     { key: "electronic items", value: "Electronic items", icon: faLaptop },
