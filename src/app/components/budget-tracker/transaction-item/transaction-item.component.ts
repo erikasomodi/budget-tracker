@@ -45,7 +45,7 @@ export class TransactionItemComponent {
         return this.faChartLine;
       case 'income':
         return this.faCreditCard;
-      case 'freelance':
+      case 'freeLance':
         return this.faMoneyBill;
       default:
         return this.icon;
