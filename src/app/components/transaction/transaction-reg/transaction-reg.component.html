@@ -67,11 +67,21 @@
       <!-- Transaction Category -->
       <div class="col-md-6 mb-3">
         <app-select
+          *ngIf="transactionType.value === 'expense'; else incomes"
           [form]="transactionForm"
           [label]="'Transaction Category'"
           [controllerName]="'transactionCategory'"
-          [options]="transactionCategoryOptions"
+          [optionsWithIcons]="transactionCategoryOptionsWithIconsExpenses"
         ></app-select>
+
+        <ng-template #incomes>
+          <app-select
+            [form]="transactionForm"
+            [label]="'Transaction Category'"
+            [controllerName]="'transactionCategory'"
+            [optionsWithIcons]="transactionCategoryOptionsWithIconsIcomes"
+          ></app-select>
+        </ng-template>
       </div>
 
       <!-- Transaction Method -->
@@ -80,7 +90,7 @@
           [form]="transactionForm"
           [label]="'Transaction Method'"
           [controllerName]="'transactionMethod'"
-          [options]="transactionMethodOptions"
+          [optionsWithIcons]="transactionMethodOptionsWithIcons"
         ></app-select>
       </div>
     </div>
@@ -91,7 +101,7 @@
       type="submit"
       class="btn btn-warning"
     >
-      {{ updateUserId ? "Update Transaction" : "Add Transaction" }}
+      {{ updateTransaction ? "Update Transaction" : "Add Transaction" }}
     </button>
   </form>
 </div>

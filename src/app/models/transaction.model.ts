@@ -1,11 +1,11 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 export interface TransactionModel {
   id?: number;
   transactionName: string;
-  transactionType?: string; // Szükséges volt bevezetnem, hogy a két típusú tranzakciót elkülönítsem:Era
+  transactionType?: string;
   transactionAmount: number;
   transactionDate: string;
   transactionCategory: string;
   transactionMethod: string;
-  icon?: IconProp; // Opcionális ikon
+  icon?: IconProp;
 }

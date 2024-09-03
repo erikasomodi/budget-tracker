@@ -1,35 +1,45 @@
-<div [formGroup]="form" *ngIf="form">
-  <label *ngIf="label" for="operationSystem" class="form-label">{{
-    label
-  }}</label>
-  <select
-    id="operationSystem"
-    class="form-select"
-    [formControlName]="controllerName"
-  >
-    <ng-container *ngIf="optionsWithIcons.length > 0; else optionsWithoutIcons">
-      <option default selected disabled value="">Choose...</option>
-      <option *ngFor="let opSystem of optionsWithIcons" [value]="opSystem.key">
-        {{ opSystem.value }}
-        <fa-icon [icon]="opSystem.icon" class="ml-2"></fa-icon>
-      </option>
-    </ng-container>
-
-    <ng-template #optionsWithoutIcons>
-      <option *ngIf="options" default selected disabled value="">
-        Choose...
-      </option>
-      <option *ngFor="let opSystem of options" [value]="opSystem.key">
-        {{ opSystem.value }}
-      </option>
-    </ng-template>
-  </select>
-
+<main [formGroup]="form" class="d-flex flex-column" *ngIf="form">
+  <label *ngIf="label" for="operationSystem" class="form-label">
+    {{ label }}
+  </label>
+  <section class="d-flex align-items-center">
+    <select
+      id="operationSystem"
+      class="form-select"
+      [formControlName]="controllerName"
+    >
+      <ng-container
+        *ngIf="optionsWithIcons.length > 0; else optionsWithoutIcons"
+      >
+        <option default selected disabled value="">Choose...</option>
+        <option
+          *ngFor="let opSystem of optionsWithIcons"
+          [value]="opSystem.key"
+        >
+          {{ opSystem.value }}
+        </option>
+      </ng-container>
+      <ng-template #optionsWithoutIcons>
+        <option *ngIf="options" default selected disabled value="">
+          Choose...
+        </option>
+        <option *ngFor="let opSystem of options" [value]="opSystem.key">
+          {{ opSystem.value }}
+        </option>
+      </ng-template>
+    </select>
+    <fa-icon
+      *ngIf="selectedIcon"
+      [icon]="selectedIcon"
+      class="ml-2 icon-adjust"
+    ></fa-icon>
+  </section>
   <small
     *ngIf="
       form.get(controllerName)?.invalid && form.get(controllerName)?.touched
     "
     class="text-danger"
-    >Please select a {{ label | lowercase }}!</small
   >
-</div>
+    Please select a {{ label | lowercase }}!
+  </small>
+</main>

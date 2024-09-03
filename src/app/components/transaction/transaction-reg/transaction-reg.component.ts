@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
@@ -9,6 +9,7 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Subscription } from "rxjs";
 import {
   faChartLine,
+  faCreditCard,
   faGift,
   faLaptop,
   faMoneyBill,
@@ -16,17 +17,24 @@ import {
   faShirt,
 } from "@fortawesome/free-solid-svg-icons";
 import { AuthService } from "../../../services/auth.service";
+import { TransactionModel } from "../../../models/transaction.model";
 
 @Component({
   selector: "app-transaction-reg",
   templateUrl: "./transaction-reg.component.html",
   styleUrl: "./transaction-reg.component.scss",
 })
-export class TransactionRegComponent implements OnInit {
-  updateUserId!: string | null;
-  selectUser!: UserModel;
+export class TransactionRegComponent implements OnInit, OnDestroy {
   transactionForm!: FormGroup;
-  saveSub?: Subscription;
+
+  selectUser!: UserModel;
+  LoginUserId!: string | null;
+
+  updateTransaction!: boolean | null;
+
+  updateSubscription?: Subscription;
+  authUserIdSubscription?: Subscription;
+  saveSubscription?: Subscription;
 
   transactionTypeOptions: { key: string; value: string }[] = [
     { key: "income", value: "Income" },
@@ -37,17 +45,35 @@ export class TransactionRegComponent implements OnInit {
     { key: "bank transfer", value: "Bank Transfer" },
     { key: "card", value: "Card" },
   ];
-  transactionCategoryOptions: { key: string; value: string; icon: IconProp }[] =
-    [
-      { key: "shopping", value: "Shopping", icon: faShirt },
-      { key: "gifts", value: "Gifts", icon: faGift },
-      { key: "food", value: "Food", icon: faPizzaSlice },
-      { key: "income", value: "Income", icon: faMoneyBill },
-      { key: "freeLance", value: "Freelance", icon: faMoneyBill },
-      { key: "investments", value: "Investments", icon: faMoneyBill },
-      { key: "electronic items", value: "Electronic items", icon: faLaptop },
-      { key: "investments", value: "Investments", icon: faChartLine },
-    ];
+  transactionMethodOptionsWithIcons: {
+    key: string;
+    value: string;
+    icon: IconProp;
+  }[] = [
+    { key: "cash", value: "Cash", icon: faMoneyBill },
+    { key: "bank transfer", value: "Bank Transfer", icon: faChartLine },
+    { key: "card", value: "Card", icon: faCreditCard },
+  ];
+  transactionCategoryOptionsWithIconsIcomes: {
+    key: string;
+    value: string;
+    icon: IconProp;
+  }[] = [
+    { key: "income", value: "Income", icon: faCreditCard },
+    { key: "freeLance", value: "Freelance", icon: faMoneyBill },
+    { key: "investments", value: "Investments", icon: faChartLine },
+  ];
+  transactionCategoryOptionsWithIconsExpenses: {
+    key: string;
+    value: string;
+    icon: IconProp;
+  }[] = [
+    { key: "shopping", value: "Shopping", icon: faShirt },
+    { key: "gifts", value: "Gifts", icon: faGift },
+    { key: "food", value: "Food", icon: faPizzaSlice },
+    { key: "electronic items", value: "Electronic items", icon: faLaptop },
+    { key: "investments", value: "Investments", icon: faChartLine },
+  ];
 
   constructor(
     private userService: UserService,
@@ -73,50 +99,27 @@ export class TransactionRegComponent implements OnInit {
       transactionMethod: new FormControl("", [Validators.required]),
     });
 
-    this.authService.userId$.subscribe((id: string | null) => {
-      this.updateUserId = id;
-      console.log("Current User ID: ", this.updateUserId);
-    });
-    // this.activatedRoute.paramMap.subscribe({
-    //   next: (params: ParamMap) => {
-    //     const userId = params.get("id");
-    //     if (userId) {
-    //       this.userService.getUserWithGetDoc(userId).subscribe({
-    //         next: (data) => {
-    //           console.log(data.id);
-    //           this.updateUserId = data.id;
-    //           console.log(this.updateUserId);
-    //           this.selectUser = data;
-    //           console.log(this.selectUser);
-    //         },
-    //       });
-    //     }
-    //   },
-    // });
+    this.authUserIdSubscription = this.authService.userId$.subscribe(
+      (id: string | null) => {
+        this.LoginUserId = id;
+        console.log("Current User ID: ", this.LoginUserId);
+      }
+    );
   }
-  newTransaction = {
-    id: Date.now(),
-    transactionName: "Grocery Shopping",
-    transactionAmount: 50.25,
-    transactionDate: "2024-07-23",
-    transactionCategory: "Food",
-    transactionMethod: "Credit Card",
-  };
-  // console.log(newTransaction);
 
   addTransaction() {
-    if (this.updateUserId) {
-      this.userService
-        .addTransactionToUser(this.updateUserId, this.newTransaction)
+    if (this.LoginUserId) {
+      const newTransaction: TransactionModel = this.transactionForm.value;
+      this.saveSubscription = this.userService
+        .addTransactionToUser(this.LoginUserId, newTransaction)
         .subscribe({
           next: () => {
-            this.toastr.success("Add a new transaction is successful!");
-            console.log(this.selectUser);
-            console.log(this.selectUser.transactions);
-            // this.router.navigate(["users_list"]);
+            this.toastr.success("Transaction added successfully!");
+            this.transactionForm.reset();
           },
           error: (err) => {
             console.log(err);
+            this.toastr.error("Failed to add transaction.");
           },
         });
     }
@@ -144,5 +147,17 @@ export class TransactionRegComponent implements OnInit {
 
   get transactionMethod() {
     return this.transactionForm.get("transactionMethod") as FormControl;
+  }
+
+  ngOnDestroy(): void {
+    if (this.updateSubscription) {
+      this.updateSubscription.unsubscribe();
+    }
+    if (this.authUserIdSubscription) {
+      this.authUserIdSubscription.unsubscribe();
+    }
+    if (this.saveSubscription) {
+      this.saveSubscription.unsubscribe();
+    }
   }
 }

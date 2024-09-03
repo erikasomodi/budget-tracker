@@ -23,6 +23,8 @@ import { ToastrService } from "ngx-toastr";
 export class RegistrationComponent implements OnInit, OnDestroy {
   userForm!: FormGroup;
 
+  activatedParamsSubscription?: Subscription;
+  activatedGetSubscription?: Subscription;
   saveSubscription?: Subscription;
   updateSubscription?: Subscription;
   authRegSubscription?: Subscription;
@@ -63,17 +65,19 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     });
 
     //* SHOW OF REGISTRATION DATA
-    this.activatedRoute.paramMap.subscribe({
+    this.activatedParamsSubscription = this.activatedRoute.paramMap.subscribe({
       next: (params) => {
         const userId = params.get("id");
         if (userId) {
           this.updateUserId = userId;
-          this.userService.getUserWithGetDoc(userId).subscribe({
-            next: (data) => {
-              this.userForm.patchValue(data);
-              this.updateUserId = data.id;
-            },
-          });
+          this.activatedGetSubscription = this.userService
+            .getUserWithGetDoc(userId)
+            .subscribe({
+              next: (data) => {
+                this.userForm.patchValue(data);
+                this.updateUserId = data.id;
+              },
+            });
         }
       },
     });
@@ -215,6 +219,12 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     }
     if (this.authLoginSubscription) {
       this.authLoginSubscription.unsubscribe();
+    }
+    if (this.activatedParamsSubscription) {
+      this.activatedParamsSubscription.unsubscribe();
+    }
+    if (this.activatedGetSubscription) {
+      this.activatedGetSubscription.unsubscribe();
     }
   }
 }
