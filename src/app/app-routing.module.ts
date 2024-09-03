@@ -18,7 +18,11 @@ const routes: Routes = [
   { path: "home-page", component: HomePageComponent },
 
   { path: "login", component: LoginComponent },
-  { path: "registration", component: RegistrationComponent },
+  {
+    path: "registration",
+    component: RegistrationComponent,
+    children: [{ path: ":id", component: RegistrationComponent }],
+  },
   {
     path: "users",
     component: UsersComponent,
