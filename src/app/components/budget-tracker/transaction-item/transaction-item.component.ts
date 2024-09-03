@@ -61,7 +61,8 @@ export class TransactionItemComponent {
   transactionDelete(arg0: number | undefined) {
     throw new Error("Method not implemented.");
   }
-  transactionUpdate(id: number | undefined) {
-    this.router.navigate(["transaction-reg", id]);
+  transactionUpdate(id: TransactionModel | undefined) {
+    console.log(id);
+    // this.router.navigate(["transaction-reg", id]);
   }
 }
