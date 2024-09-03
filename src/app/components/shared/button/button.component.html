@@ -1,7 +1,13 @@
 <button
+  type="button"
   class="btn"
   [ngClass]="buttonClass"
   (click)="onClick()"
 >
-  {{ label }}
+  <fa-icon
+    *ngIf="icon"
+    [icon]="icon"
+    class="me-2"
+  ></fa-icon>
+  <span *ngIf="!icon">{{ label }}</span>
 </button>

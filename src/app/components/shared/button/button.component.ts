@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 @Component({
   selector: 'app-button',
@@ -7,6 +8,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class ButtonComponent {
   @Input() label!: string;
+  @Input() icon?: IconProp;
   @Input() buttonClass: string = 'btn-warning';
   @Output() buttonClick = new EventEmitter<void>();
 

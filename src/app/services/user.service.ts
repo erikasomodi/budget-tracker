@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import {
   DocumentData,
   Firestore,
@@ -11,18 +11,18 @@ import {
   getDocs,
   setDoc,
   updateDoc,
-} from "@angular/fire/firestore";
+} from '@angular/fire/firestore';
 
-import { Observable, from, map } from "rxjs";
+import { Observable, from, map } from 'rxjs';
 
-import { UserModel } from "../models/user.model";
-import { TransactionModel } from "../models/transaction.model";
+import { UserModel } from '../models/user.model';
+import { TransactionModel } from '../models/transaction.model';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class UserService {
-  private readonly usersCollectionRef = collection(this.firestore, "users");
+  private readonly usersCollectionRef = collection(this.firestore, 'users');
 
   constructor(private firestore: Firestore) {}
 
@@ -83,6 +83,15 @@ export class UserService {
     return from(
       updateDoc(userDoc, {
         transactions: arrayUnion(transaction),
+      })
+    );
+  }
+  getUserTransactions(userId: string): Observable<TransactionModel[]> {
+    const userDoc = doc(this.firestore, `users/${userId}`);
+    return from(getDoc(userDoc)).pipe(
+      map((docSnapshot) => {
+        const data = docSnapshot.data();
+        return data ? data['transactions'] || [] : [];
       })
     );
   }
