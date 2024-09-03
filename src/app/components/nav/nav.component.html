@@ -87,6 +87,14 @@
             <a class="nav-link active"> {{ userEmail$ | async }}</a>
           </li>
         </ng-template>
+        <li class="nav-item">
+          <app-button
+            id="themeSwitcher"
+            [label]="'Switch color'"
+            [buttonClass]="getButtonClasses()"
+            (buttonClick)="toggleTheme()"
+          ></app-button>
+        </li>
       </ul>
     </div>
   </div>
