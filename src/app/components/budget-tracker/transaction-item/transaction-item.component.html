@@ -15,10 +15,16 @@
     <span>{{ item.transactionDate }}</span>
   </div>
   <div class="col-auto text-end align-items-baseline">
-    <button class="btn btn-sm btn-outline-warning me-2">
+    <button
+      class="btn btn-sm btn-outline-warning me-2"
+      disabled
+    >
       <fa-icon [icon]="faMarker"></fa-icon>
     </button>
-    <button class="btn btn-sm btn-outline-danger">
+    <button
+      class="btn btn-sm btn-outline-danger"
+      disabled
+    >
       <fa-icon [icon]="faTrash"></fa-icon>
     </button>
   </div>

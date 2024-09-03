@@ -61,7 +61,7 @@
                 >Total balance:</span
               >
             </ng-container>
-            <h1 class="fw-bold text-white mb-0">
+            <h1 class="text-body-emphasis fw-bold text-white mb-0">
               {{ currentSum | number }} Ft
             </h1>
           </div>
@@ -83,7 +83,7 @@
           </div>
         </div>
 
-        <ul class="list-group">
+        <ul class="list-group shadow">
           <!-- Költségek  -->
           <ng-container *ngIf="currentView === 'expenses'">
             <li

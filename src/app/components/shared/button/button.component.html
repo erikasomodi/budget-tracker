@@ -1,13 +1,13 @@
 <button
   type="button"
-  class="btn"
+  class="btn shadow"
   [ngClass]="buttonClass"
   (click)="onClick()"
 >
   <fa-icon
     *ngIf="icon"
     [icon]="icon"
-    class="me-2"
+    class=""
   ></fa-icon>
   <span *ngIf="!icon">{{ label }}</span>
 </button>
