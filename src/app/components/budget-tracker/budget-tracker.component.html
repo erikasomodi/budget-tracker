@@ -36,25 +36,27 @@
               (viewChange)="switchView($event)"
             ></app-button-switcher>
           </div>
-          <div class="d-inline-flex ps-0">
-            <app-input
-              type="text"
-              placeholder="Search..."
-              icon="magnifying-glass"
-              (input)="onSearch($event)"
-              (keydown)="preventEnter($event)"
-            ></app-input>
-          </div>
-          <ng-container *ngIf="currentView === 'transactions'">
-            <div class="ms-auto">
-              <app-button
-                id="themeSwitcher"
-                [icon]="visualIcon"
-                [label]="'Switch color'"
-                (buttonClick)="toggleVisual()"
-              ></app-button>
+          <div class="d-flex flex-row w-100 justify-content-between">
+            <div class="d-inline-flex ps-0">
+              <app-input
+                type="text"
+                placeholder="Search..."
+                icon="magnifying-glass"
+                (input)="onSearch($event)"
+                (keydown)="preventEnter($event)"
+              ></app-input>
             </div>
-          </ng-container>
+            <ng-container *ngIf="currentView === 'transactions'">
+              <div class="d-inline-flex ps-3">
+                <app-button
+                  id="themeSwitcher"
+                  [icon]="visualIcon"
+                  [label]="'Switch color'"
+                  (buttonClick)="toggleVisual()"
+                ></app-button>
+              </div>
+            </ng-container>
+          </div>
         </div>
         <div class="pt-4 my-3">
           <div class="position-relative text-center">
@@ -70,12 +72,15 @@
           </div>
         </div>
         <!-- Toaster  -->
-        
+
         <ng-container
           *ngIf="visual === 'chart' && currentView === 'transactions'"
         >
           <div class="d-flex justify-content-center">
-            <app-chart [transactions]="filteredTransactions"  [startBudget]="user.startBudget"></app-chart>
+            <app-chart
+              [transactions]="filteredTransactions"
+              [startBudget]="user.startBudget"
+            ></app-chart>
           </div>
         </ng-container>
 
@@ -115,7 +120,10 @@
                 ' list-group-item-warning': transaction.transactionAmount < 0
               }"
             >
-              <app-transaction-item [item]="transaction" [id]="userId$ | async"></app-transaction-item>
+              <app-transaction-item
+                [item]="transaction"
+                [id]="userId$ | async"
+              ></app-transaction-item>
             </li>
           </ng-container>
         </ul>

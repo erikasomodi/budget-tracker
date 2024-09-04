@@ -1,17 +1,20 @@
 <div class="row">
   <div class="col-auto text-end align-items-baseline">
-    <fa-icon [icon]="getIcon()" class="me-3"></fa-icon>
+    <fa-icon
+      [icon]="getIcon()"
+      class="me-3"
+    ></fa-icon>
   </div>
-  <div class="col col-md-4 text-start align-items-baseline">
+  <div class="col-4 col-xxl-3 text-start align-items-baseline">
     <span>{{ item.transactionName }} </span>
   </div>
-  <div class="col-md-3 ms-auto text-end align-items-baseline">
+  <div class="col-4 col-md-3 col-xxl-2 ms-auto text-end align-items-baseline">
     <strong>{{ item.transactionAmount | number }} Ft</strong>
   </div>
-  <div class="col-md-2 text-end align-items-baseline">
+  <div class="col-md-3 col-xxl-2 text-end align-items-baseline">
     <span>{{ item.transactionDate }}</span>
   </div>
-  <div class="col-auto text-end align-items-baseline">
+  <div class="col-auto text-end ms-auto align-items-baseline">
     <button
       class="btn btn-sm btn-outline-warning me-2"
       (click)="transactionUpdate(item.id)"

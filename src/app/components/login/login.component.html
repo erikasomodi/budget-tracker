@@ -3,10 +3,13 @@
 >
   <div class="row justify-content-center align-items-center text-center">
     <div class="col-12">
-      <h2 class="text-white">Login to your</h2>
-      <h1 class="text-white fw-bold mb-3">PROGBudget</h1>
+      <h2 class="text-whit text__shadow">Login to your</h2>
+      <h1 class="text-white text__shadow fw-bold mb-3">PROGBudget</h1>
     </div>
-    <form [formGroup]="loginForm" class="col-12 col-md-6 mb-3">
+    <form
+      [formGroup]="loginForm"
+      class="col-12 col-md-6 mb-3"
+    >
       <div *ngIf="email">
         <input
           formControlName="email"
@@ -17,7 +20,10 @@
         />
       </div>
       <hr />
-      <div *ngIf="password" class="col-12 mb-3">
+      <div
+        *ngIf="password"
+        class="col-12 mb-3"
+      >
         <input
           formControlName="password"
           class="form-control"
@@ -38,7 +44,12 @@
         </button>
       </div>
       <p class="my-3 text-secondary">or login with</p>
-      <button class="btn btn-danger" (click)="loginWithGoogle()">Google</button>
+      <button
+        class="btn btn-danger"
+        (click)="loginWithGoogle()"
+      >
+        Google
+      </button>
     </form>
   </div>
 </main>
