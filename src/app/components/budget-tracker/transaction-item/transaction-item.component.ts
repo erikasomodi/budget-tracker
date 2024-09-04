@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, OnDestroy, OnInit } from "@angular/core";
 import {
   faTrash,
   faMarker,
@@ -16,13 +16,14 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { Router } from "@angular/router";
 import { UserService } from "../../../services/user.service";
 import { ToastrService } from "ngx-toastr";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-transaction-item",
   templateUrl: "./transaction-item.component.html",
   styleUrls: ["./transaction-item.component.scss"],
 })
-export class TransactionItemComponent {
+export class TransactionItemComponent implements OnInit, OnDestroy {
   @Input() item!: TransactionModel;
   @Input() icon!: IconProp;
   @Input() id!: string | null;
@@ -37,11 +38,14 @@ export class TransactionItemComponent {
   faCreditCard = faCreditCard;
   faMoneyBill = faMoneyBill;
 
+  deleteSubscription?: Subscription;
+
   constructor(
     private router: Router,
     private userService: UserService,
     private toastr: ToastrService
   ) {}
+  ngOnInit(): void {}
 
   getIcon(): IconProp {
     switch (this.item.transactionCategory) {
@@ -67,12 +71,13 @@ export class TransactionItemComponent {
   }
   transactionDelete(transactionId: number | undefined) {
     if (transactionId && confirm(`Do you wanna delete this transaction?`)) {
-      this.userService
+      this.deleteSubscription = this.userService
         .removeTransactionFromUser(this.id!, transactionId)
         .subscribe({
           next: () => {
             console.log("Tranzakció sikeresen törölve."),
               this.toastr.success("Tranzakció sikeresen törölve");
+            this.router.navigate(["budget"]);
           },
           error: (error) => {
             console.error("Hiba történt a tranzakció törlésekor:", error),
@@ -84,5 +89,10 @@ export class TransactionItemComponent {
   transactionUpdate(id: number | undefined) {
     console.log(id);
     this.router.navigate(["transaction-reg", id]);
+  }
+  ngOnDestroy(): void {
+    if (this.deleteSubscription) {
+      this.deleteSubscription.unsubscribe();
+    }
   }
 }

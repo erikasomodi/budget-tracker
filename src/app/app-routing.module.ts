@@ -35,7 +35,10 @@ const routes: Routes = [
   {
     path: "transaction-reg",
     component: TransactionRegComponent,
-    children: [{ path: ":id", component: TransactionRegComponent }],
+  },
+  {
+    path: "transaction-reg/:id",
+    component: TransactionRegComponent,
   },
 
   { path: "budget", component: BudgetTrackerComponent },
