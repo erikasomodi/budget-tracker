@@ -118,7 +118,10 @@
           </li>
         </ng-template>
       </ul>
-      <div class="ms-auto">
+      <div
+        class="ms-auto"
+        *ngIf="loggedInStatus$ | async"
+      >
         <app-button
           id="themeSwitcher"
           [icon]="faAdjust"
