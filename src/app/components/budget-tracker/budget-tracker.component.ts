@@ -43,6 +43,7 @@ export class BudgetTrackerComponent implements OnInit {
     startBudget: 0,
     monthlySalary: 0,
     transactions: [],
+    role: 'user',
   };
   userName$: Observable<string>;
   userId$: Observable<string | null>;

@@ -11,4 +11,5 @@ export interface UserModel {
   startBudget: number;
   monthlySalary: number;
   transactions: TransactionModel[];
+  role?: string;
 }

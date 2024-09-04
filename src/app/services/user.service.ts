@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import {
   DocumentData,
   Firestore,
@@ -11,29 +11,31 @@ import {
   getDocs,
   setDoc,
   updateDoc,
-} from "@angular/fire/firestore";
+} from '@angular/fire/firestore';
 
-import { Observable, from, map, switchMap } from "rxjs";
+import { Observable, from, map, switchMap } from 'rxjs';
 
-import { UserModel } from "../models/user.model";
-import { TransactionModel } from "../models/transaction.model";
+import { UserModel } from '../models/user.model';
+import { TransactionModel } from '../models/transaction.model';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class UserService {
-  private readonly usersCollectionRef = collection(this.firestore, "users");
+  private readonly usersCollectionRef = collection(this.firestore, 'users');
 
   constructor(private firestore: Firestore) {}
 
   //* CREATE USER - Automatikusan generált ID-val
   createUser(user: UserModel): Observable<DocumentData> {
+    user.role = 'user';
     return from(addDoc(this.usersCollectionRef, user));
   }
 
   //* CREATE USER - Meghatározott ID-val
   createUserWithId(userId: string | null, user: UserModel): Observable<void> {
     const userDoc = doc(this.firestore, `users/${userId}`);
+    user.role = 'user';
     return from(setDoc(userDoc, { ...user, id: userId }));
   }
 
@@ -108,7 +110,7 @@ export class UserService {
           );
         } else {
           throw new Error(
-            "A felhasználónak nincsenek tranzakciói vagy nem található a felhasználó."
+            'A felhasználónak nincsenek tranzakciói vagy nem található a felhasználó.'
           );
         }
       })
@@ -143,7 +145,7 @@ export class UserService {
     return from(getDoc(userDoc)).pipe(
       map((docSnapshot) => {
         const data = docSnapshot.data();
-        return data ? data["transactions"] || [] : [];
+        return data ? data['transactions'] || [] : [];
       })
     );
   }
@@ -168,7 +170,7 @@ export class UserService {
           );
         } else {
           throw new Error(
-            "A felhasználónak nincsenek tranzakciói vagy nem található a felhasználó."
+            'A felhasználónak nincsenek tranzakciói vagy nem található a felhasználó.'
           );
         }
       })

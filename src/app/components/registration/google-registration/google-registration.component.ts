@@ -19,7 +19,7 @@ import { UserModel } from "../../../models/user.model";
 @Component({
   selector: "app-google-registration",
   templateUrl: "./google-registration.component.html",
-  styleUrl: "./google-registration.component.scss",
+  styleUrls: ["./google-registration.component.scss"],
 })
 export class GoogleRegistrationComponent implements OnInit, OnDestroy {
   userForm!: FormGroup;
@@ -32,7 +32,12 @@ export class GoogleRegistrationComponent implements OnInit, OnDestroy {
   userEmail: string | null = null;
   userEmailSubscription?: Subscription;
 
+  userRole$: Observable<string>;
+  userRole: string = "guest";
+  userRoleSubscription?: Subscription;
+
   saveSubscription?: Subscription;
+
   constructor(
     private userService: UserService,
     private router: Router,
@@ -42,6 +47,7 @@ export class GoogleRegistrationComponent implements OnInit, OnDestroy {
   ) {
     this.userId$ = this.authService.userId$;
     this.userEmail$ = this.authService.userEmail$;
+    this.userRole$ = this.authService.userRole$;
   }
 
   ngOnInit(): void {
@@ -54,7 +60,9 @@ export class GoogleRegistrationComponent implements OnInit, OnDestroy {
       numberOfChildren: new FormControl(null, [Validators.required]),
       startBudget: new FormControl("", [Validators.required]),
       monthlySalary: new FormControl("", [Validators.required]),
+      role: new FormControl("guest"),
     });
+
     this.userIdSubscription = this.userId$.subscribe((userId) => {
       this.userId = userId;
       console.log(`user id a komponensben: `, this.userId);
@@ -63,6 +71,12 @@ export class GoogleRegistrationComponent implements OnInit, OnDestroy {
     this.userEmailSubscription = this.userEmail$.subscribe((userEmail) => {
       this.userEmail = userEmail;
       console.log(`user email a komponensben: `, this.userEmail);
+    });
+
+    this.userRoleSubscription = this.userRole$.subscribe((userRole) => {
+      this.userRole = userRole;
+      this.userForm.patchValue({ role: userRole });
+      console.log(`user role a komponensben: `, this.userRole);
     });
   }
 
@@ -89,6 +103,7 @@ export class GoogleRegistrationComponent implements OnInit, OnDestroy {
       console.log(user.password);
     }
   }
+
   //* GETTEREK
 
   get name(): AbstractControl | null {
@@ -115,6 +130,9 @@ export class GoogleRegistrationComponent implements OnInit, OnDestroy {
   get monthlySalary(): AbstractControl | null {
     return this.userForm.get("monthlySalary");
   }
+  get role(): AbstractControl | null {
+    return this.userForm.get("role");
+  }
 
   ngOnDestroy(): void {
     if (this.userEmailSubscription) {
@@ -122,6 +140,9 @@ export class GoogleRegistrationComponent implements OnInit, OnDestroy {
     }
     if (this.userIdSubscription) {
       this.userIdSubscription.unsubscribe();
+    }
+    if (this.userRoleSubscription) {
+      this.userRoleSubscription.unsubscribe();
     }
     if (this.saveSubscription) {
       this.saveSubscription.unsubscribe();

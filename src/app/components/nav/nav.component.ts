@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { ToastrService } from 'ngx-toastr';
 import { faAdjust } from '@fortawesome/free-solid-svg-icons';
 import { ThemeService } from '../../services/theme.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav',
@@ -12,19 +12,21 @@ import { ThemeService } from '../../services/theme.service';
 export class NavComponent implements OnInit {
   public loggedInStatus$ = this.authService.loggedInStatus$;
   public userEmail$ = this.authService.userEmail$;
-  private dark = true;
+  public userRole$ = this.authService.userRole$;
   public faAdjust = faAdjust;
 
   constructor(
     private authService: AuthService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {}
 
   public async logout() {
-    console.log(this.loggedInStatus$.subscribe());
+    // console.log(this.loggedInStatus$.subscribe());
     await this.authService.logout();
+    this.router.navigate(['/login']);
   }
 
   // téma váltás kiszervezve service-be
