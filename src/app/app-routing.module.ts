@@ -12,6 +12,7 @@ import { BudgetTrackerComponent } from "./components/budget-tracker/budget-track
 import { UserDetailsComponent } from "./components/users/user-details/user-details.component";
 import { UsersComponent } from "./components/users/users.component";
 import { PageNotFoundComponent } from "./components/page-not-found/page-not-found.component";
+import { GoogleRegistrationComponent } from "./components/registration/google-registration/google-registration.component";
 
 const routes: Routes = [
   { path: "", redirectTo: "home-page", pathMatch: "full" },
@@ -23,6 +24,8 @@ const routes: Routes = [
     component: RegistrationComponent,
     children: [{ path: ":id", component: RegistrationComponent }],
   },
+  { path: "registrationWithGoogle", component: GoogleRegistrationComponent },
+
   {
     path: "users",
     component: UsersComponent,

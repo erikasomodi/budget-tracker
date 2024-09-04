@@ -32,7 +32,7 @@ export class UserService {
   }
 
   //* CREATE USER - Meghatározott ID-val
-  createUserWithId(userId: string, user: UserModel): Observable<void> {
+  createUserWithId(userId: string | null, user: UserModel): Observable<void> {
     const userDoc = doc(this.firestore, `users/${userId}`);
     return from(setDoc(userDoc, { ...user, id: userId }));
   }

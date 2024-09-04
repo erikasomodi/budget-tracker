@@ -32,6 +32,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { ChartComponent } from './components/budget-tracker/chart/chart.component';
+import { GoogleRegistrationComponent } from './components/registration/google-registration/google-registration.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { ChartComponent } from './components/budget-tracker/chart/chart.componen
     TransactionItemComponent,
     PageNotFoundComponent,
     ChartComponent,
+    GoogleRegistrationComponent,
   ],
   imports: [
     BrowserModule,

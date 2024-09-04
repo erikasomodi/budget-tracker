@@ -1,9 +1,9 @@
 import { TransactionModel } from "./transaction.model";
 
 export interface UserModel {
-  id?: string;
-  name: string;
-  email: string;
+  id?: string | null;
+  name: string | null;
+  email: string | null;
   password: string;
   age: number;
   married: boolean;
