@@ -21,7 +21,7 @@ export class UserListComponent implements OnInit {
     });
   }
 
-  onSelect(id?: string) {
+  onSelect(id?: string | null | undefined) {
     if (id) {
       this.router.navigate(["users", id]);
     }
