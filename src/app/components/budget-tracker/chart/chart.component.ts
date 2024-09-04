@@ -20,18 +20,31 @@ export class ChartComponent implements OnInit {
 
   ngOnInit() {
     this.renderChart();
+    console.log(this.startBudget);
   }
 
   renderChart() {
+    const initTransaction = {
+      transactionName: 'Kezdő egyenleg',
+      transactionAmount: this.startBudget,
+    };
+    const transactionsWithStartBudget = [initTransaction, ...this.transactions];
     const ctx = document.getElementById('barChart') as HTMLCanvasElement;
+    let balance = this.startBudget || 0;
+    const balances = [balance];
+
+    for (let i = 1; i < transactionsWithStartBudget.length; i++) {
+      balance += transactionsWithStartBudget[i].transactionAmount ?? 0;
+      balances.push(balance);
+    }
     new Chart(ctx, {
       type: 'line',
       data: {
-        labels: this.transactions.map((t) => t.transactionName),
+        labels: transactionsWithStartBudget.map((t) => t.transactionName),
         datasets: [
           {
-            label: 'Transaction Amount',
-            data: this.transactions.map((t) => t.transactionAmount),
+            label: 'Cumulative Balance',
+            data: balances,
             backgroundColor: 'rgba(75, 192, 192, 0.2)',
             borderColor: 'rgba(75, 192, 192, 1)',
             borderWidth: 1,
