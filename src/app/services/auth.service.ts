@@ -70,8 +70,13 @@ export class AuthService {
         if (user) {
           console.log("van user initkor: ", user);
           this.loggedInStatus.next(true);
+
           this.userEmail.next(user.email);
+          console.log(user.email);
+
           this.userIdSubject.next(user.uid);
+          console.log(user.uid);
+
           this.setUserNameByEmail(user.email);
         } else {
           this.loggedInStatus.next(false);
@@ -189,15 +194,15 @@ export class AuthService {
 
       if (isNewUser) {
         console.log("Új felhasználó regisztrált!");
-        this.router.navigate(["registration"]);
-        // Itt kezelheted a regisztrációs logikát, például adatbázisba mentés stb.
+        this.router.navigate(["registrationWithGoogle"]);
+        this.toastr.info(
+          "You have not registered yet, please complete the registration process"
+        );
       } else {
         console.log("Meglévő felhasználó bejelentkezett.");
+        this.toastr.success("You logged in successfully");
+        this.router.navigate(["budget"]);
       }
-
-      console.log("Sikeres bejelentkezés!");
-      this.toastr.success("Sikeresen bejelentkeztél");
-      // this.router.navigate(["budget"]);
     } catch (error) {
       console.error("Hiba történt a Google-bejelentkezés során:", error);
       this.toastr.error("Hiba történt a bejelentkezés során");

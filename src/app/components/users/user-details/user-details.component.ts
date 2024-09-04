@@ -30,7 +30,7 @@ export class UserDetailsComponent implements OnInit {
     });
   }
 
-  onDeleteUser(id?: string): void {
+  onDeleteUser(id?: string | null | undefined): void {
     if (id && confirm(`Do you wanna delete user with id: ${id}?`)) {
       this.userService.deletUser(id).subscribe({
         next: () => this.router.navigate(["users"]),
@@ -38,7 +38,7 @@ export class UserDetailsComponent implements OnInit {
     }
   }
 
-  onUpdateUser(id?: string): void {
+  onUpdateUser(id?: string | null | undefined): void {
     if (id) {
       this.router.navigate(["users", id, "edit"]);
     }

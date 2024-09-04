@@ -34,7 +34,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   faEye: IconProp = faEye;
   faEyeSlash: IconProp = faEyeSlash;
 
-  updateUserId?: string;
+  updateUserId?: string | null;
   createUserId?: string;
 
   constructor(
