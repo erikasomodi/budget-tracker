@@ -34,6 +34,6 @@ export class NavComponent implements OnInit {
 
   // gomb színének beállítása
   getButtonClasses(): string {
-    return this.dark ? 'btn-outline-light' : 'btn-outline-dark';
+    return this.themeService.getButtonClasses();
   }
 }

@@ -13,7 +13,7 @@ export class ThemeService {
       this.dark = savedTheme === 'dark';
     }
   }
-  // téma váltás 
+  // téma váltás
   toggleTheme() {
     const htmlElement = document.documentElement;
     const currentTheme = htmlElement.getAttribute('data-bs-theme');
@@ -25,5 +25,9 @@ export class ThemeService {
   // téma lekérdezése
   isDarkTheme() {
     return this.dark;
+  }
+  // gomb színének beállítása
+  getButtonClasses(): string {
+    return this.dark ? 'btn-outline-light' : 'btn-outline-dark';
   }
 }
