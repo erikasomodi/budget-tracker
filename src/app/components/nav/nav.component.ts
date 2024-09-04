@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { faAdjust } from '@fortawesome/free-solid-svg-icons';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-nav',
@@ -14,7 +15,10 @@ export class NavComponent implements OnInit {
   private dark = true;
   public faAdjust = faAdjust;
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private themeService: ThemeService
+  ) {}
 
   ngOnInit(): void {}
 
@@ -23,13 +27,9 @@ export class NavComponent implements OnInit {
     await this.authService.logout();
   }
 
-  // téma váltás
+  // téma váltás kiszervezve service-be
   toggleTheme() {
-    const htmlElement = document.documentElement;
-    const currentTheme = htmlElement.getAttribute('data-bs-theme');
-    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-    htmlElement.setAttribute('data-bs-theme', newTheme);
-    this.dark = newTheme === 'dark';
+    this.themeService.toggleTheme();
   }
 
   // gomb színének beállítása
