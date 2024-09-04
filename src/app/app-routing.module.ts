@@ -32,7 +32,14 @@ const routes: Routes = [
     ],
   },
 
-  { path: "transaction-reg", component: TransactionRegComponent },
+  {
+    path: "transaction-reg",
+    component: TransactionRegComponent,
+  },
+  {
+    path: "transaction-reg/:id",
+    component: TransactionRegComponent,
+  },
 
   { path: "budget", component: BudgetTrackerComponent },
 
