@@ -22,17 +22,18 @@ const routes: Routes = [
   {
     path: "registration",
     component: RegistrationComponent,
-    children: [{ path: ":id", component: RegistrationComponent }],
   },
+
   { path: "registrationWithGoogle", component: GoogleRegistrationComponent },
+  {
+    path: "registrationWithGoogle/:id",
+    component: GoogleRegistrationComponent,
+  },
 
   {
     path: "users",
     component: UsersComponent,
-    children: [
-      { path: ":id", component: UserDetailsComponent },
-      { path: ":id/edit", component: RegistrationComponent },
-    ],
+    children: [{ path: ":id", component: UserDetailsComponent }],
   },
 
   {

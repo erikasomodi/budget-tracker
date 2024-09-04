@@ -28,13 +28,20 @@
           formControlName="email"
           placeholder="example@example.com"
         />
-        <small *ngIf="email?.invalid && email?.dirty" class="text-danger"
+        <small
+          *ngIf="email?.invalid && email?.dirty && !email?.errors?.['admin'] && !email?.errors?.['gmail']"
+          class="text-danger"
           >Required field!</small
         >
         <small
-          *ngIf="email?.dirty && email?.errors && email?.errors?.['email']"
+          *ngIf="email?.dirty && email?.errors && email?.errors?.['admin']"
           class="text-danger"
           >Can not contain 'admin'!</small
+        >
+        <small
+          *ngIf="email?.dirty && email?.errors && email?.errors?.['gmail']"
+          class="text-danger"
+          >Can not contain 'gmail'!</small
         >
       </div>
 

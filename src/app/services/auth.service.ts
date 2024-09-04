@@ -7,6 +7,8 @@ import {
   getAdditionalUserInfo,
   signInWithEmailAndPassword,
   signInWithPopup,
+  updateEmail,
+  updatePassword,
 } from "@angular/fire/auth";
 import {
   collection,
@@ -22,6 +24,7 @@ import {
   Observable,
   catchError,
   from,
+  of,
   switchMap,
   tap,
 } from "rxjs";
@@ -155,6 +158,48 @@ export class AuthService {
     ) as Observable<UserCredential>;
   }
 
+  public updateEmail(newEmail: string): Observable<void> {
+    const user = this.auth.currentUser;
+
+    if (!user) {
+      return new Observable((observer) => {
+        observer.error(new Error("No user is currently signed in."));
+      });
+    }
+
+    return from(updateEmail(user, newEmail)).pipe(
+      tap(() => {
+        this.userEmail.next(newEmail); // Update the observable with the new email
+        this.toastr.success("Email updated successfully.");
+      }),
+      catchError((error) => {
+        console.error("Error updating email:", error.message);
+        this.toastr.error("Error updating email.");
+        return of(); // Return an empty observable on error
+      })
+    );
+  }
+
+  public updatePassword(newPassword: string): Observable<void> {
+    const user = this.auth.currentUser;
+
+    if (!user) {
+      return new Observable((observer) => {
+        observer.error(new Error("No user is currently signed in."));
+      });
+    }
+
+    return from(updatePassword(user, newPassword)).pipe(
+      tap(() => {
+        this.toastr.success("Password updated successfully.");
+      }),
+      catchError((error) => {
+        console.error("Error updating password:", error.message);
+        this.toastr.error("Error updating password.");
+        return of(); // Return an empty observable on error
+      })
+    );
+  }
   private setUsername(name: string): void {
     this.userNameSubject.next(name);
   }
@@ -208,14 +253,6 @@ export class AuthService {
       this.toastr.error("Hiba történt a bejelentkezés során");
     }
   }
-
-  // public async loginWithGoogle(): Promise<void> {
-  //   const user = await signInWithPopup(this.auth, this.googleAuthProvider);
-  //   console.log('You logged in successfully!');
-  //   this.toastr.success('You logged in successfully');
-  //   console.log(user);
-  //   this.router.navigate(['budget']);
-  // }
 
   async logout() {
     await this.auth.signOut();

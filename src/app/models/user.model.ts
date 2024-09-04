@@ -1,7 +1,7 @@
 import { TransactionModel } from "./transaction.model";
 
 export interface UserModel {
-  id?: string | null;
+  id?: string | null | undefined;
   name: string | null;
   email: string | null;
   password: string;
