@@ -19,14 +19,13 @@ const routes: Routes = [
   {
     path: "registration",
     component: RegistrationComponent,
-    children: [{ path: ":id", component: RegistrationComponent }],
   },
+
   { path: "registrationWithGoogle", component: GoogleRegistrationComponent },
+
   {
     path: "users",
     component: UsersComponent,
-    canActivate: [AuthGuard],
-    data: { role: 'admin' },
     children: [
       { path: ":id", component: UserDetailsComponent },
       { path: ":id/edit", component: RegistrationComponent },

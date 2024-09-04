@@ -36,7 +36,13 @@ export class GoogleRegistrationComponent implements OnInit, OnDestroy {
   userRole: string = "guest";
   userRoleSubscription?: Subscription;
 
+  updateUserId?: string | null;
+  originalUser?: UserModel;
+
+  updateSubscription?: Subscription;
   saveSubscription?: Subscription;
+  activatedParamsSubscription?: Subscription;
+  activatedGetSubscription?: Subscription;
 
   constructor(
     private userService: UserService,
@@ -78,10 +84,30 @@ export class GoogleRegistrationComponent implements OnInit, OnDestroy {
       this.userForm.patchValue({ role: userRole });
       console.log(`user role a komponensben: `, this.userRole);
     });
+
+    //* SHOW OF UPDATED DATA
+    this.activatedParamsSubscription = this.activatedRoute.paramMap.subscribe({
+      next: (params) => {
+        const userId = params.get("id");
+        if (userId) {
+          this.updateUserId = userId;
+          this.activatedGetSubscription = this.userService
+            .getUserWithGetDoc(userId)
+            .subscribe({
+              next: (data) => {
+                this.userForm.patchValue(data);
+                this.originalUser = data;
+              },
+            });
+        }
+      },
+    });
   }
 
   handleSubmit() {
-    if (this.userForm.valid) {
+    if (this.userForm.valid && this.updateUserId) {
+      this.updateUser();
+    } else if (this.userForm.valid) {
       const user: UserModel = this.userForm.value;
 
       user.email = this.userEmail;
@@ -101,9 +127,48 @@ export class GoogleRegistrationComponent implements OnInit, OnDestroy {
       console.log(user.id);
       console.log(user.email);
       console.log(user.password);
+    } else {
     }
   }
 
+  updateUser(): void {
+    const formValues: UserModel = this.userForm.value;
+    this.userService.getUserWithGetDoc(this.updateUserId).subscribe((data) => {
+      console.log("Ez a kiolvasott user:", data);
+      const updateUser: UserModel = {
+        ...data,
+        ...formValues,
+      };
+      console.log("Ez a frissitett user:", updateUser);
+
+      this.updateSubscription = this.userService
+        .updateUser(updateUser)
+        .subscribe({
+          next: () => {
+            this.toastr.success("User updated successfully!");
+          },
+          error: (error) => {
+            console.log(error);
+            this.toastr.error("User update failed!");
+          },
+        });
+      this.userForm.reset();
+      this.updateUserId = undefined;
+    });
+    //    const user: UserModel = this.userForm.value;
+    // console.log(user);
+    // user.id = this.updateUserId;
+    // console.log(user);
+    // user != this.originalUser;
+    // this.updateSubscription = this.userService.updateUser(user).subscribe({
+    //   next: () => {
+    //     this.toastr.success("User updated successfully!");
+    //     console.log(user);
+    //   },
+    // });
+    // this.userForm.reset();
+    // this.updateUserId = undefined;
+  }
   //* GETTEREK
 
   get name(): AbstractControl | null {

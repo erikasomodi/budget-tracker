@@ -35,7 +35,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   faEyeSlash: IconProp = faEyeSlash;
 
   updateUserId?: string | null;
-  createUserId?: string;
+  createUserId?: string | null | undefined;
 
   constructor(
     private userService: UserService,
@@ -52,6 +52,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       email: new FormControl("", [
         Validators.required,
         this.adminEmailValidator,
+        this.googleEmailValidator,
       ]),
       password: new FormControl("", [Validators.required]),
       age: new FormControl("", [Validators.required]),
@@ -105,36 +106,37 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   saveUser(): void {
     const user: UserModel = this.userForm.value;
     //* CREATE
-    if (this.createUserId) {
-      this.saveSubscription = this.userService
-        .createUserWithId(this.createUserId, user)
-        .subscribe({
-          next: () => {
-            console.log("User created!");
-          },
-          error: (error) => {
-            console.log(error);
-          },
-        });
-      this.userForm.reset();
-      this.createUserId = undefined;
-    } else {
-      //* UPDATE
-      if (this.updateUserId) {
-        user.id = this.updateUserId;
-        this.updateSubscription = this.userService.updateUser(user).subscribe({
-          next: () => {
-            this.router.navigate(["users"]);
-          },
-        });
-        this.userForm.reset();
-        this.updateUserId = undefined;
-      }
-    }
+    this.saveSubscription = this.userService
+      .createUserWithId(this.createUserId, user)
+      .subscribe({
+        next: () => {
+          console.log("User created!");
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
+    this.userForm.reset();
+    this.createUserId = undefined;
+  }
+  // //* UPDATE
+  updateUser(): void {
+    const user: UserModel = this.userForm.value;
+    this.userService.getUserWithGetDoc(this.updateUserId).subscribe((data) => {
+      const oldUser = data;
+      user != oldUser;
+    });
+    this.updateSubscription = this.userService.updateUser(user).subscribe({
+      next: () => {
+        this.toastr.success("User updated successfully!");
+      },
+    });
+    this.userForm.reset();
+    this.updateUserId = undefined;
   }
 
   //* USER REGISTRATION, LOGIN
-  public registration() {
+  registration() {
     console.log();
     const regData = this.userForm.value;
     return this.authService.registration(regData).pipe(
@@ -152,18 +154,6 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     );
   }
 
-  public login() {
-    if (this.userForm.valid) {
-      const loginData: userAuthData = {
-        email: this.userForm.get("email")?.value,
-        password: this.userForm.get("password")?.value,
-      };
-      this.authLoginSubscription = this.authService
-        .login(loginData)
-        .subscribe();
-    }
-  }
-
   //* CUSTOM VALIDATOR
 
   adminEmailValidator(control: AbstractControl): ValidationErrors | null {
@@ -171,7 +161,17 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
     if (controlValue != null) {
       return controlValue.match(/admin/i)
-        ? { email: { value: control.value + "Error: contain admin" } }
+        ? { admin: { value: control.value + "Error: contain admin" } }
+        : null;
+    }
+    return null;
+  }
+  googleEmailValidator(control: AbstractControl): ValidationErrors | null {
+    const controlValue = control.value as string;
+
+    if (controlValue != null) {
+      return controlValue.match(/gmail/i)
+        ? { gmail: { value: control.value + "Error: contain gmail" } }
         : null;
     }
     return null;

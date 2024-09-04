@@ -33,14 +33,17 @@ export class UserService {
   }
 
   //* CREATE USER - Meghatározott ID-val
-  createUserWithId(userId: string | null, user: UserModel): Observable<void> {
+  createUserWithId(
+    userId: string | null | undefined,
+    user: UserModel
+  ): Observable<void> {
     const userDoc = doc(this.firestore, `users/${userId}`);
     user.role = 'user';
     return from(setDoc(userDoc, { ...user, id: userId }));
   }
 
   //* READ ONE USER - nem teremt folyamatos kapcsolatot egyszeri olvasás
-  getUserWithGetDoc(id: string) {
+  getUserWithGetDoc(id: string | null | undefined) {
     const userDoc = doc(this.firestore, `users/${id}`);
     return from(getDoc(userDoc)).pipe(
       map((doc) => {

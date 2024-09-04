@@ -40,7 +40,7 @@ export class UserDetailsComponent implements OnInit {
 
   onUpdateUser(id?: string | null | undefined): void {
     if (id) {
-      this.router.navigate(["users", id, "edit"]);
+      this.router.navigate(["registrationWithGoogle", id]);
     }
   }
 }

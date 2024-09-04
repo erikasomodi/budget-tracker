@@ -75,7 +75,7 @@
       </div>
     </div>
     <button [disabled]="userForm.invalid" type="submit" class="btn btn-warning">
-      Submit
+      {{ updateUserId ? "Update" : "Submit" }}
     </button>
   </form>
 </div>
