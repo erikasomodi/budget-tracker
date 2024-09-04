@@ -14,14 +14,18 @@ import {
 } from "@angular/forms";
 import { Subscription } from "rxjs";
 import {
+  faBuildingColumns,
   faCar,
   faChartLine,
   faCreditCard,
   faGift,
+  faHandHoldingDollar,
   faLaptop,
   faMoneyBill,
+  faMoneyBillTrendUp,
   faPizzaSlice,
   faPlane,
+  faSackDollar,
   faShirt,
   faUmbrellaBeach,
 } from "@fortawesome/free-solid-svg-icons";
@@ -63,7 +67,7 @@ export class TransactionRegComponent implements OnInit, OnDestroy {
     icon: IconProp;
   }[] = [
     { key: "cash", value: "Cash", icon: faMoneyBill },
-    { key: "bank transfer", value: "Bank Transfer", icon: faChartLine },
+    { key: "bank transfer", value: "Bank Transfer", icon: faBuildingColumns },
     { key: "card", value: "Card", icon: faCreditCard },
   ];
   transactionCategoryOptionsWithIconsIcomes: {
@@ -71,9 +75,9 @@ export class TransactionRegComponent implements OnInit, OnDestroy {
     value: string;
     icon: IconProp;
   }[] = [
-    { key: "income", value: "Income", icon: faCreditCard },
-    { key: "freeLance", value: "Freelance", icon: faMoneyBill },
-    { key: "investments", value: "Investments", icon: faChartLine },
+    { key: "income", value: "Income", icon: faSackDollar },
+    { key: "freeLance", value: "Freelance", icon: faHandHoldingDollar },
+    { key: "investments", value: "Investments", icon: faMoneyBillTrendUp },
   ];
   transactionCategoryOptionsWithIconsExpenses: {
     key: string;

@@ -12,6 +12,9 @@ import {
   faUmbrellaBeach,
   faCar,
   faPlane,
+  faSackDollar,
+  faMoneyBillTrendUp,
+  faHandHoldingDollar,
 } from '@fortawesome/free-solid-svg-icons';
 import { TransactionModel } from '../../../models/transaction.model';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
@@ -41,6 +44,9 @@ export class TransactionItemComponent implements OnInit, OnDestroy {
   faMoneyBill = faMoneyBill;
   faCar = faCar;
   faPlane = faPlane;
+  faSackDollar = faSackDollar;
+  faMoneyBillTrendUp = faMoneyBillTrendUp;
+  faHandHoldingDollar = faHandHoldingDollar;
 
   deleteSubscription?: Subscription;
 
@@ -64,15 +70,15 @@ export class TransactionItemComponent implements OnInit, OnDestroy {
       case 'electronic items':
         return this.faLaptop;
       case 'investments':
-        return this.faChartLine;
+        return this.faMoneyBillTrendUp;
       case 'travel':
         return this.faCar;
       case 'flight':
         return this.faPlane;
       case 'income':
-        return this.faCreditCard;
+        return this.faSackDollar;
       case 'freeLance':
-        return this.faMoneyBill;
+        return this.faHandHoldingDollar;
       default:
         return this.icon;
     }
