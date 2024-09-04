@@ -8,12 +8,14 @@ import { UserService } from "../../../services/user.service";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Subscription } from "rxjs";
 import {
+  faCar,
   faChartLine,
   faCreditCard,
   faGift,
   faLaptop,
   faMoneyBill,
   faPizzaSlice,
+  faPlane,
   faShirt,
   faUmbrellaBeach,
 } from "@fortawesome/free-solid-svg-icons";
@@ -77,6 +79,8 @@ export class TransactionRegComponent implements OnInit, OnDestroy {
     { key: "food", value: "Food", icon: faPizzaSlice },
     { key: "electronic items", value: "Electronic items", icon: faLaptop },
     { key: "investments", value: "Investments", icon: faChartLine },
+    { key: "travel", value: "Travel", icon: faCar },
+    { key: "flight", value: "Flight", icon: faPlane },
   ];
 
   constructor(

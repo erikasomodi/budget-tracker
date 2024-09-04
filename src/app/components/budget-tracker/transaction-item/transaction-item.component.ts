@@ -10,6 +10,8 @@ import {
   faCreditCard,
   faMoneyBill,
   faUmbrellaBeach,
+  faCar,
+  faPlane,
 } from "@fortawesome/free-solid-svg-icons";
 import { TransactionModel } from "../../../models/transaction.model";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
@@ -37,6 +39,8 @@ export class TransactionItemComponent implements OnInit, OnDestroy {
   faChartLine = faChartLine;
   faCreditCard = faCreditCard;
   faMoneyBill = faMoneyBill;
+  // faCar = faCar;
+  // faPlane = faPlane;
 
   deleteSubscription?: Subscription;
 
