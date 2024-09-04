@@ -1,8 +1,14 @@
 <nav class="navbar navbar-expand-lg bg-dark-subtle fixed-top shadow">
   <div class="container-fluid ps-lg-3">
-    <div class="me-2" id="navbar__logo"></div>
+    <div
+      class="me-2"
+      id="navbar__logo"
+    ></div>
 
-    <a href="#" class="navbar-brand fw-bold" routerLink="home-page"
+    <a
+      href="#"
+      class="navbar-brand fw-bold"
+      routerLink="home-page"
       >PROGbudget</a
     >
     <button
@@ -16,9 +22,15 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <div
+      class="collapse navbar-collapse"
+      id="navbarNav"
+    >
       <ul class="navbar-nav">
-        <li *ngIf="!(loggedInStatus$ | async); else UpdateIn" class="nav-item">
+        <li
+          *ngIf="!(loggedInStatus$ | async); else UpdateIn"
+          class="nav-item"
+        >
           <a
             class="nav-link"
             routerLinkActive="active"
@@ -27,23 +39,18 @@
           >
         </li>
         <ng-template #UpdateIn>
-        <li
-          class="nav-item"
-          *ngIf="!(loggedInStatus$ | async)"
-        >
-          <a
-            class="nav-link"
-            routerLinkActive="active"
-           (click)="updateUser()"
-            >Update</a
+          <li
+            class="nav-item"
+            *ngIf="loggedInStatus$ | async"
           >
-        </li>
-      </ng-template>
-        <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active" routerLink="login"
-            >Login</a
-          >
-        </li>
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              (click)="updateUser()"
+              >My data</a
+            >
+          </li>
+        </ng-template>
         <li
           class="nav-item"
           *ngIf="(loggedInStatus$ | async) && (userRole$ | async) === 'user'"
@@ -59,16 +66,17 @@
           class="nav-item"
           *ngIf="(loggedInStatus$ | async) && (userRole$ | async) === 'user'"
         >
-          <a class="nav-link" routerLinkActive="active" routerLink="budget"
+          <a
+            class="nav-link"
+            routerLinkActive="active"
+            routerLink="budget"
             >Budget tracker</a
           >
         </li>
         <li
-  *ngIf="(loggedInStatus$ | async) && ((userRole$ | async) === 'admin'); else loggedIn"
-  class="nav-item"
->
-</li>
-
+          class="nav-item"
+          *ngIf="(loggedInStatus$ | async) && (userRole$ | async) === 'admin'"
+        >
           <a
             class="nav-link"
             routerLinkActive="active"
@@ -77,25 +85,38 @@
           >
         </li>
         <li
+          *ngIf="!(loggedInStatus$ | async); else loggedIn"
           class="nav-item"
-          *ngIf="loggedInStatus$ | async"
         >
           <a
             class="nav-link fw-bold"
-            (click)="logout()"
-            >Logout</a
+            routerLinkActive="active"
+            routerLink="login"
+            >Login</a
           >
         </li>
-        <li
-          class="nav-item"
-          *ngIf="loggedInStatus$ | async"
-        >
-          <a
-            class="nav-link active"
-            *ngIf="userEmail$ | async as userEmail"
-            >{{ userEmail }}</a
+        <ng-template #loggedIn>
+          <li
+            class="nav-item"
+            *ngIf="loggedInStatus$ | async"
           >
-        </li>
+            <a
+              class="nav-link fw-bold"
+              (click)="logout()"
+              >Logout:</a
+            >
+          </li>
+          <li
+            class="nav-item"
+            *ngIf="loggedInStatus$ | async"
+          >
+            <a
+              class="nav-link active"
+              *ngIf="userEmail$ | async as userEmail"
+              >{{ userEmail }}</a
+            >
+          </li>
+        </ng-template>
       </ul>
       <div class="ms-auto">
         <app-button

@@ -24,7 +24,6 @@ export class NavComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private themeService: ThemeService,
     private router: Router,
-    private router: Router
   ) {
     this.userId$ = this.authService.userId$;
   }
