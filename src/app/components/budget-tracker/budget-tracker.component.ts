@@ -23,6 +23,7 @@ import { TransactionModel } from '../../models/transaction.model';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { UserModel } from '../../models/user.model';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-budget-tracker',
@@ -86,7 +87,8 @@ export class BudgetTrackerComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
-    private authService: AuthService
+    private authService: AuthService,
+    private toastr: ToastrService
   ) {
     this.budgetForm = this.fb.group({});
     this.userName$ = this.authService.userName$;
@@ -203,8 +205,10 @@ export class BudgetTrackerComponent implements OnInit {
       );
     }
 
-    // Toast megjelenítése, ha nincs találat
-    this.showNoResultsToast = this.filteredTransactions.length === 0;
+    // Toastr értesítés megjelenítése, ha nincs találat
+    if (this.filteredTransactions.length === 0) {
+      this.toastr.error('No results found.');
+    }
 
     // Az összegzés frissítése a szűrt tranzakciók alapján
     this.currentSum = this.filteredTransactions.reduce(
@@ -225,11 +229,6 @@ export class BudgetTrackerComponent implements OnInit {
     this.visualIcon = this.visual === 'list' ? faChartLine : faList;
   }
 
-  // Toast elrejtése
-  hideToast() {
-    this.showNoResultsToast = false;
-    this.cdr.detectChanges();
-  }
   // Sorbarendezés dátum szerint, a tranzakciók tömbjében
   sortTransactionsByDateArray(
     transactions: TransactionModel[]
