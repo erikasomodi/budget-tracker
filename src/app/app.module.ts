@@ -31,6 +31,7 @@ import { PageNotFoundComponent } from "./components/page-not-found/page-not-foun
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
+import { ChartComponent } from './components/budget-tracker/chart/chart.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { NoopAnimationsModule } from "@angular/platform-browser/animations";
     InputComponent,
     TransactionItemComponent,
     PageNotFoundComponent,
+    ChartComponent,
   ],
   imports: [
     BrowserModule,

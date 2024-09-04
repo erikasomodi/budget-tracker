@@ -17,6 +17,7 @@ import {
   faTrash,
   faMarker,
   faList,
+  faChartColumn,
 } from '@fortawesome/free-solid-svg-icons';
 import { TransactionModel } from '../../models/transaction.model';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
@@ -53,6 +54,7 @@ export class BudgetTrackerComponent implements OnInit {
   faMoneyBill: IconProp = faMoneyBill;
   faLaptop: IconProp = faLaptop;
   faChartLine: IconProp = faChartLine;
+  faChartColumn: IconProp = faChartColumn;
   faTrash: IconProp = faTrash;
   faMarker: IconProp = faMarker;
   faList: IconProp = faList;
@@ -109,7 +111,7 @@ export class BudgetTrackerComponent implements OnInit {
       // A szűrt kiadások, bevételek és tranzakciók beállítása az eredetikre
       this.filteredExpenses = sortedExpenses;
       this.filteredIncomes = sortedIncomes;
-      this.filteredTransactions = this.transactions;
+      this.filteredTransactions = user.transactions;
 
       // Az összegzés kiszámítása a kiválasztott nézet szerint, azaz a kiadásokra állítja be az összegzést, amikor a komponens betöltődik (transactions a default)
       this.switchView(this.currentView);
@@ -128,6 +130,8 @@ export class BudgetTrackerComponent implements OnInit {
 
   // Az aktuális nézet
   currentView: 'expenses' | 'incomes' | 'transactions' = 'transactions';
+  visual: 'chart' | 'list' = 'list';
+  visualIcon: IconProp = faChartColumn;
 
   // Nézet váltás és az összegzés kiszámítása
   switchView(view: 'expenses' | 'incomes' | 'transactions') {
@@ -210,6 +214,12 @@ export class BudgetTrackerComponent implements OnInit {
 
     // Manuális nézet frissítés
     this.cdr.detectChanges();
+  }
+
+  // Vizuális nézet váltása
+  toggleVisual() {
+    this.visual = this.visual === 'list' ? 'chart' : 'list';
+    this.visualIcon = this.visual === 'list' ? faChartColumn : faList;
   }
 
   // Toast elrejtése

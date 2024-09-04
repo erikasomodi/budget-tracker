@@ -1,4 +1,4 @@
-<div class="container-md pt-3">
+<div class="container-md py-3">
   <form [formGroup]="budgetForm">
     <div class="row">
       <div class="col-md-10 col-xl-7 mx-auto">
@@ -45,13 +45,16 @@
               (keydown)="preventEnter($event)"
             ></app-input>
           </div>
-          <div>
-            <app-button
-              *ngIf=""
-              [label]="label"
-              class="me-3"
-            ></app-button>
-          </div>
+          <ng-container *ngIf="currentView === 'transactions'">
+            <div class="ms-auto">
+              <app-button
+                id="themeSwitcher"
+                [icon]="visualIcon"
+                [label]="'Switch color'"
+                (buttonClick)="toggleVisual()"
+              ></app-button>
+            </div>
+          </ng-container>
         </div>
         <div class="pt-4 my-3">
           <div class="position-relative text-center">
@@ -82,8 +85,18 @@
             </div>
           </div>
         </div>
+        <ng-container
+          *ngIf="visual === 'chart' && currentView === 'transactions'"
+        >
+          <div class="d-flex justify-content-center">
+            <app-chart [transactions]="filteredTransactions"  [startBudget]="user.startBudget"></app-chart>
+          </div>
+        </ng-container>
 
-        <ul class="list-group shadow">
+        <ul
+          id="transactions"
+          class="list-group shadow"
+        >
           <!-- Költségek  -->
           <ng-container *ngIf="currentView === 'expenses'">
             <li
@@ -105,7 +118,9 @@
           </ng-container>
 
           <!-- Költségvetés  -->
-          <ng-container *ngIf="currentView === 'transactions'">
+          <ng-container
+            *ngIf="visual !== 'chart' && currentView === 'transactions'"
+          >
             <li
               *ngFor="let transaction of filteredTransactions"
               class="list-group-item"
