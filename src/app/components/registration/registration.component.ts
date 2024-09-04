@@ -48,15 +48,12 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   //plusz validátorok még kellenek!
   ngOnInit(): void {
     this.userForm = new FormGroup({
-      name: new FormControl("", [Validators.required]),
+      name: new FormControl("", [Validators.required, Validators.minLength(3)]),
       email: new FormControl("", [
         Validators.required,
         this.adminEmailValidator,
       ]),
-      password: new FormControl("", [
-        Validators.required,
-        this.adminEmailValidator,
-      ]),
+      password: new FormControl("", [Validators.required]),
       age: new FormControl("", [Validators.required]),
       married: new FormControl("", [Validators.required]),
       numberOfChildren: new FormControl(null, [Validators.required]),

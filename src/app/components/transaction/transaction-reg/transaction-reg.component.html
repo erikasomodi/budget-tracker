@@ -11,10 +11,17 @@
           formControlName="transactionName"
         />
         <small
-          *ngIf="transactionName.invalid && transactionName.dirty"
+          *ngIf="transactionName.errors?.['required'] && transactionName.dirty"
           class="text-danger"
         >
-          Transaction name is required and must be at least 3 characters long.
+          Transaction name is required.
+        </small>
+
+        <small
+          *ngIf="transactionName.errors?.['minlength'] && transactionName.dirty"
+          class="text-danger"
+        >
+          Transaction name must be at least 3 characters long.
         </small>
       </div>
 
@@ -55,12 +62,13 @@
           id="transactionDate"
           class="form-control"
           formControlName="transactionDate"
+          [max]="currentDate"
         />
         <small
-          *ngIf="transactionDate.invalid && transactionDate.dirty"
+          *ngIf="transactionDate.invalid && transactionDate.touched"
           class="text-danger"
         >
-          Transaction date is required.
+          Transaction date is required and cannot be in the future.
         </small>
       </div>
 

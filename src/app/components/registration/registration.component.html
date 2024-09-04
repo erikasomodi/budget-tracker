@@ -1,14 +1,25 @@
 <div class="container px-4 px-lg-5 my-5">
   <form [formGroup]="userForm" *ngIf="userForm" (ngSubmit)="handleSubmit()">
     <div class="row">
+      <!-- Name -->
       <div class="col-md-6 mb-3 pt-4">
         <label for="name" class="form-label">Full name</label>
         <input type="text" class="form-control" formControlName="name" />
-        <small *ngIf="name?.invalid && name?.dirty" class="text-danger"
-          >Required field!</small
+        <small
+          *ngIf="name?.errors?.['required'] && name?.dirty"
+          class="text-danger"
         >
+          Full name is required.
+        </small>
+        <small
+          *ngIf="name?.errors?.['minlength'] && name?.dirty"
+          class="text-danger"
+        >
+          Full name must be at least 3 characters long.
+        </small>
       </div>
 
+      <!-- Email -->
       <div class="col-md-6 mb-3 pt-4">
         <label for="username" class="form-label">Email address</label>
         <input
@@ -26,6 +37,8 @@
           >Can not contain 'admin'!</small
         >
       </div>
+
+      <!-- Password -->
       <div class="col-md-6 mb-3">
         <label for="password" class="form-label">Password</label>
         <div class="input-group">
@@ -55,6 +68,7 @@
         >
       </div>
 
+      <!-- Age -->
       <div class="col-md-6 mb-3">
         <label for="age" class="form-label">Age</label>
         <input type="number" class="form-control" formControlName="age" />
@@ -62,6 +76,8 @@
           >Required field!</small
         >
       </div>
+
+      <!-- Married -->
       <div class="col-md-6 mb-3">
         <label for="married" class="form-label">Are you married?</label>
         <select
@@ -74,10 +90,12 @@
           <option value="true">Yes</option>
           <option value="false">No</option>
         </select>
-        <small *ngIf="married?.invalid && married?.dirty" class="text-danger"
+        <small *ngIf="married?.invalid && married?.touched" class="text-danger"
           >Required field!</small
         >
       </div>
+
+      <!-- Number of children -->
       <div class="col-md-6 mb-3">
         <label for="numberOfChildren" class="form-label"
           >Number of children</label
@@ -93,6 +111,8 @@
           >Required field!</small
         >
       </div>
+
+      <!-- Budget -->
       <div class="col-md-6 mb-3">
         <label for="startBudget" class="form-label">Start budget</label>
         <input
@@ -106,6 +126,8 @@
           >Required field!</small
         >
       </div>
+
+      <!-- Monthly salary -->
       <div class="col-md-6 mb-3">
         <label for="monthlySalary" class="form-label">Monthly salary</label>
         <input

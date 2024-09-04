@@ -5,7 +5,13 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { UserModel } from "../../../models/user.model";
 import { UserService } from "../../../services/user.service";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  Validators,
+} from "@angular/forms";
 import { Subscription } from "rxjs";
 import {
   faCar,
@@ -29,6 +35,7 @@ import { TransactionModel } from "../../../models/transaction.model";
 })
 export class TransactionRegComponent implements OnInit, OnDestroy {
   transactionForm!: FormGroup;
+  currentDate: string = "";
 
   selectUser!: UserModel;
   LoginUserId!: string | null;
@@ -102,7 +109,10 @@ export class TransactionRegComponent implements OnInit, OnDestroy {
         Validators.required,
         Validators.min(1),
       ]),
-      transactionDate: new FormControl("", [Validators.required]),
+      transactionDate: new FormControl("", [
+        Validators.required,
+        this.pastOrTodayDateValidator,
+      ]),
       transactionCategory: new FormControl("", [Validators.required]),
       transactionMethod: new FormControl("", [Validators.required]),
     });
@@ -134,6 +144,8 @@ export class TransactionRegComponent implements OnInit, OnDestroy {
           });
       }
     );
+    const today = new Date();
+    this.currentDate = today.toISOString().split("T")[0];
   }
 
   addTransaction() {
@@ -172,6 +184,17 @@ export class TransactionRegComponent implements OnInit, OnDestroy {
         }
       }
     }
+  }
+
+  // Move the validator function inside the class
+  pastOrTodayDateValidator(control: AbstractControl): ValidationErrors | null {
+    const today = new Date();
+    const selectedDate = new Date(control.value);
+
+    if (selectedDate > today) {
+      return { futureDate: true };
+    }
+    return null;
   }
 
   get transactionName() {
