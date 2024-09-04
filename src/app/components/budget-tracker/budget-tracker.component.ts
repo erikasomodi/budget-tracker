@@ -133,7 +133,7 @@ export class BudgetTrackerComponent implements OnInit {
   // Az aktuális nézet
   currentView: 'expenses' | 'incomes' | 'transactions' = 'transactions';
   visual: 'chart' | 'list' = 'list';
-  visualIcon: IconProp = faChartColumn;
+  visualIcon: IconProp = faChartLine;
 
   // Nézet váltás és az összegzés kiszámítása
   switchView(view: 'expenses' | 'incomes' | 'transactions') {
@@ -221,7 +221,7 @@ export class BudgetTrackerComponent implements OnInit {
   // Vizuális nézet váltása
   toggleVisual() {
     this.visual = this.visual === 'list' ? 'chart' : 'list';
-    this.visualIcon = this.visual === 'list' ? faChartColumn : faList;
+    this.visualIcon = this.visual === 'list' ? faChartLine : faList;
   }
 
   // Toast elrejtése

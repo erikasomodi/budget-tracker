@@ -43,7 +43,7 @@ export class ChartComponent implements OnInit {
         labels: transactionsWithStartBudget.map((t) => t.transactionName),
         datasets: [
           {
-            label: 'Cumulative Balance',
+            label: 'Balance',
             data: balances,
             backgroundColor: 'rgba(75, 192, 192, 0.2)',
             borderColor: 'rgba(75, 192, 192, 1)',
