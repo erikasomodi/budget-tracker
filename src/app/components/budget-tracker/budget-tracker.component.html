@@ -129,7 +129,7 @@
                 ' list-group-item-warning': transaction.transactionAmount < 0
               }"
             >
-              <app-transaction-item [item]="transaction"></app-transaction-item>
+              <app-transaction-item [item]="transaction" [id]="userId$ | async"></app-transaction-item>
             </li>
           </ng-container>
         </ul>

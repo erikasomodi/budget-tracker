@@ -31,11 +31,13 @@ export class TransactionRegComponent implements OnInit, OnDestroy {
   selectUser!: UserModel;
   LoginUserId!: string | null;
 
-  updateTransaction!: boolean | null;
+  updateTransactionId!: number | undefined;
 
   updateSubscription?: Subscription;
   authUserIdSubscription?: Subscription;
   saveSubscription?: Subscription;
+  activatedParamsSubscription?: Subscription;
+  activatedGetSubscription?: Subscription;
 
   transactionTypeOptions: { key: string; value: string }[] = [
     { key: "income", value: "Income" },
@@ -105,25 +107,66 @@ export class TransactionRegComponent implements OnInit, OnDestroy {
       (id: string | null) => {
         this.LoginUserId = id;
         console.log("Current User ID: ", this.LoginUserId);
+        this.activatedParamsSubscription =
+          this.activatedRoute.paramMap.subscribe({
+            next: (params) => {
+              const transactionIdString = params.get("id");
+              console.log(transactionIdString);
+              if (transactionIdString) {
+                const transactionId = parseInt(transactionIdString, 10);
+                if (!isNaN(transactionId)) {
+                  this.updateTransactionId = transactionId;
+                  console.log(this.updateTransactionId);
+                  this.activatedGetSubscription = this.userService
+                    .getTransactionWithGetDoc(this.LoginUserId!, transactionId)
+                    .subscribe({
+                      next: (data) => {
+                        this.transactionForm.patchValue(data!);
+                      },
+                    });
+                }
+              }
+            },
+          });
       }
     );
   }
 
   addTransaction() {
-    if (this.LoginUserId) {
+    if (this.transactionForm.valid) {
       const newTransaction: TransactionModel = this.transactionForm.value;
-      this.saveSubscription = this.userService
-        .addTransactionToUser(this.LoginUserId, newTransaction)
-        .subscribe({
-          next: () => {
-            this.toastr.success("Transaction added successfully!");
-            this.transactionForm.reset();
-          },
-          error: (err) => {
-            console.log(err);
-            this.toastr.error("Failed to add transaction.");
-          },
-        });
+      if (this.LoginUserId) {
+        if (this.updateTransactionId) {
+          newTransaction.id = this.updateTransactionId;
+          this.updateSubscription = this.userService
+            .updateTransaction(this.LoginUserId, newTransaction)
+            .subscribe({
+              next: () => {
+                this.toastr.success("Transaction updated successfully!");
+                this.transactionForm.reset();
+                this.router.navigate(["/budget"]);
+              },
+              error: (err) => {
+                console.log(err);
+                this.toastr.error("Failed to update transaction.");
+              },
+            });
+        } else {
+          newTransaction.id = Date.now();
+          this.saveSubscription = this.userService
+            .addTransactionToUser(this.LoginUserId, newTransaction)
+            .subscribe({
+              next: () => {
+                this.toastr.success("Transaction added successfully!");
+                this.transactionForm.reset();
+              },
+              error: (err) => {
+                console.log(err);
+                this.toastr.error("Failed to add transaction.");
+              },
+            });
+        }
+      }
     }
   }
 
@@ -160,6 +203,12 @@ export class TransactionRegComponent implements OnInit, OnDestroy {
     }
     if (this.saveSubscription) {
       this.saveSubscription.unsubscribe();
+    }
+    if (this.activatedParamsSubscription) {
+      this.activatedParamsSubscription.unsubscribe();
+    }
+    if (this.activatedGetSubscription) {
+      this.activatedGetSubscription.unsubscribe();
     }
   }
 }
