@@ -47,8 +47,8 @@ const routes: Routes = [
   },
   {
     path: 'transaction-reg/:id',
-    canActivate: [AuthGuard],
-    data: { role: 'user' },
+    // canActivate: [AuthGuard],
+    // data: { role: 'user' },
     component: TransactionRegComponent,
   },
 
