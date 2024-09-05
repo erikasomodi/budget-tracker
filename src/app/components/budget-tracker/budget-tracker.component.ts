@@ -24,6 +24,7 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { UserModel } from '../../models/user.model';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-budget-tracker',
@@ -48,6 +49,7 @@ export class BudgetTrackerComponent implements OnInit {
   };
   userName$: Observable<string>;
   userId$: Observable<string | null>;
+  userName: string = '';
 
   // expense icons
   faShirt: IconProp = faShirt;
@@ -88,7 +90,8 @@ export class BudgetTrackerComponent implements OnInit {
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
     private authService: AuthService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private route: ActivatedRoute
   ) {
     this.budgetForm = this.fb.group({});
     this.userName$ = this.authService.userName$;
@@ -96,6 +99,12 @@ export class BudgetTrackerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      this.userName = params['userName'];
+      console.log(
+        `Received userName in BudgetTrackerComponent: ${this.userName}`
+      );
+    });
     this.authService.getLoggedInUser().subscribe((user) => {
       this.user = user;
       this.expenses = user.transactions

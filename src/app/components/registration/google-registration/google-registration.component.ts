@@ -1,25 +1,25 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
   FormGroup,
   ValidationErrors,
   Validators,
-} from "@angular/forms";
+} from '@angular/forms';
 
-import { Observable, Subscription, tap } from "rxjs";
-import { ActivatedRoute, Router } from "@angular/router";
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { ToastrService } from "ngx-toastr";
-import { UserService } from "../../../services/user.service";
-import { AuthService } from "../../../services/auth.service";
-import { UserModel } from "../../../models/user.model";
+import { Observable, Subscription, tap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { ToastrService } from 'ngx-toastr';
+import { UserService } from '../../../services/user.service';
+import { AuthService } from '../../../services/auth.service';
+import { UserModel } from '../../../models/user.model';
 
 @Component({
-  selector: "app-google-registration",
-  templateUrl: "./google-registration.component.html",
-  styleUrls: ["./google-registration.component.scss"],
+  selector: 'app-google-registration',
+  templateUrl: './google-registration.component.html',
+  styleUrls: ['./google-registration.component.scss'],
 })
 export class GoogleRegistrationComponent implements OnInit, OnDestroy {
   userForm!: FormGroup;
@@ -33,8 +33,12 @@ export class GoogleRegistrationComponent implements OnInit, OnDestroy {
   userEmailSubscription?: Subscription;
 
   userRole$: Observable<string>;
-  userRole: string = "guest";
+  userRole: string = 'user';
   userRoleSubscription?: Subscription;
+
+  userName$: Observable<string | null>;
+  userName: string | null = null;
+  userNameSubscription?: Subscription;
 
   updateUserId?: string | null;
   originalUser?: UserModel;
@@ -54,19 +58,20 @@ export class GoogleRegistrationComponent implements OnInit, OnDestroy {
     this.userId$ = this.authService.userId$;
     this.userEmail$ = this.authService.userEmail$;
     this.userRole$ = this.authService.userRole$;
+    this.userName$ = this.authService.userName$;
   }
 
   ngOnInit(): void {
     this.userForm = new FormGroup({
-      name: new FormControl("", [Validators.required]),
-      email: new FormControl(""),
-      password: new FormControl("***SECRET***"),
-      age: new FormControl("", [Validators.required]),
-      married: new FormControl("", [Validators.required]),
+      name: new FormControl('', [Validators.required]),
+      email: new FormControl(''),
+      password: new FormControl('***SECRET***'),
+      age: new FormControl('', [Validators.required]),
+      married: new FormControl('', [Validators.required]),
       numberOfChildren: new FormControl(null, [Validators.required]),
-      startBudget: new FormControl("", [Validators.required]),
-      monthlySalary: new FormControl("", [Validators.required]),
-      role: new FormControl("guest"),
+      startBudget: new FormControl('', [Validators.required]),
+      monthlySalary: new FormControl('', [Validators.required]),
+      role: new FormControl('user'),
     });
 
     this.userIdSubscription = this.userId$.subscribe((userId) => {
@@ -84,11 +89,20 @@ export class GoogleRegistrationComponent implements OnInit, OnDestroy {
       this.userForm.patchValue({ role: userRole });
       console.log(`user role a komponensben: `, this.userRole);
     });
+    this.userNameSubscription = this.userName$.subscribe((userName) => {
+      if (userName && userName !== 'Unknown User') {
+        this.userName = userName;
+        this.userForm.patchValue({ name: userName });
+        console.log(`user name a komponensben: `, this.userName);
+      } else {
+        console.log(`user name a komponensben: Unknown User`);
+      }
+    });
 
     //* SHOW OF UPDATED DATA
     this.activatedParamsSubscription = this.activatedRoute.paramMap.subscribe({
       next: (params) => {
-        const userId = params.get("id");
+        const userId = params.get('id');
         if (userId) {
           this.updateUserId = userId;
           this.activatedGetSubscription = this.userService
@@ -109,15 +123,16 @@ export class GoogleRegistrationComponent implements OnInit, OnDestroy {
       this.updateUser();
     } else if (this.userForm.valid) {
       const user: UserModel = this.userForm.value;
-
+  
       user.email = this.userEmail;
+      user.name = this.userName; // Győződj meg róla, hogy a userName értéke átadásra kerül
       this.saveSubscription = this.userService
         .createUserWithId(this.userId, user)
         .subscribe({
           next: () => {
-            console.log("User created!");
+            console.log('User created!');
             this.toastr.success(`${user.name}'s registration was successful!`);
-            this.router.navigate(["home-page"]);
+            this.router.navigate(['budget'],{queryParams: {userName: this.userName}});
           },
           error: (error) => {
             console.log(error);
@@ -128,29 +143,30 @@ export class GoogleRegistrationComponent implements OnInit, OnDestroy {
       console.log(user.email);
       console.log(user.password);
     } else {
+      // Kezelés, ha a form nem érvényes
     }
   }
 
   updateUser(): void {
     const formValues: UserModel = this.userForm.value;
     this.userService.getUserWithGetDoc(this.updateUserId).subscribe((data) => {
-      console.log("Ez a kiolvasott user:", data);
+      console.log('Ez a kiolvasott user:', data);
       const updateUser: UserModel = {
         ...data,
         ...formValues,
       };
-      console.log("Ez a frissitett user:", updateUser);
+      console.log('Ez a frissitett user:', updateUser);
 
       this.updateSubscription = this.userService
         .updateUser(updateUser)
         .subscribe({
           next: () => {
-            this.toastr.success("User updated successfully!");
-            this.router.navigate(["users"]);
+            this.toastr.success('User updated successfully!');
+            this.router.navigate(['users']);
           },
           error: (error) => {
             console.log(error);
-            this.toastr.error("User update failed!");
+            this.toastr.error('User update failed!');
           },
         });
       this.userForm.reset();
@@ -160,31 +176,31 @@ export class GoogleRegistrationComponent implements OnInit, OnDestroy {
   //* GETTEREK
 
   get name(): AbstractControl | null {
-    return this.userForm.get("name");
+    return this.userForm.get('name');
   }
   get email(): AbstractControl | null {
-    return this.userForm.get("email");
+    return this.userForm.get('email');
   }
   get password(): AbstractControl | null {
-    return this.userForm.get("password");
+    return this.userForm.get('password');
   }
   get age(): AbstractControl | null {
-    return this.userForm.get("age");
+    return this.userForm.get('age');
   }
   get married(): AbstractControl | null {
-    return this.userForm.get("married");
+    return this.userForm.get('married');
   }
   get numberOfChildren(): AbstractControl | null {
-    return this.userForm.get("numberOfChildren");
+    return this.userForm.get('numberOfChildren');
   }
   get startBudget(): AbstractControl | null {
-    return this.userForm.get("startBudget");
+    return this.userForm.get('startBudget');
   }
   get monthlySalary(): AbstractControl | null {
-    return this.userForm.get("monthlySalary");
+    return this.userForm.get('monthlySalary');
   }
   get role(): AbstractControl | null {
-    return this.userForm.get("role");
+    return this.userForm.get('role');
   }
 
   ngOnDestroy(): void {
@@ -196,6 +212,9 @@ export class GoogleRegistrationComponent implements OnInit, OnDestroy {
     }
     if (this.userRoleSubscription) {
       this.userRoleSubscription.unsubscribe();
+    }
+    if (this.userNameSubscription) {
+      this.userNameSubscription.unsubscribe();
     }
     if (this.saveSubscription) {
       this.saveSubscription.unsubscribe();
