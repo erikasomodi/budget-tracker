@@ -3,7 +3,9 @@
 >
   <div class="row justify-content-center align-items-center text-center">
     <div class="col-12">
-      <h1 class="text-white fw-bold mb-3 text__shadow">Welcome to PROGbudget</h1>
+      <h1 class="text-white fw-bold mb-3 text__shadow">
+        Welcome to PROGbudget
+      </h1>
       <h2 class="text-white text__shadow">We are your Budget's Friends!</h2>
       <h3 class="text-black">
         Track your transactions and budget as easily as clicking on a button
@@ -26,9 +28,19 @@
         </ng-template>
       </div>
       <div class="col-6">
-        <button (click)="navigateToReg()" class="btn btn-warning" onclick="">
+        <button
+          *ngIf="!(loggedInStatus$ | async); else updateIn"
+          (click)="navigateToReg()"
+          class="btn btn-warning"
+          onclick=""
+        >
           Registration
         </button>
+        <ng-template #updateIn>
+          <button (click)="updateUser()" class="btn btn-warning" onclick="">
+            My data
+          </button>
+        </ng-template>
       </div>
     </div>
   </div>

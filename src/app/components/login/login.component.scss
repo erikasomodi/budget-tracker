@@ -1,7 +1,7 @@
 .main {
   &__bg {
     // background-image: url("https://images.unsplash.com/photo-1707157284454-553ef0a4ed0d?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
-    background-image: url('../../../assets/pb_bg.png');
+    background-image: url("../../../assets/pb_bg.png");
 
     background-size: cover;
     background-position: center;
@@ -10,4 +10,15 @@
   & h1 {
     text-shadow: 2px 2px 4px #000000;
   }
+}
+.position-relative {
+  position: relative;
+}
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  // z-index: 5000;
 }
