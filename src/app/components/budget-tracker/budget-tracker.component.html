@@ -94,7 +94,10 @@
               *ngFor="let expense of filteredTransactions"
               class="list-group-item"
             >
-              <app-transaction-item [item]="expense"></app-transaction-item>
+              <app-transaction-item
+                [item]="expense"
+                (transactionDeleted)="refreshTransactions()"
+              ></app-transaction-item>
             </li>
           </ng-container>
 
@@ -104,7 +107,10 @@
               *ngFor="let income of filteredTransactions"
               class="list-group-item"
             >
-              <app-transaction-item [item]="income"></app-transaction-item>
+              <app-transaction-item
+                [item]="income"
+                (transactionDeleted)="refreshTransactions()"
+              ></app-transaction-item>
             </li>
           </ng-container>
 
@@ -123,6 +129,7 @@
               <app-transaction-item
                 [item]="transaction"
                 [id]="userId$ | async"
+                (transactionDeleted)="refreshTransactions()"
               ></app-transaction-item>
             </li>
           </ng-container>

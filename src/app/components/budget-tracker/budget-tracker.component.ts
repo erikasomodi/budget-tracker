@@ -25,6 +25,7 @@ import { UserModel } from '../../models/user.model';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-budget-tracker',
@@ -91,7 +92,8 @@ export class BudgetTrackerComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private authService: AuthService,
     private toastr: ToastrService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private userService: UserService
   ) {
     this.budgetForm = this.fb.group({});
     this.userName$ = this.authService.userName$;
@@ -113,6 +115,7 @@ export class BudgetTrackerComponent implements OnInit {
       this.incomes = user.transactions.filter(
         (transaction) => transaction.transactionType === 'income'
       );
+      
 
       // Az összes tranzakció sorbarendezése dátum szerint
       const sortedExpenses = this.sortTransactionsByDateArray(this.expenses);
@@ -132,6 +135,7 @@ export class BudgetTrackerComponent implements OnInit {
 
       // Feliratkozás a keresőmező értékének változásaira
       this.searchTerm.valueChanges.subscribe((term) => this.budgetSearch(term));
+      this.refreshTransactions();
     });
   }
 
@@ -256,21 +260,48 @@ export class BudgetTrackerComponent implements OnInit {
       transactionAmount: -Math.abs(transaction.transactionAmount),
     };
   }
-
+  refreshTransactions() {
+    if (this.user && this.user.id) {
+      this.userService.getUserTransactions(this.user.id).subscribe(transactions => {
+        this.user.transactions = transactions;
+  
+        // Az összes tranzakció sorbarendezése dátum szerint
+        const sortedExpenses = this.sortTransactionsByDateArray(
+          transactions.filter((transaction) => transaction.transactionType === 'expense')
+            .map((transaction) => this.setExpensesNegative(transaction))
+        );
+        const sortedIncomes = this.sortTransactionsByDateArray(
+          transactions.filter((transaction) => transaction.transactionType === 'income')
+        );
+  
+        // Az expenses és incomes elemek külön sorbarendezése és összefűzése
+        this.transactions = [...sortedExpenses, ...sortedIncomes];
+        this.transactions = this.sortTransactionsByDateArray(this.transactions);
+  
+        // A szűrt tranzakciók beállítása az eredetikre
+        this.filteredTransactions = this.transactions;
+  
+        // Az összegzés kiszámítása a kiválasztott nézet szerint
+        this.currentSum = this.calculateSum(this.currentView);
+  
+        // Manuális nézet frissítés
+        this.cdr.detectChanges();
+      });
+    } else {
+      console.error('User ID is not available.');
+    }
+  }
   // Az összegzés kiszámítása a kiválasztott nézet szerint
   calculateSum(view: 'expenses' | 'incomes' | 'transactions'): number {
     let transactions;
-    // A kiadások, bevételek és az összes tranzakció kiválasztása a nézet szerint
     if (view === 'expenses') {
       transactions = this.user.transactions
         .filter((transaction) => transaction.transactionType === 'expense')
         .map((transaction) => this.setExpensesNegative(transaction));
-      // A bevételek kiválasztása a nézet szerint
     } else if (view === 'incomes') {
       transactions = this.user.transactions.filter(
         (transaction) => transaction.transactionType === 'income'
       );
-      // Az összes tranzakció kiválasztása
     } else {
       transactions = this.user.transactions.map((transaction) => {
         if (transaction.transactionType === 'expense') {
@@ -279,19 +310,17 @@ export class BudgetTrackerComponent implements OnInit {
         return transaction;
       });
     }
-    // Sorbarendezés dátum szerint, a tranzakciók tömbjében
     this.sortTransactionsByDateArray(transactions);
-
-    // Az összegzés kiszámítása a kiválasztott nézet szerint
+  
     const sum = transactions.reduce(
       (sum, transaction) => sum + transaction.transactionAmount,
       0
     );
-
+  
     if (view === 'transactions') {
       return this.user.startBudget + sum;
     }
-
-    return sum; // startBudget hozzáadása a transactions nézethez
+  
+    return sum;
   }
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import {
   faTrash,
   faMarker,
@@ -32,6 +32,7 @@ export class TransactionItemComponent implements OnInit, OnDestroy {
   @Input() item!: TransactionModel;
   @Input() icon!: IconProp;
   @Input() id!: string | null;
+  @Output() transactionDeleted = new EventEmitter<void>();
   faMarker = faMarker;
   faTrash = faTrash;
   faTshirt = faTshirt;
@@ -91,7 +92,7 @@ export class TransactionItemComponent implements OnInit, OnDestroy {
           next: () => {
             console.log('Tranzakció sikeresen törölve.'),
               this.toastr.success('Tranzakció sikeresen törölve');
-            this.router.navigate(['budget']);
+              this.transactionDeleted.emit(); // Esemény kibocsátása
           },
           error: (error) => {
             console.error('Hiba történt a tranzakció törlésekor:', error),
