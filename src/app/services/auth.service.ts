@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import {
   Auth,
   GoogleAuthProvider,
@@ -17,9 +17,9 @@ import {
   query,
   setDoc,
   where,
-} from '@angular/fire/firestore';
-import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+} from "@angular/fire/firestore";
+import { Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 import {
   BehaviorSubject,
   Observable,
@@ -28,8 +28,8 @@ import {
   of,
   switchMap,
   tap,
-} from 'rxjs';
-import { UserModel } from '../models/user.model';
+} from "rxjs";
+import { UserModel } from "../models/user.model";
 
 export interface userAuthData {
   email: string;
@@ -37,19 +37,19 @@ export interface userAuthData {
 }
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class AuthService {
   private loggedInStatus = new BehaviorSubject<boolean | null>(null);
   private googleAuthProvider = new GoogleAuthProvider();
 
-  private userNameSubject = new BehaviorSubject<string>('');
+  private userNameSubject = new BehaviorSubject<string>("");
   public userName$: Observable<string> = this.userNameSubject.asObservable();
 
   private userIdSubject = new BehaviorSubject<string | null>(null);
   public userId$: Observable<string | null> = this.userIdSubject.asObservable();
 
-  private userRoleSubject = new BehaviorSubject<string>('guest');
+  private userRoleSubject = new BehaviorSubject<string>("guest");
   public userRole$: Observable<string> = this.userRoleSubject.asObservable();
 
   public get loggedInStatus$(): Observable<boolean | null> {
@@ -75,7 +75,7 @@ export class AuthService {
     this.auth.onAuthStateChanged({
       next: (user) => {
         if (user) {
-          console.log('van user initkor: ', user);
+          console.log("van user initkor: ", user);
           this.loggedInStatus.next(true);
           this.userEmail.next(user.email);
           this.userIdSubject.next(user.uid);
@@ -85,14 +85,14 @@ export class AuthService {
           this.loggedInStatus.next(false);
           this.userEmail.next(null);
           this.userIdSubject.next(null);
-          this.userRoleSubject.next('guest');
+          this.userRoleSubject.next("guest");
         }
       },
       error: (error) => {
         console.error(error);
       },
       complete: () => {
-        console.log('CheckAuthState Completed');
+        console.log("CheckAuthState Completed");
       },
     });
   }
@@ -101,17 +101,17 @@ export class AuthService {
     return from(
       this.userEmail$.pipe(
         switchMap(async (email) => {
-          const usersCollection = collection(this.firestore, 'users');
-          const q = query(usersCollection, where('email', '==', email));
+          const usersCollection = collection(this.firestore, "users");
+          const q = query(usersCollection, where("email", "==", email));
           const querySnapshot = await getDocs(q);
           if (querySnapshot.empty) {
-            throw new Error('No user found');
+            throw new Error("No user found");
           }
           const userDoc = querySnapshot.docs[0];
           const data = userDoc.data();
           return {
             ...data,
-            transactions: data['transactions'] || [],
+            transactions: data["transactions"] || [],
           } as UserModel;
         })
       )
@@ -126,15 +126,15 @@ export class AuthService {
   }
 
   private async getUserNameByEmail(email: string): Promise<string> {
-    const usersCollection = collection(this.firestore, 'users');
-    const q = query(usersCollection, where('email', '==', email));
+    const usersCollection = collection(this.firestore, "users");
+    const q = query(usersCollection, where("email", "==", email));
     const querySnapshot = await getDocs(q);
     if (!querySnapshot.empty) {
       const userDoc = querySnapshot.docs[0];
       const userData = userDoc.data();
-      return userData['name'] || 'Unknown User';
+      return userData["name"] || "Unknown User";
     }
-    return 'Unknown User';
+    return "Unknown User";
   }
 
   private async setUserRoleByEmail(email: string | null): Promise<void> {
@@ -145,15 +145,15 @@ export class AuthService {
   }
 
   private async getUserRoleByEmail(email: string): Promise<string> {
-    const usersCollection = collection(this.firestore, 'users');
-    const q = query(usersCollection, where('email', '==', email));
+    const usersCollection = collection(this.firestore, "users");
+    const q = query(usersCollection, where("email", "==", email));
     const querySnapshot = await getDocs(q);
     if (!querySnapshot.empty) {
       const userDoc = querySnapshot.docs[0];
       const userData = userDoc.data();
-      return userData['role'] || 'user';
+      return userData["role"] || "user";
     }
-    return 'user';
+    return "user";
   }
 
   public registration(regData: userAuthData): Observable<UserCredential> {
@@ -164,7 +164,7 @@ export class AuthService {
         this.loggedInStatus.next(false);
         // console.log("user adatok", userCredential);
         // console.log("Registered and logged in.");
-        this.router.navigate(['']);
+        this.router.navigate([""]);
         const userName = await this.getUserNameByEmail(
           userCredential.user.email!
         );
@@ -245,8 +245,8 @@ export class AuthService {
           userCredential.user.email!
         );
         this.userRoleSubject.next(userRole);
-        this.toastr.success('You logged in successfully');
-        this.router.navigate(['budget']);
+        this.toastr.success("You logged in successfully");
+        this.router.navigate(["budget"]);
       }),
       catchError((error) => {
         console.log(error.message);
@@ -266,23 +266,20 @@ export class AuthService {
       const id = userCredential.user.uid;
 
       if (isNewUser) {
-        console.log('Új felhasználó regisztrált!');
-        this.router.navigate(['registrationWithGoogle']);
+        console.log("Új felhasználó regisztrált!");
+        this.router.navigate(["registrationWithGoogle"]);
         this.toastr.info(
-          'You have not registered yet, please complete the registration process'
+          "You have not registered yet, please complete the registration process"
         );
       } else {
-        console.log('Meglévő felhasználó bejelentkezett.');
-        this.toastr.success('You logged in successfully');
-        this.router.navigate(['budget']);
+        // this.userRoleSubject.next(userRole);
+        console.log("Meglévő felhasználó bejelentkezett.");
+        this.toastr.success("You logged in successfully");
+        this.router.navigate(["budget"]);
       }
-
-      console.log('Sikeres bejelentkezés!');
-      this.toastr.success('Sikeresen bejelentkeztél');
-      // this.router.navigate(["budget"]);
     } catch (error) {
-      console.error('Hiba történt a Google-bejelentkezés során:', error);
-      this.toastr.error('Hiba történt a bejelentkezés során');
+      console.error("Hiba történt a Google-bejelentkezés során:", error);
+      this.toastr.error("Hiba történt a bejelentkezés során");
     }
   }
 
@@ -290,8 +287,8 @@ export class AuthService {
     await this.auth.signOut();
     this.loggedInStatus.next(false);
     this.userEmail.next(null);
-    this.userNameSubject.next('');
-    this.userRoleSubject.next('guest');
-    this.toastr.success('You logged out successfully');
+    this.userNameSubject.next("");
+    this.userRoleSubject.next("guest");
+    this.toastr.success("You logged out successfully");
   }
 }

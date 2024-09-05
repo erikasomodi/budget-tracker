@@ -146,6 +146,7 @@ export class GoogleRegistrationComponent implements OnInit, OnDestroy {
         .subscribe({
           next: () => {
             this.toastr.success("User updated successfully!");
+            this.router.navigate(["users"]);
           },
           error: (error) => {
             console.log(error);
@@ -155,19 +156,6 @@ export class GoogleRegistrationComponent implements OnInit, OnDestroy {
       this.userForm.reset();
       this.updateUserId = undefined;
     });
-    //    const user: UserModel = this.userForm.value;
-    // console.log(user);
-    // user.id = this.updateUserId;
-    // console.log(user);
-    // user != this.originalUser;
-    // this.updateSubscription = this.userService.updateUser(user).subscribe({
-    //   next: () => {
-    //     this.toastr.success("User updated successfully!");
-    //     console.log(user);
-    //   },
-    // });
-    // this.userForm.reset();
-    // this.updateUserId = undefined;
   }
   //* GETTEREK
 

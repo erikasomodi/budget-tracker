@@ -23,7 +23,7 @@ export class NavComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private themeService: ThemeService,
-    private router: Router,
+    private router: Router
   ) {
     this.userId$ = this.authService.userId$;
   }
@@ -39,9 +39,8 @@ export class NavComponent implements OnInit, OnDestroy {
   }
 
   public async logout() {
-    // console.log(this.loggedInStatus$.subscribe());
     await this.authService.logout();
-    this.router.navigate(['/login']);
+    this.router.navigate(["/login"]);
   }
 
   // téma váltás kiszervezve service-be
